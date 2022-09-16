@@ -17,5 +17,7 @@ public interface UserRepository {
 
     UserEntity findById(long userId);
 
+    UserEntity findByUsername(String username);
+
     void deleteById(long userId);
 }

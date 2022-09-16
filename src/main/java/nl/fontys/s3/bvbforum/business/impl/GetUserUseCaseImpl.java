@@ -16,4 +16,10 @@ public class GetUserUseCaseImpl implements GetUserUseCase {
         UserEntity userEntity = userRepository.findById(userId);
         return userEntity;
     }
+
+    @Override
+    public UserEntity getUser(String username) {
+        UserEntity userEntity = userRepository.findByUsername(username);
+        return userEntity;
+    }
 }

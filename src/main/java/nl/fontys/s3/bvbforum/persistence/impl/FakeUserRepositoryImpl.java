@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class FakeUserRepositoryImpl implements UserRepository {
@@ -55,6 +56,15 @@ public class FakeUserRepositoryImpl implements UserRepository {
         return this.savedUsers
                 .stream()
                 .filter(userEntity -> userEntity.getId() == userId)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public UserEntity findByUsername(String username) {
+        return this.savedUsers
+                .stream()
+                .filter(userEntity -> Objects.equals(userEntity.getUsername(), username))
                 .findFirst()
                 .orElse(null);
     }
