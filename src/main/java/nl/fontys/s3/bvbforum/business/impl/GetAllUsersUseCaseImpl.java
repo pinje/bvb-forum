@@ -5,6 +5,7 @@ import nl.fontys.s3.bvbforum.business.GetAllUsersUseCase;
 import nl.fontys.s3.bvbforum.domain.User;
 import nl.fontys.s3.bvbforum.domain.response.GetAllUsersResponse;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
+import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class GetAllUsersUseCaseImpl implements GetAllUsersUseCase {
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Override
     public GetAllUsersResponse getAllUsers() {

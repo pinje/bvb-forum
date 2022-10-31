@@ -10,25 +10,29 @@ import nl.fontys.s3.bvbforum.persistence.UserRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @AllArgsConstructor
 public class CreateUserUseCaseImpl implements CreateUserUseCase {
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
+    @Transactional
     @Override
     public CreateUserResponse createUser(CreateUserRequest request) {
+
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new UserUsernameAlreadyExistsException();
         }
 
-        UserEntity saveUser = saveNewUser(request);
+        UserEntity saveUser = save(request);
 
         return CreateUserResponse.builder()
                 .userId(saveUser.getId())
                 .build();
     }
 
-    private UserEntity saveNewUser(CreateUserRequest request) {
+    private UserEntity save(CreateUserRequest request) {
         UserEntity newUser = UserEntity.builder()
                 .username(request.getUsername())
                 .build();

@@ -38,14 +38,14 @@ public class UsersController {
     }
 
     @GetMapping("{id}")
-    public UserEntity getUser(@PathVariable(value = "id") final long id) {
-        final UserEntity userOptional = getUserUseCase.getUser(id);
+    public UserEntity getUserById(@PathVariable(value = "id") final long id) {
+        final UserEntity userOptional = getUserUseCase.getUserById(id);
         return userOptional;
     }
 
     @GetMapping("/user/{username}")
-    public UserEntity getUser(@PathVariable(value = "username") final String username) {
-        final UserEntity userOptional = getUserUseCase.getUser(username);
+    public UserEntity getUserByUsername(@PathVariable(value = "username") final String username) {
+        final UserEntity userOptional = getUserUseCase.getUserByUsername(username);
         return userOptional;
     }
 

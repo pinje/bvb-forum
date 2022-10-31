@@ -1,23 +1,11 @@
 package nl.fontys.s3.bvbforum.persistence;
 
-import nl.fontys.s3.bvbforum.domain.User;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface UserRepository {
-    int count();
-
-    UserEntity save(UserEntity user);
-    UserEntity update(UserEntity user);
-
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
     boolean existsByUsername(String username);
-
-    List<UserEntity> findAll();
-
-    UserEntity findById(long userId);
-
     UserEntity findByUsername(String username);
-
-    void deleteById(long userId);
 }
