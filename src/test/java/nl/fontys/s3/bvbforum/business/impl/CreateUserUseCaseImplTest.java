@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,23 +57,22 @@ class CreateUserUseCaseImplTest {
     }
 
     @Test
-    @Disabled
     void CreateUser_UsernameAlreadyExistsException() throws UserUsernameAlreadyExistsException {
         // given
         CreateUserRequest request = CreateUserRequest.builder()
                 .username("Shuhei")
                 .build();
 
-        when(userRepositoryMock.save(any(UserEntity.class))).thenThrow(UserUsernameAlreadyExistsException.class);
+        when(userRepositoryMock.save(any(UserEntity.class))).thenThrow(new UserUsernameAlreadyExistsException());
 
         // when
         ResponseStatusException exception = assertThrows(UserUsernameAlreadyExistsException.class, () -> {
             createUserUseCase.createUser(request);
         });
 
-
         // then
-        assertEquals("USERNAME_EXISTS", exception.getMessage());
+        assertEquals("USERNAME_EXISTS", exception.getReason());
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(userRepositoryMock, times(1)).save(any(UserEntity.class));
     }
 
