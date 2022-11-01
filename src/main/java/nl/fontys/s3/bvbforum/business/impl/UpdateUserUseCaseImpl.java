@@ -3,6 +3,7 @@ package nl.fontys.s3.bvbforum.business.impl;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.business.UpdateUserUseCase;
 import nl.fontys.s3.bvbforum.business.exception.InvalidUserException;
+import nl.fontys.s3.bvbforum.business.exception.UserDoesntExistException;
 import nl.fontys.s3.bvbforum.domain.User;
 import nl.fontys.s3.bvbforum.domain.request.UpdateUserRequest;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
@@ -20,7 +21,7 @@ public class UpdateUserUseCaseImpl implements UpdateUserUseCase {
     public void updateUser(UpdateUserRequest request) {
         Optional<UserEntity> userOptional = userRepository.findById(request.getId());
         if (userOptional.isEmpty()) {
-            throw new InvalidUserException("USER_ID_INVALID");
+            throw new UserDoesntExistException();
         }
 
         UserEntity user = userOptional.get();

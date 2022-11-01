@@ -25,20 +25,20 @@ import static org.mockito.Mockito.*;
 class CreateUserUseCaseImplTest {
 
     @Mock
-    private UserRepository userRepositoryMock;
+    private UserRepository userRepository;
 
     @InjectMocks
     private CreateUserUseCaseImpl createUserUseCase;
 
     @Test
-    void CreateUser() {
+    void Add_ValidUser_UserSavedInRepository() {
         // given
         UserEntity userEntity = UserEntity.builder()
                 .id(1L)
                 .username("Shuhei")
                 .build();
 
-        when(userRepositoryMock.save(any(UserEntity.class))).thenReturn(userEntity);
+        when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
 
         CreateUserRequest request = CreateUserRequest.builder()
                 .username(userEntity.getUsername())
@@ -53,17 +53,17 @@ class CreateUserUseCaseImplTest {
                         .userId(user.getId())
                         .build();
         assertEquals(expectedResult, actualResult);
-        verify(userRepositoryMock, times(1)).save(any(UserEntity.class));
+        verify(userRepository, times(1)).save(any(UserEntity.class));
     }
 
     @Test
-    void CreateUser_UsernameAlreadyExistsException() throws UserUsernameAlreadyExistsException {
+    void Add_UserWithExistingUsername_ThrowsException() throws UserUsernameAlreadyExistsException {
         // given
         CreateUserRequest request = CreateUserRequest.builder()
                 .username("Shuhei")
                 .build();
 
-        when(userRepositoryMock.save(any(UserEntity.class))).thenThrow(new UserUsernameAlreadyExistsException());
+        when(userRepository.save(any(UserEntity.class))).thenThrow(new UserUsernameAlreadyExistsException());
 
         // when
         ResponseStatusException exception = assertThrows(UserUsernameAlreadyExistsException.class, () -> {
@@ -73,7 +73,7 @@ class CreateUserUseCaseImplTest {
         // then
         assertEquals("USERNAME_EXISTS", exception.getReason());
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        verify(userRepositoryMock, times(1)).save(any(UserEntity.class));
+        verify(userRepository, times(1)).save(any(UserEntity.class));
     }
 
 }

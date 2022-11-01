@@ -25,7 +25,7 @@ class GetAllUsersUseCaseImplTest {
     private GetAllUsersUseCaseImpl getAllUsersUseCase;
 
     @Test
-    void getAllUsers_shouldReturnAllUsers() {
+    void GetAll_ExistingUsers_ReturnsAllUsers() {
         UserEntity userEntityOne = UserEntity.builder()
                 .id(1L)
                 .username("one")

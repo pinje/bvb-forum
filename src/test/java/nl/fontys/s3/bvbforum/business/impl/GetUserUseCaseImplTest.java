@@ -13,7 +13,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class GetUserUseCaseImplTest {
@@ -25,21 +25,32 @@ class GetUserUseCaseImplTest {
     private GetUserUseCaseImpl getUserUseCase;
 
     @Test
-    void getUserByUsername() {
-        UserEntity expectedUser = UserEntity.builder()
+    void Get_UserByUsername_ReturnsUser() {
+        // given
+        UserEntity userEntity = UserEntity.builder()
                 .id(1L)
                 .username("Shuhei")
                 .build();
 
-        when(userRepository.findByUsername(anyString())).thenReturn(expectedUser);
+        when(userRepository.findByUsername(anyString())).thenReturn(userEntity);
 
-        UserEntity actualUser = getUserUseCase.getUserByUsername("hello");
-        assertNotNull(actualUser);
-        assertEquals(expectedUser.getUsername(), actualUser.getUsername());
+        // when
+        UserEntity actualResult = getUserUseCase.getUserByUsername("Shuhei");
+
+        // then
+        UserEntity expectedResult = UserEntity.builder()
+                .id(1L)
+                .username("Shuhei")
+                .build();
+
+        assertNotNull(actualResult);
+        assertEquals(expectedResult, actualResult);
+        verify(userRepository, times(1)).findByUsername(anyString());
     }
 
     @Test
-    void getUserById() {
+    void Get_UserById_ReturnsUser() {
+        // given
         UserEntity expectedUser = UserEntity.builder()
                 .id(1L)
                 .username("Shuhei")
@@ -47,8 +58,12 @@ class GetUserUseCaseImplTest {
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(expectedUser));
 
+        // when
         UserEntity actualUser = getUserUseCase.getUserById(1L);
+
+        // then
         assertNotNull(actualUser);
-        assertEquals(expectedUser.getId(), actualUser.getId());
+        assertEquals(expectedUser, actualUser);
+        verify(userRepository, times(1)).findById(anyLong());
     }
 }

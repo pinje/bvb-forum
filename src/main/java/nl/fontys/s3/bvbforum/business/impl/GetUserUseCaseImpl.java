@@ -17,16 +17,14 @@ public class GetUserUseCaseImpl implements GetUserUseCase {
 
     @Override
     public UserEntity getUserById(long userId) {
-        UserEntity userEntity = userRepository.findById(userId)
+        return userRepository.findById(userId)
                 .stream().filter(userEntity1 -> userEntity1.getId() == userId)
                 .findFirst()
                 .orElse(null);
-        return userEntity;
     }
 
     @Override
     public UserEntity getUserByUsername(String username) {
-        UserEntity userEntity = userRepository.findByUsername(username);
-        return userEntity;
+        return userRepository.findByUsername(username);
     }
 }
