@@ -1,12 +1,10 @@
-package nl.fontys.s3.bvbforum.business.impl;
+package nl.fontys.s3.bvbforum.business.impl.user;
 
 import nl.fontys.s3.bvbforum.business.exception.UserDoesntExistException;
-import nl.fontys.s3.bvbforum.business.exception.UserUsernameAlreadyExistsException;
-import nl.fontys.s3.bvbforum.domain.request.CreateUserRequest;
+import nl.fontys.s3.bvbforum.business.impl.user.UpdateUserUseCaseImpl;
 import nl.fontys.s3.bvbforum.domain.request.UpdateUserRequest;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -36,6 +34,7 @@ class UpdateUserUseCaseImplTest {
         UserEntity userEntity = UserEntity.builder()
                 .id(111L)
                 .username("Shuhei")
+                .password("123")
                 .build();
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(userEntity));
         when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
@@ -43,6 +42,7 @@ class UpdateUserUseCaseImplTest {
         UpdateUserRequest request = UpdateUserRequest.builder()
                 .id(111L)
                 .username("Fontys")
+                .password("123")
                 .build();
 
         // when
@@ -50,6 +50,34 @@ class UpdateUserUseCaseImplTest {
 
         // then
         assertEquals("Fontys", userEntity.getUsername());
+        assertEquals("123", userEntity.getPassword());
+        verify(userRepository,times(1)).findById(anyLong());
+        verify(userRepository, times(1)).save(any(UserEntity.class));
+    }
+
+    @Test
+    void Update_ValidUserUsername_PasswordChanged() {
+        // given
+        UserEntity userEntity = UserEntity.builder()
+                .id(111L)
+                .username("Shuhei")
+                .password("123")
+                .build();
+        when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(userEntity));
+        when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
+
+        UpdateUserRequest request = UpdateUserRequest.builder()
+                .id(111L)
+                .username("Shuhei")
+                .password("321")
+                .build();
+
+        // when
+        updateUserUseCase.updateUser(request);
+
+        // then
+        assertEquals("Shuhei", userEntity.getUsername());
+        assertEquals("321", userEntity.getPassword());
         verify(userRepository,times(1)).findById(anyLong());
         verify(userRepository, times(1)).save(any(UserEntity.class));
     }
@@ -60,6 +88,7 @@ class UpdateUserUseCaseImplTest {
         UpdateUserRequest request = UpdateUserRequest.builder()
                 .id(111L)
                 .username("Fontys")
+                .password("123")
                 .build();
 
         when(userRepository.findById(anyLong())).thenThrow(new UserDoesntExistException());

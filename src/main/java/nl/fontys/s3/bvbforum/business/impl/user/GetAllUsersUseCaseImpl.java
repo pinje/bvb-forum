@@ -1,11 +1,10 @@
-package nl.fontys.s3.bvbforum.business.impl;
+package nl.fontys.s3.bvbforum.business.impl.user;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.business.GetAllUsersUseCase;
 import nl.fontys.s3.bvbforum.domain.User;
 import nl.fontys.s3.bvbforum.domain.response.GetAllUsersResponse;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
-import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

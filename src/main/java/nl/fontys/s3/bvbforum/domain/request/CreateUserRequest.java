@@ -18,4 +18,6 @@ import javax.validation.constraints.NotNull;
 public class CreateUserRequest {
     @NotBlank
     private String username;
+    @NotBlank
+    private String password;
 }

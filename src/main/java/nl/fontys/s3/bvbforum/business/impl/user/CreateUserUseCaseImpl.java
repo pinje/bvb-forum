@@ -1,4 +1,4 @@
-package nl.fontys.s3.bvbforum.business.impl;
+package nl.fontys.s3.bvbforum.business.impl.user;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.business.CreateUserUseCase;
@@ -35,6 +35,7 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
     private UserEntity save(CreateUserRequest request) {
         UserEntity newUser = UserEntity.builder()
                 .username(request.getUsername())
+                .password(request.getPassword())
                 .build();
 
         return userRepository.save(newUser);

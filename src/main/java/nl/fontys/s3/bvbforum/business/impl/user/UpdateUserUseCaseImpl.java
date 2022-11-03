@@ -1,4 +1,4 @@
-package nl.fontys.s3.bvbforum.business.impl;
+package nl.fontys.s3.bvbforum.business.impl.user;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.business.UpdateUserUseCase;
@@ -30,6 +30,7 @@ public class UpdateUserUseCaseImpl implements UpdateUserUseCase {
 
     private void updateFields(UpdateUserRequest request, UserEntity user) {
         user.setUsername(request.getUsername());
+        user.setPassword(request.getPassword());
         userRepository.save(user);
     }
 }

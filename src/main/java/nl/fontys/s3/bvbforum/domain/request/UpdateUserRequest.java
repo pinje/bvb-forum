@@ -17,4 +17,6 @@ public class UpdateUserRequest {
     private Long id;
     @NotBlank
     private String username;
+    @NotBlank
+    private String password;
 }

@@ -1,6 +1,6 @@
-package nl.fontys.s3.bvbforum.business.impl;
+package nl.fontys.s3.bvbforum.business.impl.user;
 
-import nl.fontys.s3.bvbforum.domain.User;
+import nl.fontys.s3.bvbforum.business.impl.user.GetUserUseCaseImpl;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
 import org.junit.jupiter.api.Test;
