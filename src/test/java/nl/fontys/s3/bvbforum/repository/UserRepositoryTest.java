@@ -28,6 +28,7 @@ class UserRepositoryTest {
         UserEntity user = UserEntity.builder()
                 .id(1L)
                 .username("one")
+                .password("password")
                 .build();
 
         UserEntity savedUser = userRepository.save(user);
@@ -38,6 +39,7 @@ class UserRepositoryTest {
         UserEntity expectedUser = UserEntity.builder()
                 .id(savedUser.getId())
                 .username("one")
+                .password("password")
                 .build();
 
         assertEquals(expectedUser, savedUser);

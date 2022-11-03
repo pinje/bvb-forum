@@ -15,9 +15,9 @@ public class DatabaseDataInitializer {
     @EventListener(ApplicationReadyEvent.class)
     public void populateDatabaseInitialDummyData() {
         if (userRepository.count() == 0) {
-            userRepository.save(UserEntity.builder().username("user1").build());
-            userRepository.save(UserEntity.builder().username("user2").build());
-            userRepository.save(UserEntity.builder().username("user3").build());
+            userRepository.save(UserEntity.builder().username("user1").password("pwd1").build());
+            userRepository.save(UserEntity.builder().username("user2").password("pwd2").build());
+            userRepository.save(UserEntity.builder().username("user3").password("pwd3").build());
         }
     }
 }
