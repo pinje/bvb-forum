@@ -2,7 +2,6 @@ package nl.fontys.s3.bvbforum.controller;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.business.*;
-import nl.fontys.s3.bvbforum.domain.User;
 import nl.fontys.s3.bvbforum.domain.request.CreateUserRequest;
 import nl.fontys.s3.bvbforum.domain.request.UpdateUserRequest;
 import nl.fontys.s3.bvbforum.domain.response.CreateUserResponse;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")

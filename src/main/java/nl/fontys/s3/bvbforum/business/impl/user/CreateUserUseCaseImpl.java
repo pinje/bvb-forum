@@ -2,7 +2,6 @@ package nl.fontys.s3.bvbforum.business.impl.user;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.business.CreateUserUseCase;
-import nl.fontys.s3.bvbforum.business.exception.UserIdAlreadyExistsException;
 import nl.fontys.s3.bvbforum.business.exception.UserUsernameAlreadyExistsException;
 import nl.fontys.s3.bvbforum.domain.request.CreateUserRequest;
 import nl.fontys.s3.bvbforum.domain.response.CreateUserResponse;
