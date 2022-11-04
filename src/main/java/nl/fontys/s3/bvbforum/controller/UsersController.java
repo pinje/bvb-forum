@@ -37,14 +37,12 @@ public class UsersController {
 
     @GetMapping("{id}")
     public UserEntity getUserById(@PathVariable(value = "id") final long id) {
-        final UserEntity userOptional = getUserUseCase.getUserById(id);
-        return userOptional;
+        return getUserUseCase.getUserById(id);
     }
 
     @GetMapping("/user/{username}")
     public UserEntity getUserByUsername(@PathVariable(value = "username") final String username) {
-        final UserEntity userOptional = getUserUseCase.getUserByUsername(username);
-        return userOptional;
+        return getUserUseCase.getUserByUsername(username);
     }
 
     @PutMapping("{id}")

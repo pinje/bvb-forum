@@ -48,11 +48,13 @@ class DeleteUserUseCaseImplTest {
                 .username("Shuhei")
                 .build();
 
+        Long id = userEntity.getId();
+
         doThrow(new UserDoesntExistException()).when(userRepository).deleteById(anyLong());
 
         // when
         ResponseStatusException exception = assertThrows(UserDoesntExistException.class, () -> {
-            deleteUserUseCase.deleteUser(userEntity.getId());
+            deleteUserUseCase.deleteUser(id);
         });
 
         // then
