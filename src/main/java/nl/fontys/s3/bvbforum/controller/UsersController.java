@@ -40,7 +40,7 @@ public class UsersController {
         return getUserUseCase.getUserById(id);
     }
 
-    @GetMapping("/user/{username}")
+    @GetMapping("{username}")
     public UserEntity getUserByUsername(@PathVariable(value = "username") final String username) {
         return getUserUseCase.getUserByUsername(username);
     }
