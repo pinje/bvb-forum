@@ -40,9 +40,3 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
-
-sonarqube {
-    properties {
-        property "sonar.sourceEncoding", "UTF-8"
-    }
-}

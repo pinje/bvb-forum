@@ -11,6 +11,7 @@ final class UserConverter {
         return User.builder()
                 .id(user.getId())
                 .username(user.getUsername())
+                .password(user.getPassword())
                 .build();
     }
 }
