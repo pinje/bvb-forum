@@ -18,7 +18,7 @@ build:
 test:
   stage: test
   script:
-    - ./gradlew test --tests "nl.fontys.s3.bvbforum.business.impl.user"
+    - ./gradlew test
 
 sonarqube:
   stage: sonarqube
