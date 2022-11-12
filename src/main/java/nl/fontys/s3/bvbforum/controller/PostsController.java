@@ -7,7 +7,6 @@ import nl.fontys.s3.bvbforum.domain.request.post.CreatePostRequest;
 import nl.fontys.s3.bvbforum.domain.request.post.UpdatePostRequest;
 import nl.fontys.s3.bvbforum.domain.response.post.CreatePostResponse;
 import nl.fontys.s3.bvbforum.domain.response.post.GetAllPostsResponse;
-import nl.fontys.s3.bvbforum.persistence.entity.PostEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +48,16 @@ public class PostsController {
         request.setId(id);
         updatePostUseCase.updatePost(request);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("{id}/upvote")
+    public void upvotePost(@PathVariable("id") long id) {
+        updatePostUseCase.upvote(id);
+    }
+
+    @PutMapping("{id}/downvote")
+    public void downvotePost(@PathVariable("id") long id) {
+        updatePostUseCase.downvote(id);
     }
 
     @DeleteMapping("{postId}")

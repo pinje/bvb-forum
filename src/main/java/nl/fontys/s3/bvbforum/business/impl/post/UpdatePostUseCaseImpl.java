@@ -1,12 +1,9 @@
 package nl.fontys.s3.bvbforum.business.impl.post;
 
 import lombok.AllArgsConstructor;
-import net.bytebuddy.implementation.Implementation;
 import nl.fontys.s3.bvbforum.business.exception.post.PostDoesntExistException;
 import nl.fontys.s3.bvbforum.business.interfaces.post.UpdatePostUseCase;
-import nl.fontys.s3.bvbforum.domain.PostInformationDTO;
 import nl.fontys.s3.bvbforum.domain.request.post.UpdatePostRequest;
-import nl.fontys.s3.bvbforum.domain.request.post.UpdatePostVoteRequest;
 import nl.fontys.s3.bvbforum.persistence.PostRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.PostEntity;
 import org.springframework.stereotype.Service;
@@ -31,8 +28,8 @@ public class UpdatePostUseCaseImpl implements UpdatePostUseCase {
     }
 
     @Override
-    public void upvote(UpdatePostVoteRequest request) {
-        Optional<PostEntity> postOptional = postRepository.findById(request.getId());
+    public void upvote(long id) {
+        Optional<PostEntity> postOptional = postRepository.findById(id);
 
         if (postOptional.isEmpty()) {
             throw new PostDoesntExistException();
@@ -43,8 +40,8 @@ public class UpdatePostUseCaseImpl implements UpdatePostUseCase {
     }
 
     @Override
-    public void downvote(UpdatePostVoteRequest request) {
-        Optional<PostEntity> postOptional = postRepository.findById(request.getId());
+    public void downvote(long id) {
+        Optional<PostEntity> postOptional = postRepository.findById(id);
 
         if (postOptional.isEmpty()) {
             throw new PostDoesntExistException();
