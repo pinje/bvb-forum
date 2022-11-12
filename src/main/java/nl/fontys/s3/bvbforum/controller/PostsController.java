@@ -2,6 +2,7 @@ package nl.fontys.s3.bvbforum.controller;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.business.interfaces.post.CreatePostUseCase;
+import nl.fontys.s3.bvbforum.business.interfaces.post.DeletePostUseCase;
 import nl.fontys.s3.bvbforum.business.interfaces.post.GetAllPostsUseCase;
 import nl.fontys.s3.bvbforum.domain.request.post.CreatePostRequest;
 import nl.fontys.s3.bvbforum.domain.response.post.CreatePostResponse;
@@ -21,6 +22,8 @@ public class PostsController {
 
     private final GetAllPostsUseCase getAllPostsUseCase;
 
+    private final DeletePostUseCase deletePostUseCase;
+
     @PostMapping()
     public ResponseEntity<CreatePostResponse> createPost(@RequestBody @Valid CreatePostRequest request) {
         CreatePostResponse response = createPostUseCase.createPost(request);
@@ -30,5 +33,11 @@ public class PostsController {
     @GetMapping
     public ResponseEntity<GetAllPostsResponse> getAllPosts() {
         return ResponseEntity.ok(getAllPostsUseCase.getAllPosts());
+    }
+
+    @DeleteMapping("{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable int postId) {
+        deletePostUseCase.deletePost(postId);
+        return ResponseEntity.noContent().build();
     }
 }
