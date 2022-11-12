@@ -1,4 +1,4 @@
-package nl.fontys.s3.bvbforum.business.exception;
+package nl.fontys.s3.bvbforum.business.exception.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;

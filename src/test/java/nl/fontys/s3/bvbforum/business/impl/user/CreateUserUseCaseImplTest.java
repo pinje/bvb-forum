@@ -1,6 +1,6 @@
 package nl.fontys.s3.bvbforum.business.impl.user;
 
-import nl.fontys.s3.bvbforum.business.exception.UserUsernameAlreadyExistsException;
+import nl.fontys.s3.bvbforum.business.exception.user.UserUsernameAlreadyExistsException;
 import nl.fontys.s3.bvbforum.domain.User;
 import nl.fontys.s3.bvbforum.domain.request.user.CreateUserRequest;
 import nl.fontys.s3.bvbforum.domain.response.user.CreateUserResponse;

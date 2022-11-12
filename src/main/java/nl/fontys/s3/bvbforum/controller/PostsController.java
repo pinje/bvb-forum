@@ -1,12 +1,10 @@
 package nl.fontys.s3.bvbforum.controller;
 
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.bvbforum.business.interfaces.post.CreatePostUseCase;
-import nl.fontys.s3.bvbforum.business.interfaces.post.DeletePostUseCase;
-import nl.fontys.s3.bvbforum.business.interfaces.post.GetAllPostsUseCase;
-import nl.fontys.s3.bvbforum.business.interfaces.post.GetPostUseCase;
+import nl.fontys.s3.bvbforum.business.interfaces.post.*;
 import nl.fontys.s3.bvbforum.domain.PostInformationDTO;
 import nl.fontys.s3.bvbforum.domain.request.post.CreatePostRequest;
+import nl.fontys.s3.bvbforum.domain.request.post.UpdatePostRequest;
 import nl.fontys.s3.bvbforum.domain.response.post.CreatePostResponse;
 import nl.fontys.s3.bvbforum.domain.response.post.GetAllPostsResponse;
 import nl.fontys.s3.bvbforum.persistence.entity.PostEntity;
@@ -27,6 +25,8 @@ public class PostsController {
 
     private final GetPostUseCase getPostUseCase;
 
+    private final UpdatePostUseCase updatePostUseCase;
+
     private final DeletePostUseCase deletePostUseCase;
 
     @PostMapping()
@@ -42,6 +42,14 @@ public class PostsController {
 
     @GetMapping("{id}")
     public PostInformationDTO getPostById(@PathVariable(value = "id") final long id) { return getPostUseCase.getPostById(id); }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Void> updatePost(@PathVariable("id") long id,
+                                           @RequestBody @Valid UpdatePostRequest request) {
+        request.setId(id);
+        updatePostUseCase.updatePost(request);
+        return ResponseEntity.noContent().build();
+    }
 
     @DeleteMapping("{postId}")
     public ResponseEntity<Void> deletePost(@PathVariable int postId) {
