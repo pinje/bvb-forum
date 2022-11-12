@@ -36,4 +36,8 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<PostEntity> posts;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<VoteEntity> votes;
 }

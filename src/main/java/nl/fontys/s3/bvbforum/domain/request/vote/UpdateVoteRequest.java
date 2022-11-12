@@ -1,9 +1,11 @@
-package nl.fontys.s3.bvbforum.domain.request.post;
+package nl.fontys.s3.bvbforum.domain.request.vote;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nl.fontys.s3.bvbforum.persistence.entity.PostEntity;
+import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,13 +14,11 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreatePostRequest {
-    @NotBlank
-    private String title;
-    @NotBlank
-    private String content;
+public class UpdateVoteRequest {
     @NotNull
-    private Long vote;
+    private Long id;
     @NotNull
-    private Long userId;
+    private Long user;
+    @NotNull
+    private Long post;
 }

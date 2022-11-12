@@ -3,8 +3,10 @@ package nl.fontys.s3.bvbforum.configuration.db;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.persistence.PostRepository;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
+import nl.fontys.s3.bvbforum.persistence.VoteRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.PostEntity;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
+import nl.fontys.s3.bvbforum.persistence.entity.VoteEntity;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -21,6 +23,8 @@ public class DatabaseDataInitializer {
     private UserRepository userRepository;
 
     private PostRepository postRepository;
+
+    private VoteRepository voteRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void populateDatabaseInitialDummyData() {
@@ -40,6 +44,13 @@ public class DatabaseDataInitializer {
                             .content("content")
                             .vote(0L)
                             .user(userRepository.findByUsername("user1")).build());
+        }
+
+        if (voteRepository.count() == 0) {
+            voteRepository.save(VoteEntity.builder()
+                    .type(Boolean.TRUE)
+                    .user(userRepository.findByUsername("user1"))
+                    .post(postRepository.findById(1L).stream().filter(postEntity -> postEntity.getId() == 1L).findFirst().orElse(null)).build());
         }
     }
 }

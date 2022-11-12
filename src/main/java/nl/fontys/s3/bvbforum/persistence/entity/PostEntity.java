@@ -1,5 +1,6 @@
 package nl.fontys.s3.bvbforum.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 @Entity
@@ -47,4 +49,8 @@ public class PostEntity {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private UserEntity user;
+
+    @OneToMany(mappedBy = "post")
+    @JsonIgnore
+    private List<VoteEntity> votes;
 }

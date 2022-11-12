@@ -7,6 +7,5 @@ CREATE TABLE post
     vote       int          NOT NULL,
     user_id    int          NOT NULL,
     PRIMARY KEY (id),
-    UNIQUE (user_id),
     FOREIGN KEY (user_id) REFERENCES user (id)
 );
