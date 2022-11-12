@@ -1,5 +1,6 @@
 package nl.fontys.s3.bvbforum.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,5 +34,6 @@ public class UserEntity {
     private String password;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<PostEntity> posts;
 }
