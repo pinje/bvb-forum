@@ -1,8 +1,7 @@
 package nl.fontys.s3.bvbforum.business.impl.user;
 
 import nl.fontys.s3.bvbforum.business.exception.UserDoesntExistException;
-import nl.fontys.s3.bvbforum.business.impl.user.UpdateUserUseCaseImpl;
-import nl.fontys.s3.bvbforum.domain.request.UpdateUserRequest;
+import nl.fontys.s3.bvbforum.domain.request.user.UpdateUserRequest;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
 import org.junit.jupiter.api.Test;

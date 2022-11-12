@@ -1,10 +1,10 @@
 package nl.fontys.s3.bvbforum.business.impl.user;
 
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.bvbforum.business.CreateUserUseCase;
+import nl.fontys.s3.bvbforum.business.interfaces.user.CreateUserUseCase;
 import nl.fontys.s3.bvbforum.business.exception.UserUsernameAlreadyExistsException;
-import nl.fontys.s3.bvbforum.domain.request.CreateUserRequest;
-import nl.fontys.s3.bvbforum.domain.response.CreateUserResponse;
+import nl.fontys.s3.bvbforum.domain.request.user.CreateUserRequest;
+import nl.fontys.s3.bvbforum.domain.response.user.CreateUserResponse;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
 import org.springframework.stereotype.Service;

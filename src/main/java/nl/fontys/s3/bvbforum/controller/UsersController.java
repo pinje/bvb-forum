@@ -1,11 +1,11 @@
 package nl.fontys.s3.bvbforum.controller;
 
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.bvbforum.business.*;
-import nl.fontys.s3.bvbforum.domain.request.CreateUserRequest;
-import nl.fontys.s3.bvbforum.domain.request.UpdateUserRequest;
-import nl.fontys.s3.bvbforum.domain.response.CreateUserResponse;
-import nl.fontys.s3.bvbforum.domain.response.GetAllUsersResponse;
+import nl.fontys.s3.bvbforum.business.interfaces.user.*;
+import nl.fontys.s3.bvbforum.domain.request.user.CreateUserRequest;
+import nl.fontys.s3.bvbforum.domain.request.user.UpdateUserRequest;
+import nl.fontys.s3.bvbforum.domain.response.user.CreateUserResponse;
+import nl.fontys.s3.bvbforum.domain.response.user.GetAllUsersResponse;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

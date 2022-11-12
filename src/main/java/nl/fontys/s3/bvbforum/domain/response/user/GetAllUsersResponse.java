@@ -1,4 +1,4 @@
-package nl.fontys.s3.bvbforum.domain.response;
+package nl.fontys.s3.bvbforum.domain.response.user;
 
 import lombok.Builder;
 import lombok.Data;

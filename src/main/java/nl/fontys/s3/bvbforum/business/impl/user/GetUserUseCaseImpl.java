@@ -1,7 +1,7 @@
 package nl.fontys.s3.bvbforum.business.impl.user;
 
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.bvbforum.business.GetUserUseCase;
+import nl.fontys.s3.bvbforum.business.interfaces.user.GetUserUseCase;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
 import org.springframework.stereotype.Service;

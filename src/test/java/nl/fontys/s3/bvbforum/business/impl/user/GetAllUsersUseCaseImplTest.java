@@ -1,8 +1,7 @@
 package nl.fontys.s3.bvbforum.business.impl.user;
 
-import nl.fontys.s3.bvbforum.business.impl.user.GetAllUsersUseCaseImpl;
 import nl.fontys.s3.bvbforum.domain.User;
-import nl.fontys.s3.bvbforum.domain.response.GetAllUsersResponse;
+import nl.fontys.s3.bvbforum.domain.response.user.GetAllUsersResponse;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
 import org.junit.jupiter.api.Test;

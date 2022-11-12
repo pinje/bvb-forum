@@ -1,4 +1,4 @@
-package nl.fontys.s3.bvbforum.domain.request;
+package nl.fontys.s3.bvbforum.domain.request.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

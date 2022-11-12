@@ -8,9 +8,10 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @Data
 @Builder
 @AllArgsConstructor
@@ -30,4 +31,7 @@ public class UserEntity {
     @Length(min = 2, max = 50)
     @Column(name = "password")
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<PostEntity> posts;
 }
