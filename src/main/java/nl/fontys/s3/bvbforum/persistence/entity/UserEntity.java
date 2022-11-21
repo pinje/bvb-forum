@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -29,9 +30,13 @@ public class UserEntity {
     private String username;
 
     @NotBlank
-    @Length(min = 2, max = 50)
+    @Length(min = 2, max = 100)
     @Column(name = "password")
     private String password;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private Set<UserRoleEntity> userRoles;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
