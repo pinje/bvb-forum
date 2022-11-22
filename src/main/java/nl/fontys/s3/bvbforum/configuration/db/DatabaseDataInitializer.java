@@ -1,14 +1,11 @@
 package nl.fontys.s3.bvbforum.configuration.db;
 
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.bvbforum.business.interfaces.user.CreateUserUseCase;
 import nl.fontys.s3.bvbforum.persistence.PostRepository;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
 import nl.fontys.s3.bvbforum.persistence.VoteRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.*;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;

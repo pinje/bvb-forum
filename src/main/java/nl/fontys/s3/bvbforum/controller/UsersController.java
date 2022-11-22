@@ -2,6 +2,7 @@ package nl.fontys.s3.bvbforum.controller;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.business.interfaces.user.*;
+import nl.fontys.s3.bvbforum.configuration.security.isauthenticated.IsAuthenticated;
 import nl.fontys.s3.bvbforum.domain.request.user.CreateUserRequest;
 import nl.fontys.s3.bvbforum.domain.request.user.UpdateUserRequest;
 import nl.fontys.s3.bvbforum.domain.response.user.CreateUserResponse;
@@ -30,21 +31,25 @@ public class UsersController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @IsAuthenticated
     @GetMapping
     public ResponseEntity<GetAllUsersResponse> getAllUsers() {
         return ResponseEntity.ok(getAllUsersUseCase.getAllUsers());
     }
 
+    @IsAuthenticated
     @GetMapping("{id}")
     public UserEntity getUserById(@PathVariable(value = "id") final long id) {
         return getUserUseCase.getUserById(id);
     }
 
+    @IsAuthenticated
     @GetMapping("{username}")
     public UserEntity getUserByUsername(@PathVariable(value = "username") final String username) {
         return getUserUseCase.getUserByUsername(username);
     }
 
+    @IsAuthenticated
     @PutMapping("{id}")
     public ResponseEntity<Void> updateUser(@PathVariable("id") long id,
                                               @RequestBody @Valid UpdateUserRequest request) {
@@ -53,6 +58,7 @@ public class UsersController {
         return ResponseEntity.noContent().build();
     }
 
+    @IsAuthenticated
     @DeleteMapping("{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable int userId) {
         deleteUserUseCase.deleteUser(userId);
