@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 @RestController
@@ -32,24 +33,28 @@ public class UsersController {
     }
 
     @IsAuthenticated
+    @RolesAllowed({"ROLE_ADMIN"})
     @GetMapping
     public ResponseEntity<GetAllUsersResponse> getAllUsers() {
         return ResponseEntity.ok(getAllUsersUseCase.getAllUsers());
     }
 
     @IsAuthenticated
+    @RolesAllowed({"ROLE_ADMIN","ROLE_MEMBER"})
     @GetMapping("{id}")
     public UserEntity getUserById(@PathVariable(value = "id") final long id) {
         return getUserUseCase.getUserById(id);
     }
 
     @IsAuthenticated
+    @RolesAllowed({"ROLE_ADMIN","ROLE_MEMBER"})
     @GetMapping("{username}")
     public UserEntity getUserByUsername(@PathVariable(value = "username") final String username) {
         return getUserUseCase.getUserByUsername(username);
     }
 
     @IsAuthenticated
+    @RolesAllowed({"ROLE_ADMIN","ROLE_MEMBER"})
     @PutMapping("{id}")
     public ResponseEntity<Void> updateUser(@PathVariable("id") long id,
                                               @RequestBody @Valid UpdateUserRequest request) {
@@ -59,6 +64,7 @@ public class UsersController {
     }
 
     @IsAuthenticated
+    @RolesAllowed({"ROLE_ADMIN"})
     @DeleteMapping("{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable int userId) {
         deleteUserUseCase.deleteUser(userId);

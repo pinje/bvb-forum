@@ -30,6 +30,7 @@ public class DatabaseDataInitializer {
     public void populateDatabaseInitialDummyData() {
         if (isDatabaseEmpty()) {
             insertAdminUser();
+            insertMemberUser();
         }
 
         if (postRepository.count() == 0) {
@@ -59,10 +60,20 @@ public class DatabaseDataInitializer {
     private void insertAdminUser() {
         UserEntity adminUser = UserEntity.builder()
                 .username("admin")
-                .password(passwordEncoder.encode("test123"))
+                .password(passwordEncoder.encode("123"))
                 .build();
         UserRoleEntity adminRole = UserRoleEntity.builder().role(RoleEnum.ADMIN).user(adminUser).build();
         adminUser.setUserRoles(Set.of(adminRole));
         userRepository.save(adminUser);
+    }
+
+    private void insertMemberUser() {
+        UserEntity memberUser = UserEntity.builder()
+                .username("user")
+                .password(passwordEncoder.encode("123"))
+                .build();
+        UserRoleEntity memberRole = UserRoleEntity.builder().role(RoleEnum.MEMBER).user(memberUser).build();
+        memberUser.setUserRoles(Set.of(memberRole));
+        userRepository.save(memberUser);
     }
 }
