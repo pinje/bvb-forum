@@ -25,30 +25,6 @@ class GetUserUseCaseImplTest {
     private GetUserUseCaseImpl getUserUseCase;
 
     @Test
-    void Get_UserByUsername_ReturnsUser() {
-        // given
-        UserEntity userEntity = UserEntity.builder()
-                .id(1L)
-                .username("Shuhei")
-                .build();
-
-        when(userRepository.findByUsername(anyString())).thenReturn(userEntity);
-
-        // when
-        UserEntity actualResult = getUserUseCase.getUserByUsername("Shuhei");
-
-        // then
-        UserEntity expectedResult = UserEntity.builder()
-                .id(1L)
-                .username("Shuhei")
-                .build();
-
-        assertNotNull(actualResult);
-        assertEquals(expectedResult, actualResult);
-        verify(userRepository, times(1)).findByUsername(anyString());
-    }
-
-    @Test
     void Get_UserById_ReturnsUser() {
         // given
         UserEntity expectedUser = UserEntity.builder()

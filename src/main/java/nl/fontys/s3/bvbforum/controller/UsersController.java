@@ -48,13 +48,6 @@ public class UsersController {
 
     @IsAuthenticated
     @RolesAllowed({"ROLE_ADMIN","ROLE_MEMBER"})
-    @GetMapping("{username}")
-    public UserEntity getUserByUsername(@PathVariable(value = "username") final String username) {
-        return getUserUseCase.getUserByUsername(username);
-    }
-
-    @IsAuthenticated
-    @RolesAllowed({"ROLE_ADMIN","ROLE_MEMBER"})
     @PutMapping("{id}")
     public ResponseEntity<Void> updateUser(@PathVariable("id") long id,
                                               @RequestBody @Valid UpdateUserRequest request) {
