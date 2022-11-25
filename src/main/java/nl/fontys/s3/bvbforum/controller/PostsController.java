@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.business.interfaces.post.*;
 import nl.fontys.s3.bvbforum.domain.PostInformationDTO;
 import nl.fontys.s3.bvbforum.domain.request.post.CreatePostRequest;
+import nl.fontys.s3.bvbforum.domain.request.post.GetAllPostsRequest;
 import nl.fontys.s3.bvbforum.domain.request.post.UpdatePostRequest;
 import nl.fontys.s3.bvbforum.domain.response.post.CreatePostResponse;
 import nl.fontys.s3.bvbforum.domain.response.post.GetAllPostsResponse;
@@ -35,8 +36,10 @@ public class PostsController {
     }
 
     @GetMapping
-    public ResponseEntity<GetAllPostsResponse> getAllPosts() {
-        return ResponseEntity.ok(getAllPostsUseCase.getAllPosts());
+    public ResponseEntity<GetAllPostsResponse> getAllPosts(@RequestParam(value = "userId", required = false) Long userId) {
+        GetAllPostsRequest request = new GetAllPostsRequest();
+        request.setUserId(userId);
+        return ResponseEntity.ok(getAllPostsUseCase.getAllPosts(request));
     }
 
     @GetMapping("{id}")

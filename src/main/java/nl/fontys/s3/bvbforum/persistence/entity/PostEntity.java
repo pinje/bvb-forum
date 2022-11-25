@@ -47,8 +47,6 @@ public class PostEntity {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private UserEntity user;
 
     @OneToMany(mappedBy = "post")

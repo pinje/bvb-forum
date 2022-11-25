@@ -41,7 +41,6 @@ public class UserEntity {
     private Set<UserRoleEntity> userRoles;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
     private List<PostEntity> posts;
 
     @OneToMany(mappedBy = "user")

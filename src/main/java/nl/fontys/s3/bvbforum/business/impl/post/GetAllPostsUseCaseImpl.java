@@ -5,9 +5,12 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.business.interfaces.post.GetAllPostsUseCase;
 import nl.fontys.s3.bvbforum.domain.Post;
 import nl.fontys.s3.bvbforum.domain.PostInformationDTO;
+import nl.fontys.s3.bvbforum.domain.request.post.GetAllPostsRequest;
 import nl.fontys.s3.bvbforum.domain.response.post.GetAllPostsResponse;
 import nl.fontys.s3.bvbforum.persistence.PostRepository;
+import nl.fontys.s3.bvbforum.persistence.entity.PostEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -18,14 +21,23 @@ public class GetAllPostsUseCaseImpl implements GetAllPostsUseCase {
 
     // return a list of post information DTO
     @Override
-    public GetAllPostsResponse getAllPosts() {
-        List<PostInformationDTO> posts = postRepository.findAll()
+    public GetAllPostsResponse getAllPosts(final GetAllPostsRequest request) {
+        List<PostEntity> results;
+        if (request.getUserId() instanceof Long) {
+            results = postRepository.findAllByUserId(request.getUserId());
+        } else {
+            results = postRepository.findAll();
+        }
+
+        final GetAllPostsResponse response = new GetAllPostsResponse();
+
+        List<PostInformationDTO> posts = results
                 .stream()
                 .map(PostConverter::convert)
                 .toList();
 
-        return GetAllPostsResponse.builder()
-                .posts(posts)
-                .build();
+        response.setPosts(posts);
+
+        return response;
     }
 }

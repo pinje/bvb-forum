@@ -17,6 +17,6 @@ public class PostInformationDTO {
     private String title;
     private String content;
     private Long vote;
-    private Long userId;
+    private String userId;
     private String username;
 }

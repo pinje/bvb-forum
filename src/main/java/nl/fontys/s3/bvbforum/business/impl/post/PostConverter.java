@@ -17,7 +17,7 @@ final class PostConverter {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .vote(post.getVote())
-                .userId(post.getUser().getId())
+                .userId(post.getUser().getId().toString())
                 .username(post.getUser().getUsername())
                 .build();
     }
