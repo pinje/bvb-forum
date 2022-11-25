@@ -1,6 +1,7 @@
 package nl.fontys.s3.bvbforum.persistence.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,6 +37,7 @@ public class UserEntity {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private Set<UserRoleEntity> userRoles;
 
     @OneToMany(mappedBy = "user")

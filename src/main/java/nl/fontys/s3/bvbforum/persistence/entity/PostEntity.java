@@ -1,5 +1,6 @@
 package nl.fontys.s3.bvbforum.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Type;
