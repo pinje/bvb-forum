@@ -11,7 +11,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,6 +30,9 @@ class CreateUserUseCaseImplTest {
     @InjectMocks
     private CreateUserUseCaseImpl createUserUseCase;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @Test
     void Add_ValidUser_UserSavedInRepository() {
         // given
@@ -36,6 +42,7 @@ class CreateUserUseCaseImplTest {
                 .password("123")
                 .build();
 
+        when(passwordEncoder.encode(userEntity.getPassword())).thenReturn("encoded");
         when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
 
         CreateUserRequest request = CreateUserRequest.builder()
@@ -53,6 +60,7 @@ class CreateUserUseCaseImplTest {
                         .build();
         assertEquals(expectedResult, actualResult);
         verify(userRepository, times(1)).save(any(UserEntity.class));
+        verify(passwordEncoder, times(1)).encode(userEntity.getPassword());
     }
 
     @Test
@@ -63,6 +71,7 @@ class CreateUserUseCaseImplTest {
                 .password("123")
                 .build();
 
+        when(passwordEncoder.encode(request.getPassword())).thenReturn("encoded");
         when(userRepository.save(any(UserEntity.class))).thenThrow(new UserUsernameAlreadyExistsException());
 
         // when
@@ -74,6 +83,7 @@ class CreateUserUseCaseImplTest {
         assertEquals("USERNAME_EXISTS", exception.getReason());
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(userRepository, times(1)).save(any(UserEntity.class));
+        verify(passwordEncoder, times(1)).encode(request.getPassword());
     }
 
 }
