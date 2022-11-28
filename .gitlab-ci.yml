@@ -24,5 +24,3 @@ sonarqube:
   stage: sonarqube
   script:
     - ./gradlew sonarqube
-  only:
-    - merge_requests
