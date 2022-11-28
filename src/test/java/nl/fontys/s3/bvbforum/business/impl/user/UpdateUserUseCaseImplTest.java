@@ -1,9 +1,13 @@
 package nl.fontys.s3.bvbforum.business.impl.user;
 
+import nl.fontys.s3.bvbforum.business.exception.UnauthorizedDataAccessException;
 import nl.fontys.s3.bvbforum.business.exception.user.UserDoesntExistException;
+import nl.fontys.s3.bvbforum.domain.AccessToken;
 import nl.fontys.s3.bvbforum.domain.request.user.UpdateUserRequest;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
+import nl.fontys.s3.bvbforum.persistence.entity.RoleEnum;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
+import nl.fontys.s3.bvbforum.persistence.entity.UserRoleEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -27,16 +32,26 @@ class UpdateUserUseCaseImplTest {
     @InjectMocks
     private UpdateUserUseCaseImpl updateUserUseCase;
 
+    @Mock
+    private AccessToken accessToken;
+
     @Test
     void Update_ValidUserUsername_UsernameChanged() {
         // given
+
+        UserRoleEntity userRoleEntity = UserRoleEntity.builder()
+                .role(RoleEnum.ADMIN)
+                .build();
         UserEntity userEntity = UserEntity.builder()
                 .id(111L)
                 .username("Shuhei")
                 .password("123")
+                .userRoles(Set.of(userRoleEntity))
                 .build();
+
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(userEntity));
         when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
+        when(accessToken.getUserId()).thenReturn(userEntity.getId());
 
         UpdateUserRequest request = UpdateUserRequest.builder()
                 .id(111L)
@@ -52,6 +67,7 @@ class UpdateUserUseCaseImplTest {
         assertEquals("123", userEntity.getPassword());
         verify(userRepository,times(1)).findById(anyLong());
         verify(userRepository, times(1)).save(any(UserEntity.class));
+        verify(accessToken, times(1)).getUserId();
     }
 
     @Test
@@ -64,6 +80,7 @@ class UpdateUserUseCaseImplTest {
                 .build();
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(userEntity));
         when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
+        when(accessToken.getUserId()).thenReturn(userEntity.getId());
 
         UpdateUserRequest request = UpdateUserRequest.builder()
                 .id(111L)
@@ -79,6 +96,7 @@ class UpdateUserUseCaseImplTest {
         assertEquals("321", userEntity.getPassword());
         verify(userRepository,times(1)).findById(anyLong());
         verify(userRepository, times(1)).save(any(UserEntity.class));
+        verify(accessToken, times(1)).getUserId();
     }
 
     @Test
@@ -90,6 +108,7 @@ class UpdateUserUseCaseImplTest {
                 .password("123")
                 .build();
 
+        when(accessToken.getUserId()).thenReturn(request.getId());
         when(userRepository.findById(anyLong())).thenThrow(new UserDoesntExistException());
 
         // when
@@ -101,6 +120,7 @@ class UpdateUserUseCaseImplTest {
         assertEquals("USER_DOESNT_EXIST", exception.getReason());
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(userRepository, times(1)).findById(anyLong());
+        verify(accessToken, times(1)).getUserId();
     }
 
 }

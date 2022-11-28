@@ -1,6 +1,7 @@
 package nl.fontys.s3.bvbforum.business.impl.user;
 
 import nl.fontys.s3.bvbforum.business.impl.user.GetUserUseCaseImpl;
+import nl.fontys.s3.bvbforum.domain.AccessToken;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,9 @@ class GetUserUseCaseImplTest {
     @InjectMocks
     private GetUserUseCaseImpl getUserUseCase;
 
+    @Mock
+    private AccessToken accessToken;
+
     @Test
     void Get_UserById_ReturnsUser() {
         // given
@@ -33,6 +37,7 @@ class GetUserUseCaseImplTest {
                 .build();
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(expectedUser));
+        when(accessToken.getUserId()).thenReturn(expectedUser.getId());
 
         // when
         UserEntity actualUser = getUserUseCase.getUserById(1L);
@@ -41,5 +46,6 @@ class GetUserUseCaseImplTest {
         assertNotNull(actualUser);
         assertEquals(expectedUser, actualUser);
         verify(userRepository, times(1)).findById(anyLong());
+        verify(accessToken, times(1)).getUserId();
     }
 }

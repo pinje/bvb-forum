@@ -5,7 +5,9 @@ import nl.fontys.s3.bvbforum.domain.User;
 import nl.fontys.s3.bvbforum.domain.request.user.CreateUserRequest;
 import nl.fontys.s3.bvbforum.domain.response.user.CreateUserResponse;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
+import nl.fontys.s3.bvbforum.persistence.entity.RoleEnum;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
+import nl.fontys.s3.bvbforum.persistence.entity.UserRoleEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -58,6 +62,8 @@ class CreateUserUseCaseImplTest {
         CreateUserResponse expectedResult = CreateUserResponse.builder()
                         .userId(user.getId())
                         .build();
+
+
         assertEquals(expectedResult, actualResult);
         verify(userRepository, times(1)).save(any(UserEntity.class));
         verify(passwordEncoder, times(1)).encode(userEntity.getPassword());
