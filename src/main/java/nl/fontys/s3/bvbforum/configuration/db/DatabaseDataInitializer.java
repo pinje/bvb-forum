@@ -1,6 +1,7 @@
 package nl.fontys.s3.bvbforum.configuration.db;
 
 import lombok.AllArgsConstructor;
+import nl.fontys.s3.bvbforum.persistence.CommentRepository;
 import nl.fontys.s3.bvbforum.persistence.PostRepository;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
 import nl.fontys.s3.bvbforum.persistence.VoteRepository;
@@ -26,30 +27,16 @@ public class DatabaseDataInitializer {
 
     private PasswordEncoder passwordEncoder;
 
+    private CommentRepository commentRepository;
+
     @EventListener(ApplicationReadyEvent.class)
     public void populateDatabaseInitialDummyData() {
         if (isDatabaseEmpty()) {
             insertAdminUser();
             insertMemberUser();
-        }
-
-        if (postRepository.count() == 0) {
-            DateTime date = DateTime.now();
-            Timestamp ts = new Timestamp(date.toDateTime().getMillis());
-            postRepository.save(
-                    PostEntity.builder()
-                            .date(ts)
-                            .title("title")
-                            .content("content")
-                            .vote(0L)
-                            .user(userRepository.findByUsername("admin")).build());
-        }
-
-        if (voteRepository.count() == 0) {
-            voteRepository.save(VoteEntity.builder()
-                    .type(Boolean.TRUE)
-                    .user(userRepository.findByUsername("admin"))
-                    .post(postRepository.findById(1L).stream().filter(postEntity -> postEntity.getId() == 1L).findFirst().orElse(null)).build());
+            insertPost();
+            insertVote();
+            insertComment();
         }
     }
 
@@ -75,5 +62,36 @@ public class DatabaseDataInitializer {
         UserRoleEntity memberRole = UserRoleEntity.builder().role(RoleEnum.MEMBER).user(memberUser).build();
         memberUser.setUserRoles(Set.of(memberRole));
         userRepository.save(memberUser);
+    }
+
+    public void insertPost() {
+        DateTime date = DateTime.now();
+        Timestamp ts = new Timestamp(date.toDateTime().getMillis());
+        postRepository.save(
+                PostEntity.builder()
+                        .date(ts)
+                        .title("title")
+                        .content("content")
+                        .vote(0L)
+                        .user(userRepository.findByUsername("admin")).build());
+    }
+
+    public void insertVote() {
+        voteRepository.save(VoteEntity.builder()
+                .type(Boolean.TRUE)
+                .user(userRepository.findByUsername("admin"))
+                .post(postRepository.findById(1L).stream().filter(postEntity -> postEntity.getId() == 1L).findFirst().orElse(null)).build());
+    }
+
+    private void insertComment() {
+        DateTime date = DateTime.now();
+        Timestamp ts = new Timestamp(date.toDateTime().getMillis());
+        commentRepository.save(
+                CommentEntity.builder()
+                        .date(ts)
+                        .comment("this is a comment")
+                        .user(userRepository.findByUsername("admin"))
+                        .post(postRepository.findById(1L).stream().filter(postEntity -> postEntity.getId() == 1L).findFirst().orElse(null)).build()
+        );
     }
 }

@@ -52,4 +52,8 @@ public class PostEntity {
     @OneToMany(mappedBy = "post")
     @JsonIgnore
     private List<VoteEntity> votes;
+
+    @OneToMany(mappedBy = "post")
+    @JsonIgnore
+    private List<CommentEntity> comments;
 }

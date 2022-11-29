@@ -4,5 +4,5 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 public class PostDoesntExistException extends ResponseStatusException {
-    public PostDoesntExistException() { super(HttpStatus.BAD_REQUEST, "USER_DOESNT_EXIST"); }
+    public PostDoesntExistException() { super(HttpStatus.BAD_REQUEST, "POST_DOESNT_EXIST"); }
 }
