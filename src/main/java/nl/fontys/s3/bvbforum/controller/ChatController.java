@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("chat")
+@RequestMapping("/chat")
 public class ChatController {
 
     private final SimpMessagingTemplate messagingTemplate;
