@@ -2,6 +2,7 @@ package nl.fontys.s3.bvbforum.controller;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.business.interfaces.comment.*;
+import nl.fontys.s3.bvbforum.configuration.security.isauthenticated.IsAuthenticated;
 import nl.fontys.s3.bvbforum.domain.CommentInformationDTO;
 import nl.fontys.s3.bvbforum.domain.request.comment.CreateCommentRequest;
 import nl.fontys.s3.bvbforum.domain.request.comment.GetCommentsRequest;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 @RestController
@@ -26,6 +28,8 @@ public class CommentsController {
     private final DeleteCommentUseCase deleteCommentUseCase;
 
     @PostMapping()
+    @IsAuthenticated
+    @RolesAllowed({"ROLE_ADMIN","ROLE_MEMBER"})
     public ResponseEntity<CreateCommentResponse> createComment(@RequestBody @Valid CreateCommentRequest request) {
         CreateCommentResponse response = createCommentUseCase.createComment(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -39,6 +43,8 @@ public class CommentsController {
     }
 
     @GetMapping("/user")
+    @IsAuthenticated
+    @RolesAllowed({"ROLE_ADMIN","ROLE_MEMBER"})
     public ResponseEntity<GetCommentsResponse> getCommentsByUserId(@RequestParam(value = "userId", required = false) Long userId) {
         GetCommentsRequest request = new GetCommentsRequest();
         request.setId(userId);
@@ -46,9 +52,13 @@ public class CommentsController {
     }
 
     @GetMapping("{id}")
+    @IsAuthenticated
+    @RolesAllowed({"ROLE_ADMIN"})
     public CommentInformationDTO getCommentById(@PathVariable(value = "id") final long id) { return getCommentUseCase.getCommentById(id); }
 
     @PutMapping("{id}")
+    @IsAuthenticated
+    @RolesAllowed({"ROLE_ADMIN","ROLE_MEMBER"})
     public ResponseEntity<Void> updateComment(@PathVariable("id") long id,
                                            @RequestBody @Valid UpdateCommentRequest request) {
         request.setId(id);
@@ -57,6 +67,8 @@ public class CommentsController {
     }
 
     @DeleteMapping("{commentId}")
+    @IsAuthenticated
+    @RolesAllowed({"ROLE_ADMIN","ROLE_MEMBER"})
     public ResponseEntity<Void> deleteComment(@PathVariable int commentId) {
         deleteCommentUseCase.deleteComment(commentId);
         return ResponseEntity.noContent().build();
