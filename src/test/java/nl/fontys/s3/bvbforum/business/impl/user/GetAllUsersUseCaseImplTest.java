@@ -26,6 +26,7 @@ class GetAllUsersUseCaseImplTest {
 
     @Test
     void GetAll_ExistingUsers_ReturnsAllUsers() {
+        // given
         UserEntity userEntityOne = UserEntity.builder()
                 .id(1L)
                 .username("one")
@@ -35,6 +36,7 @@ class GetAllUsersUseCaseImplTest {
                 .username("two")
                 .build();
 
+        // set up mock objects
         when(userRepositoryMock.findAll()).thenReturn(List.of(userEntityOne, userEntityTwo));
 
         GetAllUsersResponse actualResult = getAllUsersUseCase.getAllUsers();

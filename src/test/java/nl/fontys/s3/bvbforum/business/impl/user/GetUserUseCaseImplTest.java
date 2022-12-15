@@ -13,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,7 +35,7 @@ class GetUserUseCaseImplTest {
                 .username("Shuhei")
                 .build();
 
-        when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(expectedUser));
+        when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(expectedUser));
         when(accessToken.getUserId()).thenReturn(expectedUser.getId());
 
         // when
@@ -45,7 +44,9 @@ class GetUserUseCaseImplTest {
         // then
         assertNotNull(actualUser);
         assertEquals(expectedUser, actualUser);
-        verify(userRepository, times(1)).findById(anyLong());
+
+        // verify
+        verify(userRepository, times(1)).findById(1L);
         verify(accessToken, times(1)).getUserId();
     }
 }

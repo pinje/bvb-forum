@@ -49,8 +49,8 @@ class UpdateUserUseCaseImplTest {
                 .userRoles(Set.of(userRoleEntity))
                 .build();
 
-        when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(userEntity));
-        when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
+        when(userRepository.findById(111L)).thenReturn(Optional.ofNullable(userEntity));
+        when(userRepository.save(userEntity)).thenReturn(userEntity);
         when(accessToken.getUserId()).thenReturn(userEntity.getId());
 
         UpdateUserRequest request = UpdateUserRequest.builder()
@@ -65,8 +65,10 @@ class UpdateUserUseCaseImplTest {
         // then
         assertEquals("Fontys", userEntity.getUsername());
         assertEquals("123", userEntity.getPassword());
-        verify(userRepository,times(1)).findById(anyLong());
-        verify(userRepository, times(1)).save(any(UserEntity.class));
+
+        // verify
+        verify(userRepository,times(1)).findById(111L);
+        verify(userRepository, times(1)).save(userEntity);
         verify(accessToken, times(1)).getUserId();
     }
 
@@ -78,8 +80,8 @@ class UpdateUserUseCaseImplTest {
                 .username("Shuhei")
                 .password("123")
                 .build();
-        when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(userEntity));
-        when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
+        when(userRepository.findById(111L)).thenReturn(Optional.ofNullable(userEntity));
+        when(userRepository.save(userEntity)).thenReturn(userEntity);
         when(accessToken.getUserId()).thenReturn(userEntity.getId());
 
         UpdateUserRequest request = UpdateUserRequest.builder()
@@ -94,13 +96,13 @@ class UpdateUserUseCaseImplTest {
         // then
         assertEquals("Shuhei", userEntity.getUsername());
         assertEquals("321", userEntity.getPassword());
-        verify(userRepository,times(1)).findById(anyLong());
-        verify(userRepository, times(1)).save(any(UserEntity.class));
+        verify(userRepository,times(1)).findById(111L);
+        verify(userRepository, times(1)).save(userEntity);
         verify(accessToken, times(1)).getUserId();
     }
 
     @Test
-    void Update_NoExistingUser_ThrowsException() throws UserDoesntExistException {
+    void Update_NonExistingUser_ThrowsException() throws UserDoesntExistException {
         // given
         UpdateUserRequest request = UpdateUserRequest.builder()
                 .id(111L)
@@ -109,7 +111,7 @@ class UpdateUserUseCaseImplTest {
                 .build();
 
         when(accessToken.getUserId()).thenReturn(request.getId());
-        when(userRepository.findById(anyLong())).thenThrow(new UserDoesntExistException());
+        when(userRepository.findById(111L)).thenThrow(new UserDoesntExistException());
 
         // when
         ResponseStatusException exception = assertThrows(UserDoesntExistException.class, () -> {
@@ -119,7 +121,9 @@ class UpdateUserUseCaseImplTest {
         // then
         assertEquals("USER_DOESNT_EXIST", exception.getReason());
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        verify(userRepository, times(1)).findById(anyLong());
+
+        // verify
+        verify(userRepository, times(1)).findById(111L);
         verify(accessToken, times(1)).getUserId();
     }
 

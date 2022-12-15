@@ -1,25 +1,18 @@
 package nl.fontys.s3.bvbforum.business.impl.user;
 
 import nl.fontys.s3.bvbforum.business.exception.user.UserUsernameAlreadyExistsException;
-import nl.fontys.s3.bvbforum.domain.User;
 import nl.fontys.s3.bvbforum.domain.request.user.CreateUserRequest;
 import nl.fontys.s3.bvbforum.domain.response.user.CreateUserResponse;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
-import nl.fontys.s3.bvbforum.persistence.entity.RoleEnum;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
-import nl.fontys.s3.bvbforum.persistence.entity.UserRoleEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,19 +20,15 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CreateUserUseCaseImplTest {
-
     @Mock
     private UserRepository userRepository;
-
     @InjectMocks
     private CreateUserUseCaseImpl createUserUseCase;
-
     @Mock
     private PasswordEncoder passwordEncoder;
 
     @Test
     void Add_ValidUser_UserSavedInRepository() {
-
         // given
         UserEntity userEntity = UserEntity.builder()
                 .id(1L)
@@ -64,6 +53,7 @@ class CreateUserUseCaseImplTest {
         // then
         assertNotNull(response.getUserId());
 
+        // verify
         verify(userRepository, times(1)).existsByUsername("Shuhei");
         verify(passwordEncoder, times(1)).encode("123456");
         verify(userRepository, times(1)).save(any(UserEntity.class));

@@ -35,7 +35,7 @@ class DeleteUserUseCaseImplTest {
         deleteUserUseCase.deleteUser(userEntity.getId());
 
         // then
-        verify(userRepository, times(1)).deleteById(anyLong());
+        verify(userRepository, times(1)).deleteById(111L);
 
     }
 
@@ -49,7 +49,7 @@ class DeleteUserUseCaseImplTest {
 
         Long id = userEntity.getId();
 
-        doThrow(new UserDoesntExistException()).when(userRepository).deleteById(anyLong());
+        doThrow(new UserDoesntExistException()).when(userRepository).deleteById(111L);
 
         // when
         ResponseStatusException exception = assertThrows(UserDoesntExistException.class, () -> {
@@ -59,6 +59,8 @@ class DeleteUserUseCaseImplTest {
         // then
         assertEquals("USER_DOESNT_EXIST", exception.getReason());
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        verify(userRepository, times(1)).deleteById(anyLong());
+
+        // verify
+        verify(userRepository, times(1)).deleteById(111L);
     }
 }
