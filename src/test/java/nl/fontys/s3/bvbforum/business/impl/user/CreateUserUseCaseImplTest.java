@@ -39,34 +39,34 @@ class CreateUserUseCaseImplTest {
 
     @Test
     void Add_ValidUser_UserSavedInRepository() {
+
         // given
         UserEntity userEntity = UserEntity.builder()
                 .id(1L)
                 .username("Shuhei")
-                .password("123")
+                .password("123456")
                 .build();
 
-        when(passwordEncoder.encode(userEntity.getPassword())).thenReturn("encoded");
+        // set up mock objects
+        when(userRepository.existsByUsername("Shuhei")).thenReturn(false);
         when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
+        when(passwordEncoder.encode(userEntity.getPassword())).thenReturn("encoded_password");
 
+        // call the method
         CreateUserRequest request = CreateUserRequest.builder()
                 .username(userEntity.getUsername())
                 .password(userEntity.getPassword())
                 .build();
 
         // when
-        CreateUserResponse actualResult = createUserUseCase.createUser(request);
+        CreateUserResponse response = createUserUseCase.createUser(request);
 
         // then
-        User user = User.builder().id(1L).username("Shuhei").password("123").build();
-        CreateUserResponse expectedResult = CreateUserResponse.builder()
-                        .userId(user.getId())
-                        .build();
+        assertNotNull(response.getUserId());
 
-
-        assertEquals(expectedResult, actualResult);
+        verify(userRepository, times(1)).existsByUsername("Shuhei");
+        verify(passwordEncoder, times(1)).encode("123456");
         verify(userRepository, times(1)).save(any(UserEntity.class));
-        verify(passwordEncoder, times(1)).encode(userEntity.getPassword());
     }
 
     @Test
@@ -77,6 +77,7 @@ class CreateUserUseCaseImplTest {
                 .password("123")
                 .build();
 
+        // set up mock objects
         when(passwordEncoder.encode(request.getPassword())).thenReturn("encoded");
         when(userRepository.save(any(UserEntity.class))).thenThrow(new UserUsernameAlreadyExistsException());
 
