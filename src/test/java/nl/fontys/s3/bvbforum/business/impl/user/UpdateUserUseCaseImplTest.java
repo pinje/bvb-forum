@@ -89,39 +89,6 @@ class UpdateUserUseCaseImplTest {
     }
 
     @Test
-    void Update_ExistingUser_AdminRole() {
-        // given
-        UserEntity userEntity = UserEntity.builder()
-                .id(111L)
-                .username("Shuhei")
-                .password("123")
-                .build();
-
-        UpdateUserRequest request = UpdateUserRequest.builder()
-                .id(111L)
-                .username("username_changed")
-                .password("password_changed")
-                .build();
-
-        // set up mock objects
-        when(accessToken.hasRole(RoleEnum.ADMIN.name())).thenReturn(true);
-        when(userRepository.findById(userEntity.getId())).thenReturn(Optional.ofNullable(userEntity));
-        when(userRepository.save(userEntity)).thenReturn(userEntity);
-
-        // when
-        updateUserUseCase.updateUser(request);
-
-        // then
-        assertEquals("username_changed", userEntity.getUsername());
-        assertEquals("password_changed", userEntity.getPassword());
-
-        // verify
-        verify(accessToken, times(1)).hasRole(RoleEnum.ADMIN.name());
-        verify(userRepository,times(1)).findById(111L);
-        verify(userRepository, times(1)).save(userEntity);
-    }
-
-    @Test
     void Update_ExistingUser_NonAdminRoleSameUser() {
         // given
         UserEntity userEntity = UserEntity.builder()
