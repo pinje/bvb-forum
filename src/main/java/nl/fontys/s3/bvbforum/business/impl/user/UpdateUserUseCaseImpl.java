@@ -17,12 +17,12 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UpdateUserUseCaseImpl implements UpdateUserUseCase {
     private UserRepository userRepository;
-    private AccessToken requestAccessToken;
+    private AccessToken accessToken;
 
     @Override
     public void updateUser(UpdateUserRequest request) {
-        if (!requestAccessToken.hasRole(RoleEnum.ADMIN.name())) {
-            if (requestAccessToken.getUserId() != request.getId()) {
+        if (!accessToken.hasRole(RoleEnum.ADMIN.name())) {
+            if (accessToken.getUserId() != request.getId()) {
                 throw new UnauthorizedDataAccessException("USER_ID_NOT_FROM_LOGGED_IN_USER");
             }
         }

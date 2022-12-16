@@ -1,6 +1,7 @@
 package nl.fontys.s3.bvbforum.business.impl.user;
 
 import lombok.AllArgsConstructor;
+import nl.fontys.s3.bvbforum.business.exception.user.UserDoesntExistException;
 import nl.fontys.s3.bvbforum.business.interfaces.user.GetAllUsersUseCase;
 import nl.fontys.s3.bvbforum.domain.User;
 import nl.fontys.s3.bvbforum.domain.response.user.GetAllUsersResponse;
@@ -20,6 +21,10 @@ public class GetAllUsersUseCaseImpl implements GetAllUsersUseCase {
                 .stream()
                 .map(UserConverter::convert)
                 .toList();
+
+        if (users.isEmpty()) {
+            throw new UserDoesntExistException();
+        }
 
         return GetAllUsersResponse.builder()
                 .users(users)

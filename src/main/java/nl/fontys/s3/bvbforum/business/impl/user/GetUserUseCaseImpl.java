@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class GetUserUseCaseImpl implements GetUserUseCase {
     private UserRepository userRepository;
-    private AccessToken requestAccessToken;
+    private AccessToken accessToken;
 
     @Override
     public UserEntity getUserById(long userId) {
-        if (!requestAccessToken.hasRole(RoleEnum.ADMIN.name())) {
-            if (requestAccessToken.getUserId() != userId) {
+        if (!accessToken.hasRole(RoleEnum.ADMIN.name())) {
+            if (accessToken.getUserId() != userId) {
                 throw new UnauthorizedDataAccessException("USER_ID_NOT_FROM_LOGGED_IN_USER");
             }
         }

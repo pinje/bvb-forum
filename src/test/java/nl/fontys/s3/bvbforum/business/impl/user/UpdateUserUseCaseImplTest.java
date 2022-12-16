@@ -25,91 +25,51 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UpdateUserUseCaseImplTest {
-
     @Mock
     private UserRepository userRepository;
-
     @InjectMocks
     private UpdateUserUseCaseImpl updateUserUseCase;
-
     @Mock
     private AccessToken accessToken;
 
     @Test
-    void Update_ValidUserUsername_UsernameChanged() {
+    void Update_NonExistingUser_AdminRole_ThrowsException() throws UserDoesntExistException {
         // given
-
-        UserRoleEntity userRoleEntity = UserRoleEntity.builder()
-                .role(RoleEnum.ADMIN)
-                .build();
-        UserEntity userEntity = UserEntity.builder()
+        UpdateUserRequest request = UpdateUserRequest.builder()
                 .id(111L)
                 .username("Shuhei")
                 .password("123")
-                .userRoles(Set.of(userRoleEntity))
                 .build();
 
-        when(userRepository.findById(111L)).thenReturn(Optional.ofNullable(userEntity));
-        when(userRepository.save(userEntity)).thenReturn(userEntity);
-        when(accessToken.getUserId()).thenReturn(userEntity.getId());
-
-        UpdateUserRequest request = UpdateUserRequest.builder()
-                .id(111L)
-                .username("Fontys")
-                .password("123")
-                .build();
+        // set up mock objects
+        when(accessToken.hasRole(RoleEnum.ADMIN.name())).thenReturn(true);
+        when(userRepository.findById(111L)).thenThrow(new UserDoesntExistException());
 
         // when
-        updateUserUseCase.updateUser(request);
+        ResponseStatusException exception = assertThrows(UserDoesntExistException.class, () -> {
+            updateUserUseCase.updateUser(request);
+        });
 
         // then
-        assertEquals("Fontys", userEntity.getUsername());
-        assertEquals("123", userEntity.getPassword());
+        assertEquals("USER_DOESNT_EXIST", exception.getReason());
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
 
         // verify
-        verify(userRepository,times(1)).findById(111L);
-        verify(userRepository, times(1)).save(userEntity);
-        verify(accessToken, times(1)).getUserId();
+        verify(userRepository, times(1)).findById(111L);
+        verify(accessToken, times(1)).hasRole(RoleEnum.ADMIN.name());
     }
 
     @Test
-    void Update_ValidUserUsername_PasswordChanged() {
+    void Update_NonExistingUser_NonAdminRole_ThrowsException() throws UserDoesntExistException {
         // given
-        UserEntity userEntity = UserEntity.builder()
+        UpdateUserRequest request = UpdateUserRequest.builder()
                 .id(111L)
                 .username("Shuhei")
                 .password("123")
                 .build();
-        when(userRepository.findById(111L)).thenReturn(Optional.ofNullable(userEntity));
-        when(userRepository.save(userEntity)).thenReturn(userEntity);
-        when(accessToken.getUserId()).thenReturn(userEntity.getId());
 
-        UpdateUserRequest request = UpdateUserRequest.builder()
-                .id(111L)
-                .username("Shuhei")
-                .password("321")
-                .build();
-
-        // when
-        updateUserUseCase.updateUser(request);
-
-        // then
-        assertEquals("Shuhei", userEntity.getUsername());
-        assertEquals("321", userEntity.getPassword());
-        verify(userRepository,times(1)).findById(111L);
-        verify(userRepository, times(1)).save(userEntity);
-        verify(accessToken, times(1)).getUserId();
-    }
-
-    @Test
-    void Update_NonExistingUser_ThrowsException() throws UserDoesntExistException {
-        // given
-        UpdateUserRequest request = UpdateUserRequest.builder()
-                .id(111L)
-                .username("Fontys")
-                .password("123")
-                .build();
-
+        // set up mock objects
+        when(accessToken.hasRole(RoleEnum.ADMIN.name())).thenReturn(false);
         when(accessToken.getUserId()).thenReturn(request.getId());
         when(userRepository.findById(111L)).thenThrow(new UserDoesntExistException());
 
@@ -125,6 +85,101 @@ class UpdateUserUseCaseImplTest {
         // verify
         verify(userRepository, times(1)).findById(111L);
         verify(accessToken, times(1)).getUserId();
+        verify(accessToken, times(1)).hasRole(RoleEnum.ADMIN.name());
     }
 
+    @Test
+    void Update_ExistingUser_AdminRole() {
+        // given
+        UserEntity userEntity = UserEntity.builder()
+                .id(111L)
+                .username("Shuhei")
+                .password("123")
+                .build();
+
+        UpdateUserRequest request = UpdateUserRequest.builder()
+                .id(111L)
+                .username("username_changed")
+                .password("password_changed")
+                .build();
+
+        // set up mock objects
+        when(accessToken.hasRole(RoleEnum.ADMIN.name())).thenReturn(true);
+        when(userRepository.findById(userEntity.getId())).thenReturn(Optional.ofNullable(userEntity));
+        when(userRepository.save(userEntity)).thenReturn(userEntity);
+
+        // when
+        updateUserUseCase.updateUser(request);
+
+        // then
+        assertEquals("username_changed", userEntity.getUsername());
+        assertEquals("password_changed", userEntity.getPassword());
+
+        // verify
+        verify(accessToken, times(1)).hasRole(RoleEnum.ADMIN.name());
+        verify(userRepository,times(1)).findById(111L);
+        verify(userRepository, times(1)).save(userEntity);
+    }
+
+    @Test
+    void Update_ExistingUser_NonAdminRoleSameUser() {
+        // given
+        UserEntity userEntity = UserEntity.builder()
+                .id(111L)
+                .username("Shuhei")
+                .password("123")
+                .build();
+
+        UpdateUserRequest request = UpdateUserRequest.builder()
+                .id(111L)
+                .username("username_changed")
+                .password("password_changed")
+                .build();
+
+        // set up mock objects
+        when(accessToken.hasRole(RoleEnum.ADMIN.name())).thenReturn(false);
+        when(accessToken.getUserId()).thenReturn(userEntity.getId());
+        when(userRepository.findById(userEntity.getId())).thenReturn(Optional.ofNullable(userEntity));
+        when(userRepository.save(userEntity)).thenReturn(userEntity);
+
+        // when
+        updateUserUseCase.updateUser(request);
+
+        // then
+        assertEquals("username_changed", userEntity.getUsername());
+        assertEquals("password_changed", userEntity.getPassword());
+
+        // verify
+        verify(accessToken, times(1)).hasRole(RoleEnum.ADMIN.name());
+        verify(accessToken, times(1)).getUserId();
+        verify(userRepository,times(1)).findById(111L);
+        verify(userRepository, times(1)).save(userEntity);
+    }
+
+    @Test
+    void Update_ExistingUser_NonAdminRoleDifferentUser_ThrowsException() throws UnauthorizedDataAccessException {
+        // given
+        UpdateUserRequest request = UpdateUserRequest.builder()
+                .id(111L)
+                .username("username_changed")
+                .password("password_changed")
+                .build();
+
+        // set up mock objects
+        when(accessToken.hasRole(RoleEnum.ADMIN.name())).thenReturn(false);
+        when(accessToken.getUserId()).thenReturn(222L);
+
+        // when
+        ResponseStatusException exception = assertThrows(UnauthorizedDataAccessException.class, () -> {
+            updateUserUseCase.updateUser(request);
+        });
+
+        // then
+        assertEquals("USER_ID_NOT_FROM_LOGGED_IN_USER", exception.getReason());
+        assertEquals(HttpStatus.FORBIDDEN, exception.getStatus());
+
+        // verify
+        verify(accessToken, times(1)).hasRole(RoleEnum.ADMIN.name());
+        verify(accessToken, times(1)).getUserId();
+    }
 }

@@ -52,6 +52,7 @@ class CreateUserUseCaseImplTest {
 
         // then
         assertNotNull(response.getUserId());
+        assertEquals(response.getUserId(), userEntity.getId());
 
         // verify
         verify(userRepository, times(1)).existsByUsername("Shuhei");
@@ -79,6 +80,8 @@ class CreateUserUseCaseImplTest {
         // then
         assertEquals("USERNAME_EXISTS", exception.getReason());
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+
+        // verify
         verify(userRepository, times(1)).save(any(UserEntity.class));
         verify(passwordEncoder, times(1)).encode(request.getPassword());
     }

@@ -16,10 +16,8 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class DeleteUserUseCaseImplTest {
-
     @Mock
     private UserRepository userRepository;
-
     @InjectMocks
     private DeleteUserUseCaseImpl deleteUserUseCase;
 
@@ -34,9 +32,8 @@ class DeleteUserUseCaseImplTest {
         // when
         deleteUserUseCase.deleteUser(userEntity.getId());
 
-        // then
+        // verify
         verify(userRepository, times(1)).deleteById(111L);
-
     }
 
     @Test
@@ -49,6 +46,7 @@ class DeleteUserUseCaseImplTest {
 
         Long id = userEntity.getId();
 
+        // set up mock objects
         doThrow(new UserDoesntExistException()).when(userRepository).deleteById(111L);
 
         // when
