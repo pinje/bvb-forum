@@ -130,7 +130,7 @@ class DeletePostUseCaseImplTest {
         Long id = postEntity.getId();
 
         // set up mock objects
-        doThrow(new PostDoesntExistException()).when(postRepository).deleteById(1L);
+        doThrow(new PostDoesntExistException()).when(postRepository).findById(1L);
 
         // when
         ResponseStatusException exception = assertThrows(PostDoesntExistException.class, () -> {
@@ -142,7 +142,7 @@ class DeletePostUseCaseImplTest {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
 
         // verify
-        verify(postRepository, times(1)).deleteById(1L);
+        verify(postRepository, times(1)).findById(1L);
     }
 
 }

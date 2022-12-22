@@ -117,7 +117,7 @@ class DeleteUserUseCaseImplTest {
         Long id = userEntity.getId();
 
         // set up mock objects
-        doThrow(new UserDoesntExistException()).when(userRepository).deleteById(111L);
+        doThrow(new UserDoesntExistException()).when(userRepository).findById(111L);
 
         // when
         ResponseStatusException exception = assertThrows(UserDoesntExistException.class, () -> {
@@ -129,6 +129,6 @@ class DeleteUserUseCaseImplTest {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
 
         // verify
-        verify(userRepository, times(1)).deleteById(111L);
+        verify(userRepository, times(1)).findById(111L);
     }
 }
