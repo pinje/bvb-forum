@@ -21,9 +21,6 @@ test:
     - ./gradlew test
 
 sonarqube:
-  organization: sonar-administrators
-  token:
-    secure: 9f28eaf6a6e00b9dc46364fbebe8479fccd5eb71
   stage: sonarqube
   script:
-    - ./gradlew sonarqube
+    - ./gradlew sonarqube -Dsonar.login=admin -Dsonar.password=admin123
