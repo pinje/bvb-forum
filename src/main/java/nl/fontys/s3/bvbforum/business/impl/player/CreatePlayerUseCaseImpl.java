@@ -10,6 +10,7 @@ import nl.fontys.s3.bvbforum.persistence.entity.PositionEnum;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -29,11 +30,11 @@ public class CreatePlayerUseCaseImpl implements CreatePlayerUseCase {
     private PlayerEntity save(CreatePlayerRequest request) {
         PositionEnum position;
 
-        if (request.getPosition() == "FW") {
+        if (Objects.equals(request.getPosition(), "FW")) {
             position = PositionEnum.FW;
-        } else if (request.getPosition() == "MF") {
+        } else if (Objects.equals(request.getPosition(), "MF")) {
             position = PositionEnum.MF;
-        } else if (request.getPosition() == "DF") {
+        } else if (Objects.equals(request.getPosition(), "DF")) {
             position = PositionEnum.DF;
         } else {
             position = PositionEnum.GK;
