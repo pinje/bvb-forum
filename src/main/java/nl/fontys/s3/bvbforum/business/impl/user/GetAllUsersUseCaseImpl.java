@@ -16,7 +16,6 @@ import java.util.List;
 public class GetAllUsersUseCaseImpl implements GetAllUsersUseCase {
     private UserRepository userRepository;
 
-    @Transactional
     @Override
     public GetAllUsersResponse getAllUsers() {
         List<User> users = userRepository.findAll()

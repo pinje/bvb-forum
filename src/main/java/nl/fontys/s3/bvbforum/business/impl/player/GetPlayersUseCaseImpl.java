@@ -16,7 +16,6 @@ import java.util.List;
 public class GetPlayersUseCaseImpl implements GetPlayersUseCase {
     private PlayerRepository playerRepository;
 
-    @Transactional
     @Override
     public GetPlayersResponse getPlayers() {
         List<Player> players = playerRepository.findAll()
