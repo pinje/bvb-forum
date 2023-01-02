@@ -108,5 +108,7 @@ public class DatabaseDataInitializer {
                 .rating(10L)
                 .user(userRepository.findByUsername("admin"))
                 .build();
+
+        ratingRepository.save(rating);
     }
 }
