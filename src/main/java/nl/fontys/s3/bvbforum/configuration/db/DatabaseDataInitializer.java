@@ -1,10 +1,7 @@
 package nl.fontys.s3.bvbforum.configuration.db;
 
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.bvbforum.persistence.CommentRepository;
-import nl.fontys.s3.bvbforum.persistence.PostRepository;
-import nl.fontys.s3.bvbforum.persistence.UserRepository;
-import nl.fontys.s3.bvbforum.persistence.VoteRepository;
+import nl.fontys.s3.bvbforum.persistence.*;
 import nl.fontys.s3.bvbforum.persistence.entity.*;
 import org.joda.time.DateTime;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -20,14 +17,12 @@ import java.util.Set;
 @AllArgsConstructor
 public class DatabaseDataInitializer {
     private UserRepository userRepository;
-
     private PostRepository postRepository;
-
     private VoteRepository voteRepository;
-
     private PasswordEncoder passwordEncoder;
-
     private CommentRepository commentRepository;
+    private PlayerRepository playerRepository;
+    private RatingRepository ratingRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void populateDatabaseInitialDummyData() {
@@ -37,6 +32,8 @@ public class DatabaseDataInitializer {
             insertPost();
             insertVote();
             insertComment();
+            insertPlayer();
+            insertRating();
         }
     }
 
@@ -93,5 +90,23 @@ public class DatabaseDataInitializer {
                         .user(userRepository.findByUsername("admin"))
                         .post(postRepository.findById(1L).stream().filter(postEntity -> postEntity.getId() == 1L).findFirst().orElse(null)).build()
         );
+    }
+
+    private void insertPlayer() {
+        PlayerEntity player = PlayerEntity.builder()
+                .firstname("marco")
+                .lastname("reus")
+                .position(PositionEnum.MF)
+                .build();
+
+        playerRepository.save(player);
+    }
+
+    private void insertRating() {
+        RatingEntity rating = RatingEntity.builder()
+                .player(playerRepository.findByLastname("reus"))
+                .rating(10L)
+                .user(userRepository.findByUsername("admin"))
+                .build();
     }
 }
