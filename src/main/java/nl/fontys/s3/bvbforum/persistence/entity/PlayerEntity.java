@@ -33,7 +33,7 @@ public class PlayerEntity {
     private String lastname;
 
     @NotBlank
-    @Length(max = 2)
+    @Enumerated(EnumType.STRING)
     @Column(name = "position")
-    private String position;
+    private PositionEnum position;
 }
