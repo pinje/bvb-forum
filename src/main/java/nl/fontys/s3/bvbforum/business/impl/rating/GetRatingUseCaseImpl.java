@@ -3,6 +3,7 @@ package nl.fontys.s3.bvbforum.business.impl.rating;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.business.interfaces.rating.GetRatingUseCase;
 import nl.fontys.s3.bvbforum.domain.PlayerAverageRatingDTO;
+import nl.fontys.s3.bvbforum.domain.RatingInformationDTO;
 import nl.fontys.s3.bvbforum.persistence.PlayerRepository;
 import nl.fontys.s3.bvbforum.persistence.RatingRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.RatingEntity;
@@ -17,9 +18,10 @@ public class GetRatingUseCaseImpl implements GetRatingUseCase {
     private PlayerRepository playerRepository;
 
     @Override
-    public RatingEntity getRatingById(long ratingId) {
+    public RatingInformationDTO getRatingById(long ratingId) {
         return ratingRepository.findById(ratingId)
                 .stream()
+                .map(RatingConverter::convert)
                 .findFirst()
                 .orElse(null);
     }

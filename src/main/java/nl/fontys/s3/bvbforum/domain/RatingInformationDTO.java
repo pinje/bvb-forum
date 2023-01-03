@@ -11,9 +11,9 @@ import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Rating {
+public class RatingInformationDTO {
     private Long id;
     private PlayerEntity player;
     private Long rating;
-    private UserEntity user;
+    private Long userId;
 }

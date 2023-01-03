@@ -7,8 +7,8 @@ import nl.fontys.s3.bvbforum.business.interfaces.rating.GetRatingUseCase;
 import nl.fontys.s3.bvbforum.business.interfaces.rating.GetRatingsUseCase;
 import nl.fontys.s3.bvbforum.configuration.security.isauthenticated.IsAuthenticated;
 import nl.fontys.s3.bvbforum.domain.PlayerAverageRatingDTO;
+import nl.fontys.s3.bvbforum.domain.RatingInformationDTO;
 import nl.fontys.s3.bvbforum.domain.request.rating.CreateRatingRequest;
-import nl.fontys.s3.bvbforum.domain.request.rating.GetRatingsRequest;
 import nl.fontys.s3.bvbforum.domain.response.rating.CreateRatingResponse;
 import nl.fontys.s3.bvbforum.domain.response.rating.GetRatingsResponse;
 import nl.fontys.s3.bvbforum.persistence.entity.RatingEntity;
@@ -42,26 +42,22 @@ public class RatingController {
         return ResponseEntity.ok(getRatingsUseCase.getRatings());
     }
 
-    @GetMapping("/player")
-    public ResponseEntity<GetRatingsResponse> getRatingsByPlayerId(@RequestParam(value = "id", required = true) Long playerId) {
-        GetRatingsRequest request = new GetRatingsRequest();
-        request.setId(playerId);
-        return ResponseEntity.ok(getRatingsUseCase.getRatingsByPlayerId(request));
+    @GetMapping("/player/{playerId}")
+    public ResponseEntity<GetRatingsResponse> getRatingsByPlayerId(@PathVariable(value = "playerId") final long playerId) {
+        return ResponseEntity.ok(getRatingsUseCase.getRatingsByPlayerId(playerId));
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user/{userId}")
     @IsAuthenticated
     @RolesAllowed({"ROLE_ADMIN","ROLE_MEMBER"})
-    public ResponseEntity<GetRatingsResponse> getRatingsByUserId(@RequestParam(value = "id", required = true) Long userId) {
-        GetRatingsRequest request = new GetRatingsRequest();
-        request.setId(userId);
-        return ResponseEntity.ok(getRatingsUseCase.getRatingsByUserId(request));
+    public ResponseEntity<GetRatingsResponse> getRatingsByUserId(@PathVariable(value = "userId") final long userId) {
+        return ResponseEntity.ok(getRatingsUseCase.getRatingsByUserId(userId));
     }
 
     @GetMapping("{id}")
-    public RatingEntity getRatingById(@PathVariable(value = "id") final long id) { return getRatingUseCase.getRatingById(id); }
+    public RatingInformationDTO getRatingById(@PathVariable(value = "id") final long id) { return getRatingUseCase.getRatingById(id); }
 
-    @GetMapping("/player/{id}")
+    @GetMapping("/average/{playerId}")
     public PlayerAverageRatingDTO getAverageRatingByPlayerId(@PathVariable(value = "playerId") final long playerId) { return getRatingUseCase.getAverageRatingByPlayerId(playerId); }
 
     @DeleteMapping("{ratingId}")

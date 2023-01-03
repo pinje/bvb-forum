@@ -3,8 +3,7 @@ package nl.fontys.s3.bvbforum.business.impl.rating;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.business.exception.rating.RatingDoesntExistException;
 import nl.fontys.s3.bvbforum.business.interfaces.rating.GetRatingsUseCase;
-import nl.fontys.s3.bvbforum.domain.Rating;
-import nl.fontys.s3.bvbforum.domain.request.rating.GetRatingsRequest;
+import nl.fontys.s3.bvbforum.domain.RatingInformationDTO;
 import nl.fontys.s3.bvbforum.domain.response.rating.GetRatingsResponse;
 import nl.fontys.s3.bvbforum.persistence.RatingRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.RatingEntity;
@@ -19,7 +18,7 @@ public class GetRatingsUseCaseImpl implements GetRatingsUseCase {
 
     @Override
     public GetRatingsResponse getRatings() {
-        List<Rating> ratings = ratingRepository.findAll()
+        List<RatingInformationDTO> ratings = ratingRepository.findAll()
                 .stream()
                 .map(RatingConverter::convert)
                 .toList();
@@ -34,13 +33,13 @@ public class GetRatingsUseCaseImpl implements GetRatingsUseCase {
     }
 
     @Override
-    public GetRatingsResponse getRatingsByPlayerId(final GetRatingsRequest request) {
+    public GetRatingsResponse getRatingsByPlayerId(long playerId) {
         List<RatingEntity> results;
-        results = ratingRepository.findAllByPlayerId(request.getId());
+        results = ratingRepository.findAllByPlayerId(playerId);
 
         final GetRatingsResponse response = new GetRatingsResponse();
 
-        List<Rating> ratings = results
+        List<RatingInformationDTO> ratings = results
                 .stream()
                 .map(RatingConverter::convert)
                 .toList();
@@ -51,13 +50,13 @@ public class GetRatingsUseCaseImpl implements GetRatingsUseCase {
     }
 
     @Override
-    public GetRatingsResponse getRatingsByUserId(final GetRatingsRequest request) {
+    public GetRatingsResponse getRatingsByUserId(long userId) {
         List<RatingEntity> results;
-        results = ratingRepository.findAllByUserId(request.getId());
+        results = ratingRepository.findAllByUserId(userId);
 
         final GetRatingsResponse response = new GetRatingsResponse();
 
-        List<Rating> ratings = results
+        List<RatingInformationDTO> ratings = results
                 .stream()
                 .map(RatingConverter::convert)
                 .toList();

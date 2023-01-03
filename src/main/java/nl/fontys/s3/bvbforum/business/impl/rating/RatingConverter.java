@@ -1,6 +1,6 @@
 package nl.fontys.s3.bvbforum.business.impl.rating;
 
-import nl.fontys.s3.bvbforum.domain.Rating;
+import nl.fontys.s3.bvbforum.domain.RatingInformationDTO;
 import nl.fontys.s3.bvbforum.persistence.entity.RatingEntity;
 
 final class RatingConverter {
@@ -9,12 +9,12 @@ final class RatingConverter {
 
     }
 
-    public static Rating convert(RatingEntity rating) {
-        return Rating.builder()
+    public static RatingInformationDTO convert(RatingEntity rating) {
+        return RatingInformationDTO.builder()
                 .id(rating.getId())
                 .player(rating.getPlayer())
                 .rating(rating.getRating())
-                .user(rating.getUser())
+                .userId(rating.getUser().getId())
                 .build();
     }
 }

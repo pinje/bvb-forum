@@ -109,6 +109,20 @@ public class DatabaseDataInitializer {
                 .user(userRepository.findByUsername("admin"))
                 .build();
 
+        RatingEntity ratingTwo = RatingEntity.builder()
+                .player(playerRepository.findByLastname("reus"))
+                .rating(7L)
+                .user(userRepository.findByUsername("admin"))
+                .build();
+
+        RatingEntity ratingThree = RatingEntity.builder()
+                .player(playerRepository.findByLastname("reus"))
+                .rating(5L)
+                .user(userRepository.findByUsername("admin"))
+                .build();
+
         ratingRepository.save(rating);
+        ratingRepository.save(ratingTwo);
+        ratingRepository.save(ratingThree);
     }
 }

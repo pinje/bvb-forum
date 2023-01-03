@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nl.fontys.s3.bvbforum.domain.Rating;
+import nl.fontys.s3.bvbforum.domain.RatingInformationDTO;
 
 import java.util.List;
 
@@ -13,5 +13,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetRatingsResponse {
-    private List<Rating> ratings;
+    private List<RatingInformationDTO> ratings;
 }
