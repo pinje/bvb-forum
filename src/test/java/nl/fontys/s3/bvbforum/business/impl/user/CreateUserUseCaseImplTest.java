@@ -4,7 +4,9 @@ import nl.fontys.s3.bvbforum.business.exception.user.UserUsernameAlreadyExistsEx
 import nl.fontys.s3.bvbforum.domain.request.user.CreateUserRequest;
 import nl.fontys.s3.bvbforum.domain.response.user.CreateUserResponse;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
+import nl.fontys.s3.bvbforum.persistence.entity.RoleEnum;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
+import nl.fontys.s3.bvbforum.persistence.entity.UserRoleEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,6 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,18 +37,30 @@ class CreateUserUseCaseImplTest {
         UserEntity userEntity = UserEntity.builder()
                 .id(1L)
                 .username("Shuhei")
-                .password("123456")
+                .password("encoded_password")
                 .build();
+
+        UserEntity requestUser = UserEntity.builder()
+                .username("Shuhei")
+                .password("encoded_password")
+                .build();
+
+        UserRoleEntity requestUserRole = UserRoleEntity.builder()
+                .user(requestUser)
+                .role(RoleEnum.MEMBER)
+                .build();
+
+        requestUser.setUserRoles(Set.of(requestUserRole));
 
         // set up mock objects
         when(userRepository.existsByUsername("Shuhei")).thenReturn(false);
-        when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
-        when(passwordEncoder.encode(userEntity.getPassword())).thenReturn("encoded_password");
+        when(userRepository.save(requestUser)).thenReturn(userEntity);
+        when(passwordEncoder.encode("123456")).thenReturn("encoded_password");
 
         // call the method
         CreateUserRequest request = CreateUserRequest.builder()
-                .username(userEntity.getUsername())
-                .password(userEntity.getPassword())
+                .username(requestUser.getUsername())
+                .password("123456")
                 .build();
 
         // when
@@ -57,7 +73,7 @@ class CreateUserUseCaseImplTest {
         // verify
         verify(userRepository, times(1)).existsByUsername("Shuhei");
         verify(passwordEncoder, times(1)).encode("123456");
-        verify(userRepository, times(1)).save(any(UserEntity.class));
+        verify(userRepository, times(1)).save(requestUser);
     }
 
     @Test
@@ -69,8 +85,7 @@ class CreateUserUseCaseImplTest {
                 .build();
 
         // set up mock objects
-        when(passwordEncoder.encode(request.getPassword())).thenReturn("encoded");
-        when(userRepository.save(any(UserEntity.class))).thenThrow(new UserUsernameAlreadyExistsException());
+        doThrow(new UserUsernameAlreadyExistsException()).when(userRepository).existsByUsername("Shuhei");
 
         // when
         ResponseStatusException exception = assertThrows(UserUsernameAlreadyExistsException.class, () -> {
@@ -82,8 +97,7 @@ class CreateUserUseCaseImplTest {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
 
         // verify
-        verify(userRepository, times(1)).save(any(UserEntity.class));
-        verify(passwordEncoder, times(1)).encode(request.getPassword());
+        verify(userRepository, times(1)).existsByUsername("Shuhei");
     }
 
 }
