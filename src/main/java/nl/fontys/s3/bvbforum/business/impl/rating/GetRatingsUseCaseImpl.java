@@ -18,7 +18,7 @@ public class GetRatingsUseCaseImpl implements GetRatingsUseCase {
     private RatingRepository ratingRepository;
 
     @Override
-    public GetRatingsResponse getRatings(final GetRatingsRequest request) {
+    public GetRatingsResponse getRatings() {
         List<Rating> ratings = ratingRepository.findAll()
                 .stream()
                 .map(RatingConverter::convert)
