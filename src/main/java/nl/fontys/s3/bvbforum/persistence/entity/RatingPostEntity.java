@@ -53,4 +53,7 @@ public class RatingPostEntity {
 
     @OneToMany(mappedBy = "ratingPost")
     private List<RatingEntity> ratings;
+
+    @OneToMany(mappedBy = "ratingPost")
+    private List<RatingPostPlayerEntity> ratingPostPlayers;
 }

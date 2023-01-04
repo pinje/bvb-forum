@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -24,6 +25,7 @@ public class DatabaseDataInitializer {
     private PlayerRepository playerRepository;
     private RatingRepository ratingRepository;
     private RatingPostRepository ratingPostRepository;
+    private RatingPostPlayerRepository ratingPostPlayerRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void populateDatabaseInitialDummyData() {
@@ -35,6 +37,7 @@ public class DatabaseDataInitializer {
             insertComment();
             insertPlayer();
             insertRatingPost();
+            insertRatingPostPlayer();
             insertRating();
         }
     }
@@ -137,6 +140,18 @@ public class DatabaseDataInitializer {
         ratingPostRepository.save(ratingPost);
         ratingPostRepository.save(ratingPostTwo);
         ratingPostRepository.save(ratingPostThree);
+    }
+
+    private void insertRatingPostPlayer() {
+        PlayerEntity player = playerRepository.findById(1L).orElseThrow();
+        RatingPostEntity ratingPost = ratingPostRepository.findById(1L).orElseThrow();
+
+        RatingPostPlayerEntity ratingPostPlayer = RatingPostPlayerEntity.builder()
+                .player(player)
+                .ratingPost(ratingPost)
+                .build();
+
+        ratingPostPlayerRepository.save(ratingPostPlayer);
     }
 
     private void insertRating() {
