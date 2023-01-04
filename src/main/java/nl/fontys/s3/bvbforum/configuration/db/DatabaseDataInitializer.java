@@ -23,6 +23,7 @@ public class DatabaseDataInitializer {
     private CommentRepository commentRepository;
     private PlayerRepository playerRepository;
     private RatingRepository ratingRepository;
+    private RatingPostRepository ratingPostRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void populateDatabaseInitialDummyData() {
@@ -33,6 +34,7 @@ public class DatabaseDataInitializer {
             insertVote();
             insertComment();
             insertPlayer();
+            insertRatingPost();
             insertRating();
         }
     }
@@ -102,23 +104,61 @@ public class DatabaseDataInitializer {
         playerRepository.save(player);
     }
 
+    private void insertRatingPost() {
+        DateTime date = DateTime.now();
+        Timestamp ts = new Timestamp(date.toDateTime().getMillis());
+        RatingPostEntity ratingPost = RatingPostEntity.builder()
+                .date(ts)
+                .start_year(2022)
+                .end_year(2023)
+                .matchday(1)
+                .opponent("Schalke04")
+                .tournament(TournamentEnum.BUNDESLIGA)
+                .build();
+
+        RatingPostEntity ratingPostTwo = RatingPostEntity.builder()
+                .date(ts)
+                .start_year(2022)
+                .end_year(2023)
+                .matchday(0)
+                .opponent("Real Madrid")
+                .tournament(TournamentEnum.CHAMPIONS_LEAGUE)
+                .build();
+
+        RatingPostEntity ratingPostThree = RatingPostEntity.builder()
+                .date(ts)
+                .start_year(2022)
+                .end_year(2023)
+                .matchday(0)
+                .opponent("St. Pauli")
+                .tournament(TournamentEnum.DFB_CUP)
+                .build();
+
+        ratingPostRepository.save(ratingPost);
+        ratingPostRepository.save(ratingPostTwo);
+        ratingPostRepository.save(ratingPostThree);
+    }
+
     private void insertRating() {
         RatingEntity rating = RatingEntity.builder()
                 .player(playerRepository.findByLastname("reus"))
                 .rating(10L)
                 .user(userRepository.findByUsername("admin"))
+                .ratingPost(ratingPostRepository.findById(1L).stream().findFirst().orElse(null))
                 .build();
 
         RatingEntity ratingTwo = RatingEntity.builder()
                 .player(playerRepository.findByLastname("reus"))
                 .rating(7L)
                 .user(userRepository.findByUsername("admin"))
+                .ratingPost(ratingPostRepository.findById(2L).stream().findFirst().orElse(null))
                 .build();
 
         RatingEntity ratingThree = RatingEntity.builder()
                 .player(playerRepository.findByLastname("reus"))
                 .rating(5L)
                 .user(userRepository.findByUsername("admin"))
+                .ratingPost(ratingPostRepository.findById(3L).stream().findFirst().orElse(null))
                 .build();
 
         ratingRepository.save(rating);

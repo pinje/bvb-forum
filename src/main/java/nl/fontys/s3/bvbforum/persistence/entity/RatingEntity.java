@@ -1,9 +1,6 @@
 package nl.fontys.s3.bvbforum.persistence.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -33,4 +30,9 @@ public class RatingEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "rating_post_id")
+    private RatingPostEntity ratingPost;
 }

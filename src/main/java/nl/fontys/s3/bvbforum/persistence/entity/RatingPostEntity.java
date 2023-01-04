@@ -1,5 +1,6 @@
 package nl.fontys.s3.bvbforum.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,11 +29,28 @@ public class RatingPostEntity {
     @Column(name = "date")
     private Timestamp date;
 
+    @NotNull
+    @Column(name = "start_year")
+    private Integer start_year;
+
+    @NotNull
+    @Column(name = "end_year")
+    private Integer end_year;
+
+    @NotNull
+    @Column(name = "matchday")
+    private Integer matchday;
+
     @NotBlank
     @Length(min = 2, max = 50)
-    @Column(name = "title")
-    private String title;
+    @Column(name = "opponent")
+    private String opponent;
 
-    @OneToMany(mappedBy = "rating_post")
-    private List<PlayerEntity> players;
+    @NotNull
+    @Column(name = "tournament")
+    @Enumerated(EnumType.STRING)
+    private TournamentEnum tournament;
+
+    @OneToMany(mappedBy = "ratingPost")
+    private List<RatingEntity> ratings;
 }
