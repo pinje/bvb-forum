@@ -98,7 +98,7 @@ public class GetRatingsUseCaseImpl implements GetRatingsUseCase {
         // for each player, get their average rating and store
         for (PlayerEntity player : players) {
             List<RatingEntity> list;
-            list = ratingRepository.findAll();
+            list = ratingRepository.findAllByPlayerId(player.getId());
 
             double averageRating = list.stream()
                     .mapToInt(ratingEntity -> Math.toIntExact(ratingEntity.getRating()))
