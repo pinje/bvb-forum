@@ -36,10 +36,12 @@ public class GetRatingUseCaseImpl implements GetRatingUseCase {
                 .average()
                 .orElse(0.0);
 
+        String formattedAverageRating = String.format("%.2f", averageRating);
+
         PlayerAverageRatingDTO result = PlayerAverageRatingDTO.builder()
                 .player(playerRepository.findById(playerId)
                         .stream().findFirst().orElse(null))
-                .averageRating(averageRating)
+                .averageRating(formattedAverageRating)
                 .build();
 
         return result;

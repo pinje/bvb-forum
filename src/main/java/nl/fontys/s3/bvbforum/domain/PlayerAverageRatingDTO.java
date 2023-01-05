@@ -12,5 +12,5 @@ import nl.fontys.s3.bvbforum.persistence.entity.PlayerEntity;
 @AllArgsConstructor
 public class PlayerAverageRatingDTO {
     private PlayerEntity player;
-    private Double averageRating;
+    private String averageRating;
 }

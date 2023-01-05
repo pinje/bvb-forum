@@ -9,8 +9,10 @@ import nl.fontys.s3.bvbforum.configuration.security.isauthenticated.IsAuthentica
 import nl.fontys.s3.bvbforum.domain.PlayerAverageRatingDTO;
 import nl.fontys.s3.bvbforum.domain.RatingInformationDTO;
 import nl.fontys.s3.bvbforum.domain.request.rating.CreateRatingRequest;
+import nl.fontys.s3.bvbforum.domain.request.rating.GetRatingsByPositionRequest;
 import nl.fontys.s3.bvbforum.domain.response.rating.CreateRatingResponse;
 import nl.fontys.s3.bvbforum.domain.response.rating.GetRatingsResponse;
+import nl.fontys.s3.bvbforum.persistence.entity.PositionEnum;
 import nl.fontys.s3.bvbforum.persistence.entity.RatingEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/ratings")
@@ -52,6 +55,14 @@ public class RatingController {
     @RolesAllowed({"ROLE_ADMIN","ROLE_MEMBER"})
     public ResponseEntity<GetRatingsResponse> getRatingsByUserId(@PathVariable(value = "userId") final long userId) {
         return ResponseEntity.ok(getRatingsUseCase.getRatingsByUserId(userId));
+    }
+
+    @GetMapping("/average")
+    public List<PlayerAverageRatingDTO> getAverageRatings() { return getRatingsUseCase.getAverageRatings(); }
+
+    @GetMapping("/average_position")
+    public List<PlayerAverageRatingDTO> getAverageRatingsByPosition(@RequestBody @Valid GetRatingsByPositionRequest request) {
+        return getRatingsUseCase.getAverageRatingsByPosition(request);
     }
 
     @GetMapping("{id}")
