@@ -52,8 +52,10 @@ public class RatingPostEntity {
     private TournamentEnum tournament;
 
     @OneToMany(mappedBy = "ratingPost")
+    @JsonIgnore
     private List<RatingEntity> ratings;
 
     @OneToMany(mappedBy = "ratingPost")
+    @JsonIgnore
     private List<RatingPostPlayerEntity> ratingPostPlayers;
 }
