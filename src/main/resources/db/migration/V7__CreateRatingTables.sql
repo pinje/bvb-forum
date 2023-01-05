@@ -8,5 +8,5 @@ CREATE TABLE rating
     PRIMARY KEY (id),
     FOREIGN KEY (player_id) REFERENCES player (id),
     FOREIGN KEY (user_id) REFERENCES user (id),
-    FOREIGN KEY (rating_post_id) REFERENCES rating_post (id) ON DELETE CASCADE 
+    FOREIGN KEY (rating_post_id) REFERENCES rating_post (id) ON DELETE CASCADE
 )
