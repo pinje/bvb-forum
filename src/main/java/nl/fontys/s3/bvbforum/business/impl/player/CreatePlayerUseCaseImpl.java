@@ -28,22 +28,10 @@ public class CreatePlayerUseCaseImpl implements CreatePlayerUseCase {
     }
 
     private PlayerEntity save(CreatePlayerRequest request) {
-        PositionEnum position;
-
-        if (Objects.equals(request.getPosition(), "FW")) {
-            position = PositionEnum.FW;
-        } else if (Objects.equals(request.getPosition(), "MF")) {
-            position = PositionEnum.MF;
-        } else if (Objects.equals(request.getPosition(), "DF")) {
-            position = PositionEnum.DF;
-        } else {
-            position = PositionEnum.GK;
-        }
-
         PlayerEntity newPlayer = PlayerEntity.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
-                .position(position)
+                .position(request.getPosition())
                 .build();
 
         return playerRepository.save(newPlayer);

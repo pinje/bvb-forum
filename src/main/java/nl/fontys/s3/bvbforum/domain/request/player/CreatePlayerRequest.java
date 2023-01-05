@@ -18,6 +18,6 @@ public class CreatePlayerRequest {
     private String firstname;
     @NotBlank
     private String lastname;
-    @NotBlank
-    private String position;
+    @NotNull
+    private PositionEnum position;
 }
