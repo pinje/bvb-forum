@@ -35,7 +35,10 @@ public class DatabaseDataInitializer {
             insertPost();
             insertVote();
             insertComment();
-            insertPlayer();
+            insertForwards();
+            insertMidfielders();
+            insertDefenders();
+            insertGoalkeepers();
             insertRatingPost();
             insertRatingPostPlayer();
             insertRating();
@@ -97,14 +100,216 @@ public class DatabaseDataInitializer {
         );
     }
 
-    private void insertPlayer() {
-        PlayerEntity player = PlayerEntity.builder()
+    private void insertForwards() {
+        PlayerEntity malen = PlayerEntity.builder()
+                .firstname("donyell")
+                .lastname("malen")
+                .position(PositionEnum.FW)
+                .build();
+
+        PlayerEntity moukoko = PlayerEntity.builder()
+                .firstname("youssoufa")
+                .lastname("moukoko")
+                .position(PositionEnum.FW)
+                .build();
+        PlayerEntity modeste = PlayerEntity.builder()
+                .firstname("anthony")
+                .lastname("modeste")
+                .position(PositionEnum.FW)
+                .build();
+        PlayerEntity jamie = PlayerEntity.builder()
+                .firstname("jamie")
+                .lastname("bynoe-gittens")
+                .position(PositionEnum.FW)
+                .build();
+        PlayerEntity brandt = PlayerEntity.builder()
+                .firstname("julian")
+                .lastname("brandt")
+                .position(PositionEnum.FW)
+                .build();
+
+        PlayerEntity adeyemi = PlayerEntity.builder()
+                .firstname("karim")
+                .lastname("adeyemi")
+                .position(PositionEnum.FW)
+                .build();
+
+        PlayerEntity reyna = PlayerEntity.builder()
+                .firstname("gio")
+                .lastname("reyna")
+                .position(PositionEnum.FW)
+                .build();
+
+        PlayerEntity hazard = PlayerEntity.builder()
+                .firstname("thorgan")
+                .lastname("hazard")
+                .position(PositionEnum.FW)
+                .build();
+
+        PlayerEntity justin = PlayerEntity.builder()
+                .firstname("justin")
+                .lastname("njinmah")
+                .position(PositionEnum.FW)
+                .build();
+
+        playerRepository.save(malen);
+        playerRepository.save(moukoko);
+        playerRepository.save(modeste);
+        playerRepository.save(jamie);
+        playerRepository.save(brandt);
+        playerRepository.save(adeyemi);
+        playerRepository.save(reyna);
+        playerRepository.save(hazard);
+        playerRepository.save(justin);
+    }
+
+    private void insertMidfielders() {
+        PlayerEntity jude = PlayerEntity.builder()
+                .firstname("jude")
+                .lastname("bellingham")
+                .position(PositionEnum.MF)
+                .build();
+
+        PlayerEntity ozcan = PlayerEntity.builder()
+                .firstname("salih")
+                .lastname("ozcan")
+                .position(PositionEnum.MF)
+                .build();
+
+        PlayerEntity marco = PlayerEntity.builder()
                 .firstname("marco")
                 .lastname("reus")
                 .position(PositionEnum.MF)
                 .build();
 
-        playerRepository.save(player);
+        PlayerEntity mo = PlayerEntity.builder()
+                .firstname("mahmoud")
+                .lastname("dahoud")
+                .position(PositionEnum.MF)
+                .build();
+
+        PlayerEntity pasalic = PlayerEntity.builder()
+                .firstname("marco")
+                .lastname("pasalic")
+                .position(PositionEnum.MF)
+                .build();
+
+        PlayerEntity kamara = PlayerEntity.builder()
+                .firstname("abdoulaye")
+                .lastname("kamara")
+                .position(PositionEnum.MF)
+                .build();
+
+        PlayerEntity can = PlayerEntity.builder()
+                .firstname("emre")
+                .lastname("can")
+                .position(PositionEnum.MF)
+                .build();
+
+        playerRepository.save(jude);
+        playerRepository.save(ozcan);
+        playerRepository.save(marco);
+        playerRepository.save(mo);
+        playerRepository.save(pasalic);
+        playerRepository.save(kamara);
+        playerRepository.save(can);
+    }
+
+    private void insertDefenders() {
+        PlayerEntity wolf = PlayerEntity.builder()
+                .firstname("marius")
+                .lastname("wolf")
+                .position(PositionEnum.DF)
+                .build();
+
+        PlayerEntity schlotterbeck = PlayerEntity.builder()
+                .firstname("nico")
+                .lastname("schlotterbeck")
+                .position(PositionEnum.DF)
+                .build();
+
+        PlayerEntity hummels = PlayerEntity.builder()
+                .firstname("mats")
+                .lastname("hummels")
+                .position(PositionEnum.DF)
+                .build();
+
+        PlayerEntity rapha = PlayerEntity.builder()
+                .firstname("raphael")
+                .lastname("guerreiro")
+                .position(PositionEnum.DF)
+                .build();
+
+        PlayerEntity sule = PlayerEntity.builder()
+                .firstname("niklas")
+                .lastname("sule")
+                .position(PositionEnum.DF)
+                .build();
+
+        PlayerEntity meunier = PlayerEntity.builder()
+                .firstname("thomas")
+                .lastname("meunier")
+                .position(PositionEnum.DF)
+                .build();
+
+        PlayerEntity passlack = PlayerEntity.builder()
+                .firstname("felix")
+                .lastname("passlack")
+                .position(PositionEnum.DF)
+                .build();
+
+        PlayerEntity rothe = PlayerEntity.builder()
+                .firstname("tom")
+                .lastname("rothe")
+                .position(PositionEnum.DF)
+                .build();
+
+        PlayerEntity papadopoulos = PlayerEntity.builder()
+                .firstname("antonios")
+                .lastname("papadopoulos")
+                .position(PositionEnum.DF)
+                .build();
+
+        PlayerEntity coulibaly = PlayerEntity.builder()
+                .firstname("soumaila")
+                .lastname("coulibaly")
+                .position(PositionEnum.DF)
+                .build();
+
+        playerRepository.save(wolf);
+        playerRepository.save(schlotterbeck);
+        playerRepository.save(hummels);
+        playerRepository.save(rapha);
+        playerRepository.save(sule);
+        playerRepository.save(meunier);
+        playerRepository.save(passlack);
+        playerRepository.save(rothe);
+        playerRepository.save(papadopoulos);
+        playerRepository.save(coulibaly);
+    }
+
+    private void insertGoalkeepers() {
+        PlayerEntity kobel = PlayerEntity.builder()
+                .firstname("gregor")
+                .lastname("kobel")
+                .position(PositionEnum.GK)
+                .build();
+
+        PlayerEntity meyer = PlayerEntity.builder()
+                .firstname("alexander")
+                .lastname("meyer")
+                .position(PositionEnum.GK)
+                .build();
+
+        PlayerEntity lotka = PlayerEntity.builder()
+                .firstname("marcel")
+                .lastname("lotka")
+                .position(PositionEnum.GK)
+                .build();
+
+        playerRepository.save(kobel);
+        playerRepository.save(meyer);
+        playerRepository.save(lotka);
     }
 
     private void insertRatingPost() {

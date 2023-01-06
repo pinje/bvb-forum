@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -101,9 +102,7 @@ public class GetRatingsUseCaseImpl implements GetRatingsUseCase {
 
         return response;
     }
-
-
-    @Query("SELECT r FROM RatingEntity r ORDER BY r.rating DESC")
+    
     private List<PlayerAverageRatingDTO> generate(List<PlayerEntity> players) {
         List<PlayerAverageRatingDTO> results = new ArrayList<>();
 
@@ -126,6 +125,8 @@ public class GetRatingsUseCaseImpl implements GetRatingsUseCase {
 
             results.add(playerAverageRatingDTO);
         }
+
+        results.sort(Comparator.comparing(PlayerAverageRatingDTO::getAverageRating).reversed());
 
         return results;
     }
