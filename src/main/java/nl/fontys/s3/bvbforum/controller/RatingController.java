@@ -64,7 +64,9 @@ public class RatingController {
     }
 
     @GetMapping("/average_position")
-    public ResponseEntity<GetAverageRatingsResponse> getAverageRatingsByPosition(@RequestBody @Valid GetRatingsByPositionRequest request) {
+    public ResponseEntity<GetAverageRatingsResponse> getAverageRatingsByPosition(@RequestParam(value = "position") PositionEnum position) {
+        GetRatingsByPositionRequest request = new GetRatingsByPositionRequest();
+        request.setPosition(position);
         return ResponseEntity.ok(getRatingsUseCase.getAverageRatingsByPosition(request));
     }
 
