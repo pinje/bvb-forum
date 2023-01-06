@@ -6,12 +6,14 @@ import nl.fontys.s3.bvbforum.business.interfaces.rating.GetRatingsUseCase;
 import nl.fontys.s3.bvbforum.domain.PlayerAverageRatingDTO;
 import nl.fontys.s3.bvbforum.domain.RatingInformationDTO;
 import nl.fontys.s3.bvbforum.domain.request.rating.GetRatingsByPositionRequest;
+import nl.fontys.s3.bvbforum.domain.response.rating.GetAverageRatingsResponse;
 import nl.fontys.s3.bvbforum.domain.response.rating.GetRatingsResponse;
 import nl.fontys.s3.bvbforum.persistence.PlayerRepository;
 import nl.fontys.s3.bvbforum.persistence.RatingRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.PlayerEntity;
 import nl.fontys.s3.bvbforum.persistence.entity.PositionEnum;
 import nl.fontys.s3.bvbforum.persistence.entity.RatingEntity;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
@@ -75,23 +77,33 @@ public class GetRatingsUseCaseImpl implements GetRatingsUseCase {
     }
 
     @Override
-    public List<PlayerAverageRatingDTO> getAverageRatings() {
+    public GetAverageRatingsResponse getAverageRatings() {
         // gather all players
         List<PlayerEntity> players;
         players = playerRepository.findAll();
 
-        return generate(players);
+        final GetAverageRatingsResponse response = new GetAverageRatingsResponse();
+
+        response.setAverageRatings(generate(players));
+
+        return response;
     }
 
     @Override
-    public List<PlayerAverageRatingDTO> getAverageRatingsByPosition(GetRatingsByPositionRequest request) {
+    public GetAverageRatingsResponse getAverageRatingsByPosition(GetRatingsByPositionRequest request) {
         // gather all players
         List<PlayerEntity> players;
         players = playerRepository.findAllByPosition(request.getPosition());
 
-        return generate(players);
+        final GetAverageRatingsResponse response = new GetAverageRatingsResponse();
+
+        response.setAverageRatings(generate(players));
+
+        return response;
     }
 
+
+    @Query("SELECT r FROM RatingEntity r ORDER BY r.rating DESC")
     private List<PlayerAverageRatingDTO> generate(List<PlayerEntity> players) {
         List<PlayerAverageRatingDTO> results = new ArrayList<>();
 

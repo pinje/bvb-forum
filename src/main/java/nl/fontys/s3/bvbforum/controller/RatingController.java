@@ -11,6 +11,7 @@ import nl.fontys.s3.bvbforum.domain.RatingInformationDTO;
 import nl.fontys.s3.bvbforum.domain.request.rating.CreateRatingRequest;
 import nl.fontys.s3.bvbforum.domain.request.rating.GetRatingsByPositionRequest;
 import nl.fontys.s3.bvbforum.domain.response.rating.CreateRatingResponse;
+import nl.fontys.s3.bvbforum.domain.response.rating.GetAverageRatingsResponse;
 import nl.fontys.s3.bvbforum.domain.response.rating.GetRatingsResponse;
 import nl.fontys.s3.bvbforum.persistence.entity.PositionEnum;
 import nl.fontys.s3.bvbforum.persistence.entity.RatingEntity;
@@ -58,11 +59,13 @@ public class RatingController {
     }
 
     @GetMapping("/average")
-    public List<PlayerAverageRatingDTO> getAverageRatings() { return getRatingsUseCase.getAverageRatings(); }
+    public ResponseEntity<GetAverageRatingsResponse> getAverageRatings() {
+        return ResponseEntity.ok(getRatingsUseCase.getAverageRatings());
+    }
 
     @GetMapping("/average_position")
-    public List<PlayerAverageRatingDTO> getAverageRatingsByPosition(@RequestBody @Valid GetRatingsByPositionRequest request) {
-        return getRatingsUseCase.getAverageRatingsByPosition(request);
+    public ResponseEntity<GetAverageRatingsResponse> getAverageRatingsByPosition(@RequestBody @Valid GetRatingsByPositionRequest request) {
+        return ResponseEntity.ok(getRatingsUseCase.getAverageRatingsByPosition(request));
     }
 
     @GetMapping("{id}")
