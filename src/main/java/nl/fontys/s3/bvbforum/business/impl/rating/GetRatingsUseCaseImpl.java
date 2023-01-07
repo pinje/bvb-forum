@@ -102,7 +102,7 @@ public class GetRatingsUseCaseImpl implements GetRatingsUseCase {
 
         return response;
     }
-    
+
     private List<PlayerAverageRatingDTO> generate(List<PlayerEntity> players) {
         List<PlayerAverageRatingDTO> results = new ArrayList<>();
 

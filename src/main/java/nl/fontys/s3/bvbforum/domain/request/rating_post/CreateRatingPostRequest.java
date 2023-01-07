@@ -16,16 +16,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateRatingPostRequest {
-    @NotNull
-    private Integer start_year;
-    @NotNull
-    private Integer end_year;
-    @NotNull
-    private Integer matchday;
+    @NotBlank
+    private String start_year;
+    @NotBlank
+    private String end_year;
+    @NotBlank
+    private String matchday;
     @NotBlank
     private String opponent;
     @NotNull
     private TournamentEnum tournament;
     @NotEmpty
-    private List<Integer> playersId;
+    private List<String> playersId;
 }

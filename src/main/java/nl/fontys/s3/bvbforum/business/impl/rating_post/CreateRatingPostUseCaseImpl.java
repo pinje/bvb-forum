@@ -28,9 +28,9 @@ public class CreateRatingPostUseCaseImpl implements CreateRatingPostUseCase {
     public CreateRatingPostResponse createRatingPost(CreateRatingPostRequest request) {
         RatingPostEntity saveRatingPost = save(request);
 
-        List<Integer> players = request.getPlayersId();
+        List<String> players = request.getPlayersId();
 
-        for (Integer playerId : players) {
+        for (String playerId : players) {
             RatingPostPlayerEntity ratingPostPlayer = RatingPostPlayerEntity.builder()
                     .player(playerRepository.findById(Long.valueOf(playerId)).stream().findFirst().orElse(null))
                     .ratingPost(saveRatingPost)
@@ -49,9 +49,9 @@ public class CreateRatingPostUseCaseImpl implements CreateRatingPostUseCase {
 
         RatingPostEntity newRatingPost = RatingPostEntity.builder()
                 .date(ts)
-                .start_year(request.getStart_year())
-                .end_year(request.getEnd_year())
-                .matchday(request.getMatchday())
+                .start_year(Integer.valueOf(request.getStart_year()))
+                .end_year(Integer.valueOf(request.getEnd_year()))
+                .matchday(Integer.valueOf(request.getMatchday()))
                 .opponent(request.getOpponent())
                 .tournament(request.getTournament())
                 .build();
