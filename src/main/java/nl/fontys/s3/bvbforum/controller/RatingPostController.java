@@ -41,8 +41,6 @@ public class RatingPostController {
     }
 
     @GetMapping("/latest")
-    @IsAuthenticated
-    @RolesAllowed({"ROLE_ADMIN","ROLE_MEMBER"})
     public RatingPostEntity getMostRecentRatingPost() {
         return getRatingPostUseCase.getMostRecentRatingPost();
     }
