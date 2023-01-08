@@ -34,8 +34,6 @@ public class RatingPostController {
     }
 
     @GetMapping("{id}")
-    @IsAuthenticated
-    @RolesAllowed({"ROLE_ADMIN","ROLE_MEMBER"})
     public RatingPostEntity getRatingPostById(@PathVariable(value = "id") final long id) {
         return getRatingPostUseCase.getRatingPostById(id);
     }
