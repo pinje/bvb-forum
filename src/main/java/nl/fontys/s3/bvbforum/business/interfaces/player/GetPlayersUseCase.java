@@ -4,4 +4,5 @@ import nl.fontys.s3.bvbforum.domain.response.player.GetPlayersResponse;
 
 public interface GetPlayersUseCase {
     GetPlayersResponse getPlayers();
+    GetPlayersResponse getPlayersByRatingPostId(long ratingPostId);
 }

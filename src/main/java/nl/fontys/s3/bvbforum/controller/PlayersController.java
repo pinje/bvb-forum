@@ -10,6 +10,7 @@ import nl.fontys.s3.bvbforum.domain.request.player.CreatePlayerRequest;
 import nl.fontys.s3.bvbforum.domain.response.player.CreatePlayerResponse;
 import nl.fontys.s3.bvbforum.domain.response.player.GetPlayersResponse;
 import nl.fontys.s3.bvbforum.persistence.entity.PlayerEntity;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,11 @@ public class PlayersController {
     @GetMapping
     public ResponseEntity<GetPlayersResponse> getPlayers() {
         return ResponseEntity.ok(getPlayersUseCase.getPlayers());
+    }
+
+    @GetMapping("/ratingpost/{id}")
+    public ResponseEntity<GetPlayersResponse> getPlayersByRatingPostId(@PathVariable(value = "id") final long id) {
+        return ResponseEntity.ok(getPlayersUseCase.getPlayersByRatingPostId(id));
     }
 
     @GetMapping("{id}")
