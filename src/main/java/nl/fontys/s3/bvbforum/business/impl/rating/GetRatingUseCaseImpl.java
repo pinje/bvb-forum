@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.business.interfaces.rating.GetRatingUseCase;
 import nl.fontys.s3.bvbforum.domain.PlayerAverageRatingDTO;
 import nl.fontys.s3.bvbforum.domain.RatingInformationDTO;
+import nl.fontys.s3.bvbforum.domain.request.rating.GetRatingRequest;
 import nl.fontys.s3.bvbforum.persistence.PlayerRepository;
 import nl.fontys.s3.bvbforum.persistence.RatingRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.RatingEntity;
@@ -45,5 +46,21 @@ public class GetRatingUseCaseImpl implements GetRatingUseCase {
                 .build();
 
         return result;
+    }
+
+    @Override
+    public boolean checkUserAlreadyVoted(GetRatingRequest request) {
+        List<RatingEntity> list;
+        list = ratingRepository.findAllByUserId(request.getUserId());
+
+        // check for each in list
+        for (RatingEntity element : list) {
+            if (element.getRatingPost().getId() == request.getRatingPostId()) {
+                // already voted
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -9,6 +9,7 @@ import nl.fontys.s3.bvbforum.configuration.security.isauthenticated.IsAuthentica
 import nl.fontys.s3.bvbforum.domain.PlayerAverageRatingDTO;
 import nl.fontys.s3.bvbforum.domain.RatingInformationDTO;
 import nl.fontys.s3.bvbforum.domain.request.rating.CreateRatingRequest;
+import nl.fontys.s3.bvbforum.domain.request.rating.GetRatingRequest;
 import nl.fontys.s3.bvbforum.domain.request.rating.GetRatingsByPositionRequest;
 import nl.fontys.s3.bvbforum.domain.response.rating.CreateRatingResponse;
 import nl.fontys.s3.bvbforum.domain.response.rating.GetAverageRatingsResponse;
@@ -75,6 +76,15 @@ public class RatingController {
 
     @GetMapping("/average/{playerId}")
     public PlayerAverageRatingDTO getAverageRatingByPlayerId(@PathVariable(value = "playerId") final long playerId) { return getRatingUseCase.getAverageRatingByPlayerId(playerId); }
+
+    @GetMapping("/alreadyvoted")
+    public boolean checkUserAlreadyVoted(@RequestParam(value = "ratingPostId") long ratingPostId,
+                                         @RequestParam(value = "userId") long userId) {
+        GetRatingRequest request = new GetRatingRequest();
+        request.setRatingPostId(ratingPostId);
+        request.setUserId(userId);
+        return getRatingUseCase.checkUserAlreadyVoted(request);
+    }
 
     @DeleteMapping("{ratingId}")
     @IsAuthenticated
