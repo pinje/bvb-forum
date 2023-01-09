@@ -18,4 +18,6 @@ public class CreateRatingRequest {
     private Long rating;
     @NotNull
     private Long userId;
+    @NotNull
+    private Long ratingPostId;
 }

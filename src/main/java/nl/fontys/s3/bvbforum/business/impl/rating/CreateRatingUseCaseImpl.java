@@ -5,6 +5,7 @@ import nl.fontys.s3.bvbforum.business.interfaces.rating.CreateRatingUseCase;
 import nl.fontys.s3.bvbforum.domain.request.rating.CreateRatingRequest;
 import nl.fontys.s3.bvbforum.domain.response.rating.CreateRatingResponse;
 import nl.fontys.s3.bvbforum.persistence.PlayerRepository;
+import nl.fontys.s3.bvbforum.persistence.RatingPostRepository;
 import nl.fontys.s3.bvbforum.persistence.RatingRepository;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.RatingEntity;
@@ -18,6 +19,7 @@ public class CreateRatingUseCaseImpl implements CreateRatingUseCase {
     private RatingRepository ratingRepository;
     private PlayerRepository playerRepository;
     private UserRepository userRepository;
+    private RatingPostRepository ratingPostRepository;
 
     @Transactional
     @Override
@@ -36,6 +38,9 @@ public class CreateRatingUseCaseImpl implements CreateRatingUseCase {
                         .findFirst().orElse(null))
                 .rating(request.getRating())
                 .user(userRepository.findById(request.getUserId())
+                        .stream()
+                        .findFirst().orElse(null))
+                .ratingPost(ratingPostRepository.findById(request.getRatingPostId())
                         .stream()
                         .findFirst().orElse(null))
                 .build();
