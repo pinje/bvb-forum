@@ -88,13 +88,13 @@ class CreateRatingPostUseCaseImplTest {
 
 
         // cal the method
-        List<Integer> players = new ArrayList<>();
-        players.add(1);
-        players.add(2);
+        List<String> players = new ArrayList<>();
+        players.add("1");
+        players.add("2");
         CreateRatingPostRequest request = CreateRatingPostRequest.builder()
-                .start_year(2022)
-                .end_year(2023)
-                .matchday(1)
+                .start_year("2022")
+                .end_year("2023")
+                .matchday("1")
                 .opponent("Bayern Munich")
                 .tournament(TournamentEnum.BUNDESLIGA)
                 .playersId(players)

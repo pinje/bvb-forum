@@ -104,7 +104,7 @@ class GetRatingUseCaseImplTest {
                 .build();
 
         PlayerAverageRatingDTO expectedAverageRating = PlayerAverageRatingDTO.builder()
-                .averageRating(9D)
+                .averageRating(String.valueOf(9D))
                 .player(playerEntity)
                 .build();
 

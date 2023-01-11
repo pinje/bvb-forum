@@ -45,7 +45,7 @@ class CreatePlayerUseCaseImplTest {
         CreatePlayerRequest request = CreatePlayerRequest.builder()
                 .firstname("marco")
                 .lastname("reus")
-                .position("MF")
+                .position(PositionEnum.valueOf("MF"))
                 .build();
 
         // when
