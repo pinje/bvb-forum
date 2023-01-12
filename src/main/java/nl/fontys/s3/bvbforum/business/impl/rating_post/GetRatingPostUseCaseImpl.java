@@ -24,14 +24,13 @@ public class GetRatingPostUseCaseImpl implements GetRatingPostUseCase {
     }
 
     @Override
-    @Query("SELECT r FROM RatingPostEntity r ORDER BY r.date DESC")
     public RatingPostEntity getMostRecentRatingPost() {
-        List<RatingPostEntity> ratingPosts = ratingPostRepository.findAll();
+        RatingPostEntity ratingPost = ratingPostRepository.findFirstByOrderByDateDesc();
 
-        if (ratingPosts.isEmpty()) {
+        if (ratingPost.equals(null)) {
             throw new RatingPostDoesntExistException();
         }
 
-        return ratingPosts.get(0);
+        return ratingPost;
     }
 }
