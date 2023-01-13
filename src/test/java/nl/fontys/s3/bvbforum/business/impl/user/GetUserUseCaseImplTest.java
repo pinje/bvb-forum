@@ -1,6 +1,7 @@
 package nl.fontys.s3.bvbforum.business.impl.user;
 
 import nl.fontys.s3.bvbforum.business.exception.UnauthorizedDataAccessException;
+import nl.fontys.s3.bvbforum.business.exception.user.UserDoesntExistException;
 import nl.fontys.s3.bvbforum.business.impl.user.GetUserUseCaseImpl;
 import nl.fontys.s3.bvbforum.domain.AccessToken;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
@@ -96,5 +97,23 @@ class GetUserUseCaseImplTest {
         // verify
         verify(accessToken, times(1)).hasRole(RoleEnum.ADMIN.name());
         verify(accessToken, times(1)).getUserId();
+    }
+
+    @Test
+    void Get_UserById_UserNotFound() {
+        // given
+        long nonExistentUserId = -1;
+
+        // set up mock objects
+        when(userRepository.findById(nonExistentUserId)).thenReturn(null);
+
+        // when
+        Optional<UserEntity> result = userRepository.findById(nonExistentUserId);
+
+        // then
+        assertNull(result);
+
+        // verify
+        verify(userRepository, times(1)).findById(nonExistentUserId);
     }
 }

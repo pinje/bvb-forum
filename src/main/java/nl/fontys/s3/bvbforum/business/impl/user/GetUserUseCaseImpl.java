@@ -22,6 +22,7 @@ public class GetUserUseCaseImpl implements GetUserUseCase {
                 throw new UnauthorizedDataAccessException("USER_ID_NOT_FROM_LOGGED_IN_USER");
             }
         }
+
         return userRepository.findById(userId)
                 .stream().filter(userEntity1 -> userEntity1.getId() == userId)
                 .findFirst()
