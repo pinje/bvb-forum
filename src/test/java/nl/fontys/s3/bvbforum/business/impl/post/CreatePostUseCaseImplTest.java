@@ -29,8 +29,6 @@ class CreatePostUseCaseImplTest {
     private UserRepository userRepository;
     @InjectMocks
     private CreatePostUseCaseImpl createPostUseCase;
-    @Captor
-    private ArgumentCaptor<PostEntity> postCaptor;
 
     @Test
     void Add_ValidPost_PostSavedInRepository() {
@@ -50,7 +48,6 @@ class CreatePostUseCaseImplTest {
                 .build();
 
         PostEntity requestPostEntity = PostEntity.builder()
-                .date(postCaptor.getValue().getDate())
                 .title("title")
                 .content("content")
                 .vote(1L)
@@ -72,13 +69,11 @@ class CreatePostUseCaseImplTest {
         // when
         CreatePostResponse response = createPostUseCase.createPost(request);
 
-        verify(postRepository).save(postCaptor.capture());
-
         // then
         assertNotNull(response.getPostId());
 
         // verify
-        verify(postRepository, times(1)).save(postEntity);
+        verify(postRepository, times(1)).save(requestPostEntity);
         verify(userRepository, times(1)).findById(1L);
     }
 }

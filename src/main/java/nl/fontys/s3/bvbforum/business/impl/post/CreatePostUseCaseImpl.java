@@ -24,16 +24,19 @@ public class CreatePostUseCaseImpl implements CreatePostUseCase {
     public CreatePostResponse createPost(CreatePostRequest request) {
         PostEntity savePost = save(request);
 
+
+        DateTime date = DateTime.now();
+        Timestamp ts = new Timestamp(date.toDateTime().getMillis());
+
+        savePost.setDate(ts);
+
         return CreatePostResponse.builder()
                 .postId(savePost.getId())
                 .build();
     }
 
     private PostEntity save(CreatePostRequest request) {
-        DateTime date = DateTime.now();
-        Timestamp ts = new Timestamp(date.toDateTime().getMillis());
         PostEntity newPost = PostEntity.builder()
-                .date(ts)
                 .title(request.getTitle())
                 .content(request.getContent())
                 .vote(request.getVote())
