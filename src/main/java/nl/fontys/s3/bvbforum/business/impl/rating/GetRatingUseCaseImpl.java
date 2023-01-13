@@ -35,7 +35,7 @@ public class GetRatingUseCaseImpl implements GetRatingUseCase {
         double averageRating = list.stream()
                 .mapToInt(ratingEntity -> Math.toIntExact(ratingEntity.getRating()))
                 .average()
-                .orElse(0.0);
+                .orElse(0.00);
 
         String formattedAverageRating = String.format("%.2f", averageRating);
 

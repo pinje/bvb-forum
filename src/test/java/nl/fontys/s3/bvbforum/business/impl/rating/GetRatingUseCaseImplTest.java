@@ -2,18 +2,18 @@ package nl.fontys.s3.bvbforum.business.impl.rating;
 
 import nl.fontys.s3.bvbforum.domain.PlayerAverageRatingDTO;
 import nl.fontys.s3.bvbforum.domain.RatingInformationDTO;
+import nl.fontys.s3.bvbforum.domain.request.rating.GetRatingRequest;
 import nl.fontys.s3.bvbforum.persistence.PlayerRepository;
 import nl.fontys.s3.bvbforum.persistence.RatingRepository;
-import nl.fontys.s3.bvbforum.persistence.entity.PlayerEntity;
-import nl.fontys.s3.bvbforum.persistence.entity.PositionEnum;
-import nl.fontys.s3.bvbforum.persistence.entity.RatingEntity;
-import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
+import nl.fontys.s3.bvbforum.persistence.entity.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,11 +107,21 @@ class GetRatingUseCaseImplTest {
                 .position(PositionEnum.MF)
                 .build();
 
+        RatingPostEntity ratingPostEntity = RatingPostEntity.builder()
+                .id(111L)
+                .start_year(2022)
+                .end_year(2023)
+                .matchday(1)
+                .opponent("Schalke04")
+                .tournament(TournamentEnum.BUNDESLIGA)
+                .build();
+
         RatingEntity ratingEntityOne = RatingEntity.builder()
                 .id(1L)
                 .player(playerEntity)
                 .rating(8L)
                 .user(userEntity)
+                .ratingPost(ratingPostEntity)
                 .build();
 
         RatingEntity ratingEntityTwo = RatingEntity.builder()
@@ -119,10 +129,13 @@ class GetRatingUseCaseImplTest {
                 .player(playerEntity)
                 .rating(10L)
                 .user(userEntity)
+                .ratingPost(ratingPostEntity)
                 .build();
 
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+
         PlayerAverageRatingDTO expectedAverageRating = PlayerAverageRatingDTO.builder()
-                .averageRating(String.valueOf(9D))
+                .averageRating(decimalFormat.format(9D))
                 .player(playerEntity)
                 .build();
 
@@ -140,5 +153,173 @@ class GetRatingUseCaseImplTest {
         // verify
         verify(ratingRepository, times(1)).findAllByPlayerId(22L);
         verify(playerRepository, times(1)).findById(22L);
+    }
+
+    @Test
+    void Get_RatingByPlayerId_PlayerNotFound_NoAverage() {
+        // given
+        long nonExistentPlayerId = -1;
+        List<RatingEntity> emptyList = new ArrayList<>();
+
+        // set up mock objects
+        when(ratingRepository.findAllByPlayerId(nonExistentPlayerId)).thenReturn(emptyList);
+
+        // when
+        PlayerAverageRatingDTO result = getRatingUseCase.getAverageRatingByPlayerId(nonExistentPlayerId);
+
+        // then
+        assertEquals(String.format("%.2f", 0.00), result.getAverageRating());
+
+        // verify
+        verify(ratingRepository, times(1)).findAllByPlayerId(nonExistentPlayerId);
+    }
+
+    @Test
+    void Get_RatingByPlayerId_RatingNotFound_NoAverage() {
+        // given
+        long playerId = 1;
+        List<RatingEntity> emptyList = new ArrayList<>();
+
+        // set up mock objects
+        when(ratingRepository.findAllByPlayerId(playerId)).thenReturn(emptyList);
+
+        // when
+        PlayerAverageRatingDTO result = getRatingUseCase.getAverageRatingByPlayerId(playerId);
+
+        // then
+        assertEquals(String.format("%.2f", 0.00), result.getAverageRating());
+
+        // verify
+        verify(ratingRepository, times(1)).findAllByPlayerId(playerId);
+
+    }
+
+    @Test
+    void Get_UserAlreadyVoted_ReturnsTrue() {
+        // given
+        UserEntity userEntity = UserEntity.builder()
+                .id(1L)
+                .username("Shuhei")
+                .password("123456")
+                .build();
+
+        PlayerEntity playerEntity = PlayerEntity.builder()
+                .id(22L)
+                .firstname("marco")
+                .lastname("reus")
+                .position(PositionEnum.MF)
+                .build();
+
+        RatingPostEntity ratingPostEntity = RatingPostEntity.builder()
+                .id(111L)
+                .start_year(2022)
+                .end_year(2023)
+                .matchday(1)
+                .opponent("Schalke04")
+                .tournament(TournamentEnum.BUNDESLIGA)
+                .build();
+
+        RatingEntity ratingEntityOne = RatingEntity.builder()
+                .id(1L)
+                .player(playerEntity)
+                .rating(8L)
+                .user(userEntity)
+                .ratingPost(ratingPostEntity)
+                .build();
+
+        RatingEntity ratingEntityTwo = RatingEntity.builder()
+                .id(2L)
+                .player(playerEntity)
+                .rating(10L)
+                .user(userEntity)
+                .ratingPost(ratingPostEntity)
+                .build();
+
+        // set up mock objects
+        when(ratingRepository.findAllByUserId(1L)).thenReturn(List.of(ratingEntityOne, ratingEntityTwo));
+
+        // call the method
+        GetRatingRequest request = GetRatingRequest.builder()
+                .userId(1L)
+                .ratingPostId(111L)
+                .build();
+        // when
+        boolean result = getRatingUseCase.checkUserAlreadyVoted(request);
+
+        // then
+        assertTrue(result);
+
+        // verify
+        verify(ratingRepository, times(1)).findAllByUserId(1L);
+    }
+
+    @Test
+    void Get_UserNeverVoted_ReturnsFalse() {
+        // given
+        UserEntity userEntity = UserEntity.builder()
+                .id(1L)
+                .username("Shuhei")
+                .password("123456")
+                .build();
+
+        PlayerEntity playerEntity = PlayerEntity.builder()
+                .id(22L)
+                .firstname("marco")
+                .lastname("reus")
+                .position(PositionEnum.MF)
+                .build();
+
+        RatingPostEntity ratingPostEntity = RatingPostEntity.builder()
+                .id(111L)
+                .start_year(2022)
+                .end_year(2023)
+                .matchday(1)
+                .opponent("Schalke04")
+                .tournament(TournamentEnum.BUNDESLIGA)
+                .build();
+
+        List<RatingEntity> emptyList = new ArrayList<>();
+
+        // set up mock objects
+        when(ratingRepository.findAllByUserId(1L)).thenReturn(emptyList);
+
+        // call the method
+        GetRatingRequest request = GetRatingRequest.builder()
+                .userId(1L)
+                .ratingPostId(111L)
+                .build();
+        // when
+        boolean result = getRatingUseCase.checkUserAlreadyVoted(request);
+
+        // then
+        assertFalse(result);
+
+        // verify
+        verify(ratingRepository, times(1)).findAllByUserId(1L);
+    }
+
+    @Test
+    void Get_UserAlreadyVoted_UserNotFound_ReturnsFalse() {
+        // given
+        long nonExistentUserId = -1;
+
+        List<RatingEntity> emptyList = new ArrayList<>();
+
+        // set up mock objects
+        when(ratingRepository.findAllByUserId(nonExistentUserId)).thenReturn(emptyList);
+
+        // call the method
+        GetRatingRequest request = GetRatingRequest.builder()
+                .userId(nonExistentUserId)
+                .ratingPostId(111L)
+                .build();
+        // when
+        boolean result = getRatingUseCase.checkUserAlreadyVoted(request);
+
+        // then
+        assertFalse(result);
+
+        // verify
+        verify(ratingRepository, times(1)).findAllByUserId(nonExistentUserId);
     }
 }
