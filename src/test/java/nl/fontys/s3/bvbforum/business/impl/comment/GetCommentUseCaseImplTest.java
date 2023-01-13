@@ -74,10 +74,10 @@ public class GetCommentUseCaseImplTest {
         long nonExistentCommentId = -1;
 
         // set up mock objects
-        when(commentRepository.findById(nonExistentCommentId)).thenReturn(null);
+        when(commentRepository.findById(nonExistentCommentId)).thenReturn(Optional.empty());
 
         // when
-        Optional<CommentEntity> result = commentRepository.findById(nonExistentCommentId);
+        CommentInformationDTO result = getCommentUseCase.getCommentById(nonExistentCommentId);
 
         // then
         assertNull(result);

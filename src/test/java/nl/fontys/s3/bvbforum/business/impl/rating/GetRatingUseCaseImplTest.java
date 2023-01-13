@@ -74,6 +74,24 @@ class GetRatingUseCaseImplTest {
     }
 
     @Test
+    void Get_RatingById_RatingNotFound() {
+        // given
+        long nonExistentRatingId = -1;
+
+        // set up mock objects
+        when(ratingRepository.findById(nonExistentRatingId)).thenReturn(Optional.empty());
+
+        // when
+        RatingInformationDTO result = getRatingUseCase.getRatingById(nonExistentRatingId);
+
+        // then
+        assertNull(result);
+
+        // verify
+        verify(ratingRepository, times(1)).findById(nonExistentRatingId);
+    }
+
+    @Test
     void Get_RatingByPlayerId_ReturnsAverageRatingOfPlayer() {
         // given
         UserEntity userEntity = UserEntity.builder()

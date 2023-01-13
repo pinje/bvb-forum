@@ -64,14 +64,14 @@ class GetPostUseCaseImplTest {
         long nonExistentPostId = -1;
 
         // set up mock objects
-        when(postRepository.findById(nonExistentPostId)).thenReturn(null);
+        when(postRepository.findById(nonExistentPostId)).thenReturn(Optional.empty());
 
         // when
-        Optional<PostEntity> result = postRepository.findById(nonExistentPostId);
+        PostInformationDTO result = getPostUseCase.getPostById(nonExistentPostId);
 
         // then
         assertNull(result);
-        
+
         // verify
         verify(postRepository, times(1)).findById(nonExistentPostId);
     }

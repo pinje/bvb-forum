@@ -1,5 +1,6 @@
 package nl.fontys.s3.bvbforum.business.impl.player;
 
+import nl.fontys.s3.bvbforum.domain.Player;
 import nl.fontys.s3.bvbforum.persistence.PlayerRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.PlayerEntity;
 import nl.fontys.s3.bvbforum.persistence.entity.PositionEnum;
@@ -50,10 +51,10 @@ class GetPlayerUseCaseImplTest {
         long nonExistentPlayerId = -1;
 
         // set up mock objects
-        when(playerRepository.findById(nonExistentPlayerId)).thenReturn(null);
+        when(playerRepository.findById(nonExistentPlayerId)).thenReturn(Optional.empty());
 
         // when
-        Optional<PlayerEntity> result = playerRepository.findById(nonExistentPlayerId);
+        PlayerEntity result = getPlayerUseCase.getPlayerById(nonExistentPlayerId);
 
         // then
         assertNull(result);

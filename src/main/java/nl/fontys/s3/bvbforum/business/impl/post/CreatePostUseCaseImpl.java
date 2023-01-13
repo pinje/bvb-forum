@@ -24,7 +24,6 @@ public class CreatePostUseCaseImpl implements CreatePostUseCase {
     public CreatePostResponse createPost(CreatePostRequest request) {
         PostEntity savePost = save(request);
 
-
         DateTime date = DateTime.now();
         Timestamp ts = new Timestamp(date.toDateTime().getMillis());
 
