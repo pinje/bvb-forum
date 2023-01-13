@@ -13,8 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -67,5 +66,23 @@ public class GetCommentUseCaseImplTest {
 
         // verify
         verify(commentRepository, times(1)).findById(456L);
+    }
+
+    @Test
+    void Get_CommentById_CommentNotFound() {
+        // given
+        long nonExistentCommentId = -1;
+
+        // set up mock objects
+        when(commentRepository.findById(nonExistentCommentId)).thenReturn(null);
+
+        // when
+        Optional<CommentEntity> result = commentRepository.findById(nonExistentCommentId);
+
+        // then
+        assertNull(result);
+
+        // verify
+        verify(commentRepository, times(1)).findById(nonExistentCommentId);
     }
 }

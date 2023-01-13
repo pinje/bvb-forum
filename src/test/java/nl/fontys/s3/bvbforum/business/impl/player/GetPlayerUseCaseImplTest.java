@@ -43,4 +43,22 @@ class GetPlayerUseCaseImplTest {
         // verify
         verify(playerRepository, times(1)).findById(1L);
     }
+
+    @Test
+    void Get_PlayerById_PlayerNotFound() {
+        // given
+        long nonExistentPlayerId = -1;
+
+        // set up mock objects
+        when(playerRepository.findById(nonExistentPlayerId)).thenReturn(null);
+
+        // when
+        Optional<PlayerEntity> result = playerRepository.findById(nonExistentPlayerId);
+
+        // then
+        assertNull(result);
+
+        // verify
+        verify(playerRepository, times(1)).findById(nonExistentPlayerId);
+    }
 }
