@@ -56,8 +56,14 @@ public class CreateCommentUseCaseImplTest {
                 .post(postEntity)
                 .build();
 
+        CommentEntity requestCommentEntity = CommentEntity.builder()
+                .comment("comment")
+                .user(userEntity)
+                .post(postEntity)
+                .build();
+
         // set up mock objects
-        when(commentRepository.save(any(CommentEntity.class))).thenReturn(commentEntity);
+        when(commentRepository.save(requestCommentEntity)).thenReturn(commentEntity);
         when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(userEntity));
         when(postRepository.findById(1L)).thenReturn(Optional.ofNullable(postEntity));
 
@@ -75,7 +81,7 @@ public class CreateCommentUseCaseImplTest {
         assertNotNull(response.getCommentId());
 
         // verify
-        verify(commentRepository, times(1)).save(any(CommentEntity.class));
+        verify(commentRepository, times(1)).save(requestCommentEntity);
         verify(postRepository, times(1)).findById(1L);
         verify(userRepository, times(1)).findById(1L);
     }

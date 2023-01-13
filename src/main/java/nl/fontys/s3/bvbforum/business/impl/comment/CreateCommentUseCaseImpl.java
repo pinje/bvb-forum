@@ -26,16 +26,19 @@ public class CreateCommentUseCaseImpl implements CreateCommentUseCase {
     public CreateCommentResponse createComment(CreateCommentRequest request) {
         CommentEntity saveComment = save(request);
 
+        DateTime date = DateTime.now();
+        Timestamp ts = new Timestamp(date.toDateTime().getMillis());
+
+        saveComment.setDate(ts);
+
         return CreateCommentResponse.builder()
                 .commentId(saveComment.getId())
                 .build();
     }
 
     private CommentEntity save(CreateCommentRequest request) {
-        DateTime date = DateTime.now();
-        Timestamp ts = new Timestamp(date.toDateTime().getMillis());
+
         CommentEntity newComment = CommentEntity.builder()
-                .date(ts)
                 .comment(request.getComment())
                 .user(userRepository.findById(request.getUserId())
                         .stream()

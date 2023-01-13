@@ -43,6 +43,14 @@ class CreateRatingPostUseCaseImplTest {
                 .tournament(TournamentEnum.BUNDESLIGA)
                 .build();
 
+        RatingPostEntity requestRatingPostEntity = RatingPostEntity.builder()
+                .start_year(2022)
+                .end_year(2023)
+                .matchday(1)
+                .opponent("Bayern Munich")
+                .tournament(TournamentEnum.BUNDESLIGA)
+                .build();
+
         PlayerEntity playerOne = PlayerEntity.builder()
                 .id(1L)
                 .firstname("marco")
@@ -82,7 +90,7 @@ class CreateRatingPostUseCaseImplTest {
         // set up mock objects
         when(ratingPostPlayerRepository.save(requestRatingPostPlayerOne)).thenReturn(ratingPostPlayerEntityOne);
         when(ratingPostPlayerRepository.save(requestRatingPostPlayerTwo)).thenReturn(ratingPostPlayerEntityTwo);
-        when(ratingPostRepository.save(any(RatingPostEntity.class))).thenReturn(ratingPostEntity);
+        when(ratingPostRepository.save(requestRatingPostEntity)).thenReturn(ratingPostEntity);
         when(playerRepository.findById(1L)).thenReturn(Optional.ofNullable(playerOne));
         when(playerRepository.findById(2L)).thenReturn(Optional.ofNullable(playerTwo));
 
@@ -109,7 +117,7 @@ class CreateRatingPostUseCaseImplTest {
         // verify
         verify(ratingPostPlayerRepository, times(1)).save(requestRatingPostPlayerOne);
         verify(ratingPostPlayerRepository, times(1)).save(requestRatingPostPlayerTwo);
-        verify(ratingPostRepository, times(1)).save(any(RatingPostEntity.class));
+        verify(ratingPostRepository, times(1)).save(requestRatingPostEntity);
         verify(playerRepository, times(1)).findById(1L);
         verify(playerRepository, times(1)).findById(2L);
     }

@@ -28,6 +28,11 @@ public class CreateRatingPostUseCaseImpl implements CreateRatingPostUseCase {
     public CreateRatingPostResponse createRatingPost(CreateRatingPostRequest request) {
         RatingPostEntity saveRatingPost = save(request);
 
+        DateTime date = DateTime.now();
+        Timestamp ts = new Timestamp(date.toDateTime().getMillis());
+
+        saveRatingPost.setDate(ts);
+
         List<String> players = request.getPlayersId();
 
         for (String playerId : players) {
@@ -44,11 +49,8 @@ public class CreateRatingPostUseCaseImpl implements CreateRatingPostUseCase {
     }
 
     private RatingPostEntity save(CreateRatingPostRequest request) {
-        DateTime date = DateTime.now();
-        Timestamp ts = new Timestamp(date.toDateTime().getMillis());
 
         RatingPostEntity newRatingPost = RatingPostEntity.builder()
-                .date(ts)
                 .start_year(Integer.valueOf(request.getStart_year()))
                 .end_year(Integer.valueOf(request.getEnd_year()))
                 .matchday(Integer.valueOf(request.getMatchday()))
