@@ -12,8 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,5 +56,23 @@ class GetPostUseCaseImplTest {
 
         // verify
         verify(postRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    void Get_PostById_PostNotFound() {
+        // given
+        long nonExistentPostId = -1;
+
+        // set up mock objects
+        when(postRepository.findById(nonExistentPostId)).thenReturn(null);
+
+        // when
+        Optional<PostEntity> result = postRepository.findById(nonExistentPostId);
+
+        // then
+        assertNull(result);
+        
+        // verify
+        verify(postRepository, times(1)).findById(nonExistentPostId);
     }
 }
