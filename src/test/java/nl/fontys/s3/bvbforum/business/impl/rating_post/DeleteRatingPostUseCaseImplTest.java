@@ -65,9 +65,7 @@ class DeleteRatingPostUseCaseImplTest {
         doThrow(new RatingPostDoesntExistException()).when(ratingPostRepository).findById(1L);
 
         // when
-        ResponseStatusException exception = assertThrows(RatingPostDoesntExistException.class, () -> {
-            deleteRatingPostUseCase.deleteRatingPost(id);
-        });
+        ResponseStatusException exception = assertThrows(RatingPostDoesntExistException.class, () -> deleteRatingPostUseCase.deleteRatingPost(id));
 
         // then
         assertEquals("RATING_POST_DOESNT_EXIST", exception.getReason());

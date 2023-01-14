@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -83,16 +82,6 @@ class GetRatingPostUseCaseImplTest {
                 .tournament(TournamentEnum.BUNDESLIGA)
                 .build();
 
-        RatingPostEntity ratingPostEntityTwo = RatingPostEntity.builder()
-                .id(1L)
-                .date(Timestamp.valueOf("2023-01-01 02:00:00"))
-                .start_year(2022)
-                .end_year(2023)
-                .matchday(2)
-                .opponent("Schalke04")
-                .tournament(TournamentEnum.BUNDESLIGA)
-                .build();
-
         // set up mock objects
         when(ratingPostRepository.findFirstByOrderByDateDesc()).thenReturn(expectedRatingPost);
 
@@ -115,9 +104,7 @@ class GetRatingPostUseCaseImplTest {
         when(ratingPostRepository.findFirstByOrderByDateDesc()).thenReturn(null);
 
         // when
-        ResponseStatusException exception = assertThrows(RatingPostDoesntExistException.class, () -> {
-            getRatingPostUseCase.getMostRecentRatingPost();
-        });
+        ResponseStatusException exception = assertThrows(RatingPostDoesntExistException.class, () -> getRatingPostUseCase.getMostRecentRatingPost());
 
         // then
         assertEquals("RATING_POST_DOESNT_EXIST", exception.getReason());
