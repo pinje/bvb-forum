@@ -101,6 +101,7 @@ class GetUserUseCaseImplTest {
         long nonExistentUserId = -1;
 
         // set up mock objects
+        when(accessToken.hasRole(RoleEnum.ADMIN.name())).thenReturn(true);
         when(userRepository.findById(nonExistentUserId)).thenReturn(Optional.empty());
 
         // when
@@ -110,6 +111,7 @@ class GetUserUseCaseImplTest {
         assertNull(result);
 
         // verify
+        verify(accessToken, times(1)).hasRole(RoleEnum.ADMIN.name());
         verify(userRepository, times(1)).findById(nonExistentUserId);
     }
 }
