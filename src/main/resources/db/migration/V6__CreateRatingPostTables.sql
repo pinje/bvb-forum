@@ -1,7 +1,7 @@
 CREATE TABLE rating_post
 (
     id          int         NOT NULL AUTO_INCREMENT,
-    date        timestamp   NOT NULL,
+    date        timestamp,
     start_year  int         NOT NULL,
     end_year    int         NOT NULL,
     matchday    int         NOT NULL,

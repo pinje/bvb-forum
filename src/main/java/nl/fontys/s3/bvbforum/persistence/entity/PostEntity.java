@@ -26,7 +26,6 @@ public class PostEntity {
     @Column(name = "id")
     private Long id;
 
-    @NotNull
     @Column(name = "date")
     private Timestamp date;
 

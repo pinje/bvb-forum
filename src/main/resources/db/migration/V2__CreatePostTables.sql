@@ -1,7 +1,7 @@
 CREATE TABLE post
 (
     id         int          NOT NULL AUTO_INCREMENT,
-    date       timestamp    NOT NULL,
+    date       timestamp,
     title      text         NOT NULL,
     content    text         NOT NULL,
     vote       int          NOT NULL,

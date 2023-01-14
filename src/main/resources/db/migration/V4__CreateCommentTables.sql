@@ -1,7 +1,7 @@
 CREATE TABLE comment
 (
     id         int          NOT NULL AUTO_INCREMENT,
-    date       timestamp    NOT NULL,
+    date       timestamp,
     comment    text         NOT NULL,
     user_id    int          NOT NULL,
     post_id    int          NOT NULL,

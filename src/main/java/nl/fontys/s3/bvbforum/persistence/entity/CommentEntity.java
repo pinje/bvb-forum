@@ -20,7 +20,6 @@ public class CommentEntity {
     @Column(name = "id")
     private Long id;
 
-    @NotNull
     @Column(name = "date")
     private Timestamp date;
 
