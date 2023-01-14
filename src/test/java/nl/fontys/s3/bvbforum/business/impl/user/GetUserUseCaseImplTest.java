@@ -1,8 +1,6 @@
 package nl.fontys.s3.bvbforum.business.impl.user;
 
 import nl.fontys.s3.bvbforum.business.exception.UnauthorizedDataAccessException;
-import nl.fontys.s3.bvbforum.business.exception.user.UserDoesntExistException;
-import nl.fontys.s3.bvbforum.business.impl.user.GetUserUseCaseImpl;
 import nl.fontys.s3.bvbforum.domain.AccessToken;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.RoleEnum;
@@ -39,7 +37,7 @@ class GetUserUseCaseImplTest {
 
         // set up mock objects
         when(accessToken.hasRole(RoleEnum.ADMIN.name())).thenReturn(true);
-        when(userRepository.findById(expectedUser.getId())).thenReturn(Optional.ofNullable(expectedUser));
+        when(userRepository.findById(expectedUser.getId())).thenReturn(Optional.of(expectedUser));
 
         // when
         UserEntity actualUser = getUserUseCase.getUserById(1L);
@@ -63,7 +61,7 @@ class GetUserUseCaseImplTest {
         // set up mock objects
         when(accessToken.hasRole(RoleEnum.ADMIN.name())).thenReturn(false);
         when(accessToken.getUserId()).thenReturn(1L);
-        when(userRepository.findById(expectedUser.getId())).thenReturn(Optional.ofNullable(expectedUser));
+        when(userRepository.findById(expectedUser.getId())).thenReturn(Optional.of(expectedUser));
 
         // when
         UserEntity actualUser = getUserUseCase.getUserById(1L);
@@ -86,9 +84,7 @@ class GetUserUseCaseImplTest {
         when(accessToken.getUserId()).thenReturn(2L);
 
         // when
-        ResponseStatusException exception = assertThrows(UnauthorizedDataAccessException.class, () -> {
-            getUserUseCase.getUserById(1L);
-        });
+        ResponseStatusException exception = assertThrows(UnauthorizedDataAccessException.class, () -> getUserUseCase.getUserById(1L));
 
         // then
         assertEquals("USER_ID_NOT_FROM_LOGGED_IN_USER", exception.getReason());
@@ -105,10 +101,10 @@ class GetUserUseCaseImplTest {
         long nonExistentUserId = -1;
 
         // set up mock objects
-        when(userRepository.findById(nonExistentUserId)).thenReturn(null);
+        when(userRepository.findById(nonExistentUserId)).thenReturn(Optional.empty());
 
         // when
-        Optional<UserEntity> result = userRepository.findById(nonExistentUserId);
+        UserEntity result = getUserUseCase.getUserById(nonExistentUserId);
 
         // then
         assertNull(result);

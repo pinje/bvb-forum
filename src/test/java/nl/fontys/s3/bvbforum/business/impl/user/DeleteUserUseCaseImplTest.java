@@ -92,9 +92,7 @@ class DeleteUserUseCaseImplTest {
         when(accessToken.getUserId()).thenReturn(222L);
 
         // when
-        ResponseStatusException exception = assertThrows(UnauthorizedDataAccessException.class, () -> {
-            deleteUserUseCase.deleteUser(id);
-        });
+        ResponseStatusException exception = assertThrows(UnauthorizedDataAccessException.class, () -> deleteUserUseCase.deleteUser(id));
 
         // then
         assertEquals("USER_ID_NOT_FROM_LOGGED_IN_USER", exception.getReason());
@@ -120,9 +118,7 @@ class DeleteUserUseCaseImplTest {
         doThrow(new UserDoesntExistException()).when(userRepository).findById(111L);
 
         // when
-        ResponseStatusException exception = assertThrows(UserDoesntExistException.class, () -> {
-            deleteUserUseCase.deleteUser(id);
-        });
+        ResponseStatusException exception = assertThrows(UserDoesntExistException.class, () -> deleteUserUseCase.deleteUser(id));
 
         // then
         assertEquals("USER_DOESNT_EXIST", exception.getReason());

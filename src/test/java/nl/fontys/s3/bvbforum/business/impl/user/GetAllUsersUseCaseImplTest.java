@@ -64,9 +64,7 @@ class GetAllUsersUseCaseImplTest {
         when(userRepository.findAll()).thenReturn(List.of());
 
         // when
-        ResponseStatusException exception = assertThrows(UserDoesntExistException.class, () -> {
-            getAllUsersUseCase.getAllUsers();
-        });
+        ResponseStatusException exception = assertThrows(UserDoesntExistException.class, () -> getAllUsersUseCase.getAllUsers());
 
         // then
         assertEquals("USER_DOESNT_EXIST", exception.getReason());

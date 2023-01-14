@@ -19,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -88,9 +87,7 @@ class CreateUserUseCaseImplTest {
         doThrow(new UserUsernameAlreadyExistsException()).when(userRepository).existsByUsername("Shuhei");
 
         // when
-        ResponseStatusException exception = assertThrows(UserUsernameAlreadyExistsException.class, () -> {
-            createUserUseCase.createUser(request);
-        });
+        ResponseStatusException exception = assertThrows(UserUsernameAlreadyExistsException.class, () -> createUserUseCase.createUser(request));
 
         // then
         assertEquals("USERNAME_EXISTS", exception.getReason());

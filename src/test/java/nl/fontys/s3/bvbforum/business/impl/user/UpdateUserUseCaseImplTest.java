@@ -7,7 +7,6 @@ import nl.fontys.s3.bvbforum.domain.request.user.UpdateUserRequest;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.RoleEnum;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
-import nl.fontys.s3.bvbforum.persistence.entity.UserRoleEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,10 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
-import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,9 +44,7 @@ class UpdateUserUseCaseImplTest {
         when(userRepository.findById(111L)).thenThrow(new UserDoesntExistException());
 
         // when
-        ResponseStatusException exception = assertThrows(UserDoesntExistException.class, () -> {
-            updateUserUseCase.updateUser(request);
-        });
+        ResponseStatusException exception = assertThrows(UserDoesntExistException.class, () -> updateUserUseCase.updateUser(request));
 
         // then
         assertEquals("USER_DOESNT_EXIST", exception.getReason());
@@ -74,9 +70,7 @@ class UpdateUserUseCaseImplTest {
         when(userRepository.findById(111L)).thenThrow(new UserDoesntExistException());
 
         // when
-        ResponseStatusException exception = assertThrows(UserDoesntExistException.class, () -> {
-            updateUserUseCase.updateUser(request);
-        });
+        ResponseStatusException exception = assertThrows(UserDoesntExistException.class, () -> updateUserUseCase.updateUser(request));
 
         // then
         assertEquals("USER_DOESNT_EXIST", exception.getReason());
@@ -106,7 +100,7 @@ class UpdateUserUseCaseImplTest {
         // set up mock objects
         when(accessToken.hasRole(RoleEnum.ADMIN.name())).thenReturn(false);
         when(accessToken.getUserId()).thenReturn(userEntity.getId());
-        when(userRepository.findById(userEntity.getId())).thenReturn(Optional.ofNullable(userEntity));
+        when(userRepository.findById(userEntity.getId())).thenReturn(Optional.of(userEntity));
         when(userRepository.save(userEntity)).thenReturn(userEntity);
 
         // when
@@ -137,9 +131,7 @@ class UpdateUserUseCaseImplTest {
         when(accessToken.getUserId()).thenReturn(222L);
 
         // when
-        ResponseStatusException exception = assertThrows(UnauthorizedDataAccessException.class, () -> {
-            updateUserUseCase.updateUser(request);
-        });
+        ResponseStatusException exception = assertThrows(UnauthorizedDataAccessException.class, () -> updateUserUseCase.updateUser(request));
 
         // then
         assertEquals("USER_ID_NOT_FROM_LOGGED_IN_USER", exception.getReason());
