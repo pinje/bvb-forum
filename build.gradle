@@ -49,6 +49,18 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+jacoco {
+    toolVersion = "0.8.8"
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+    }
+}
+
 sonarqube {
     properties {
         property "sonar.sourceEncoding", "UTF-8"
