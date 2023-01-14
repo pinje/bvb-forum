@@ -43,11 +43,21 @@ class DeleteRatingUseCaseImplTest {
                 .position(PositionEnum.MF)
                 .build();
 
+        RatingPostEntity ratingPostEntity = RatingPostEntity.builder()
+                .id(555L)
+                .start_year(2022)
+                .end_year(2023)
+                .matchday(1)
+                .opponent("Schalke04")
+                .tournament(TournamentEnum.BUNDESLIGA)
+                .build();
+
         RatingEntity ratingEntity = RatingEntity.builder()
                 .id(1L)
                 .player(playerEntity)
                 .rating(8L)
                 .user(userEntity)
+                .ratingPost(ratingPostEntity)
                 .build();
 
         // set up mock objects
@@ -79,11 +89,21 @@ class DeleteRatingUseCaseImplTest {
                 .position(PositionEnum.MF)
                 .build();
 
+        RatingPostEntity ratingPostEntity = RatingPostEntity.builder()
+                .id(555L)
+                .start_year(2022)
+                .end_year(2023)
+                .matchday(1)
+                .opponent("Schalke04")
+                .tournament(TournamentEnum.BUNDESLIGA)
+                .build();
+
         RatingEntity ratingEntity = RatingEntity.builder()
                 .id(1L)
                 .player(playerEntity)
                 .rating(8L)
                 .user(userEntity)
+                .ratingPost(ratingPostEntity)
                 .build();
 
         // set up mock objects
@@ -117,11 +137,21 @@ class DeleteRatingUseCaseImplTest {
                 .position(PositionEnum.MF)
                 .build();
 
+        RatingPostEntity ratingPostEntity = RatingPostEntity.builder()
+                .id(555L)
+                .start_year(2022)
+                .end_year(2023)
+                .matchday(1)
+                .opponent("Schalke04")
+                .tournament(TournamentEnum.BUNDESLIGA)
+                .build();
+
         RatingEntity ratingEntity = RatingEntity.builder()
                 .id(1L)
                 .player(playerEntity)
                 .rating(8L)
                 .user(userEntity)
+                .ratingPost(ratingPostEntity)
                 .build();
 
         // set up mock objects
@@ -160,11 +190,21 @@ class DeleteRatingUseCaseImplTest {
                 .position(PositionEnum.MF)
                 .build();
 
+        RatingPostEntity ratingPostEntity = RatingPostEntity.builder()
+                .id(555L)
+                .start_year(2022)
+                .end_year(2023)
+                .matchday(1)
+                .opponent("Schalke04")
+                .tournament(TournamentEnum.BUNDESLIGA)
+                .build();
+
         RatingEntity ratingEntity = RatingEntity.builder()
                 .id(1L)
                 .player(playerEntity)
                 .rating(8L)
                 .user(userEntity)
+                .ratingPost(ratingPostEntity)
                 .build();
 
         Long id = ratingEntity.getId();
