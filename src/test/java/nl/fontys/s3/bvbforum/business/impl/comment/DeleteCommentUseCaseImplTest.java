@@ -154,8 +154,9 @@ public class DeleteCommentUseCaseImplTest {
         // given
         long nonExistentCommentId = -1;
 
+
         // set up mock objects
-        when(commentRepository.findById(1L)).thenReturn(Optional.empty());
+        when(commentRepository.findById(nonExistentCommentId)).thenReturn(Optional.empty());
 
         // when
         ResponseStatusException exception = assertThrows(CommentDoesntExistException.class, () -> deleteCommentUseCase.deleteComment(nonExistentCommentId));
