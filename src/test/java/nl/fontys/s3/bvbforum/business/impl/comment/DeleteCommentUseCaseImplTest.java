@@ -56,7 +56,7 @@ public class DeleteCommentUseCaseImplTest {
                 .build();
 
         // set up mock objects
-        when(commentRepository.findById(commentEntity.getId())).thenReturn(Optional.ofNullable(commentEntity));
+        when(commentRepository.findById(commentEntity.getId())).thenReturn(Optional.of(commentEntity));
         when(accessToken.hasRole(RoleEnum.ADMIN.name())).thenReturn(true);
 
         // when
@@ -93,7 +93,7 @@ public class DeleteCommentUseCaseImplTest {
                 .build();
 
         // set up mock objects
-        when(commentRepository.findById(commentEntity.getId())).thenReturn(Optional.ofNullable(commentEntity));
+        when(commentRepository.findById(commentEntity.getId())).thenReturn(Optional.of(commentEntity));
         when(accessToken.hasRole(RoleEnum.ADMIN.name())).thenReturn(false);
         when(accessToken.getUserId()).thenReturn(commentEntity.getUser().getId());
 
@@ -132,14 +132,12 @@ public class DeleteCommentUseCaseImplTest {
                 .build();
 
         // set up mock objects
-        when(commentRepository.findById(commentEntity.getId())).thenReturn(Optional.ofNullable(commentEntity));
+        when(commentRepository.findById(commentEntity.getId())).thenReturn(Optional.of(commentEntity));
         when(accessToken.hasRole(RoleEnum.ADMIN.name())).thenReturn(false);
         when(accessToken.getUserId()).thenReturn(222L);
 
         // when
-        ResponseStatusException exception = assertThrows(UnauthorizedDataAccessException.class, () -> {
-            deleteCommentUseCase.deleteComment(commentEntity.getId());
-        });
+        ResponseStatusException exception = assertThrows(UnauthorizedDataAccessException.class, () -> deleteCommentUseCase.deleteComment(commentEntity.getId()));
 
         // then
         assertEquals("USER_ID_NOT_FROM_LOGGED_IN_USER", exception.getReason());
@@ -181,9 +179,7 @@ public class DeleteCommentUseCaseImplTest {
         doThrow(new CommentDoesntExistException()).when(commentRepository).findById(1L);
 
         // when
-        ResponseStatusException exception = assertThrows(CommentDoesntExistException.class, () -> {
-            deleteCommentUseCase.deleteComment(id);
-        });
+        ResponseStatusException exception = assertThrows(CommentDoesntExistException.class, () -> deleteCommentUseCase.deleteComment(id));
 
         // then
         assertEquals("COMMENT_DOESNT_EXIST", exception.getReason());

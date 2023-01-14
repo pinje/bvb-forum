@@ -1,6 +1,5 @@
 package nl.fontys.s3.bvbforum.business.impl.player;
 
-import nl.fontys.s3.bvbforum.domain.Player;
 import nl.fontys.s3.bvbforum.persistence.PlayerRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.PlayerEntity;
 import nl.fontys.s3.bvbforum.persistence.entity.PositionEnum;
@@ -12,7 +11,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

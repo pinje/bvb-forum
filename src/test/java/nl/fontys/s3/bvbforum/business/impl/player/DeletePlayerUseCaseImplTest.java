@@ -62,9 +62,7 @@ class DeletePlayerUseCaseImplTest {
         doThrow(new PlayerDoesntExistException()).when(playerRepository).findById(1L);
 
         // when
-        ResponseStatusException exception = assertThrows(PlayerDoesntExistException.class, () -> {
-            deletePlayerUseCase.deletePlayer(id);
-        });
+        ResponseStatusException exception = assertThrows(PlayerDoesntExistException.class, () -> deletePlayerUseCase.deletePlayer(id));
 
         // then
         assertEquals("PLAYER_DOESNT_EXIST", exception.getReason());

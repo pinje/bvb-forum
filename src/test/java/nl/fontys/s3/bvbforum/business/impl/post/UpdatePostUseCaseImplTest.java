@@ -2,11 +2,8 @@ package nl.fontys.s3.bvbforum.business.impl.post;
 
 import nl.fontys.s3.bvbforum.business.exception.UnauthorizedDataAccessException;
 import nl.fontys.s3.bvbforum.business.exception.post.PostDoesntExistException;
-import nl.fontys.s3.bvbforum.business.exception.user.UserDoesntExistException;
 import nl.fontys.s3.bvbforum.domain.AccessToken;
-import nl.fontys.s3.bvbforum.domain.User;
 import nl.fontys.s3.bvbforum.domain.request.post.UpdatePostRequest;
-import nl.fontys.s3.bvbforum.domain.request.user.UpdateUserRequest;
 import nl.fontys.s3.bvbforum.persistence.PostRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.PostEntity;
 import nl.fontys.s3.bvbforum.persistence.entity.RoleEnum;
@@ -21,7 +18,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,9 +44,7 @@ class UpdatePostUseCaseImplTest {
         when(postRepository.findById(111L)).thenThrow(new PostDoesntExistException());
 
         // when
-        ResponseStatusException exception = assertThrows(PostDoesntExistException.class, () -> {
-            updatePostUseCase.updatePost(request);
-        });
+        ResponseStatusException exception = assertThrows(PostDoesntExistException.class, () -> updatePostUseCase.updatePost(request));
 
         // then
         assertEquals("POST_DOESNT_EXIST", exception.getReason());
@@ -75,7 +71,7 @@ class UpdatePostUseCaseImplTest {
 
         // set up mock objects
         when(accessToken.hasRole(RoleEnum.ADMIN.name())).thenReturn(true);
-        when(postRepository.findById(postEntity.getId())).thenReturn(Optional.ofNullable(postEntity));
+        when(postRepository.findById(postEntity.getId())).thenReturn(Optional.of(postEntity));
         when(postRepository.save(postEntity)).thenReturn(postEntity);
 
         // when
@@ -116,7 +112,7 @@ class UpdatePostUseCaseImplTest {
         // set up mock objects
         when(accessToken.hasRole(RoleEnum.ADMIN.name())).thenReturn(false);
         when(accessToken.getUserId()).thenReturn(postEntity.getUser().getId());
-        when(postRepository.findById(postEntity.getId())).thenReturn(Optional.ofNullable(postEntity));
+        when(postRepository.findById(postEntity.getId())).thenReturn(Optional.of(postEntity));
         when(postRepository.save(postEntity)).thenReturn(postEntity);
 
         // when
@@ -161,9 +157,7 @@ class UpdatePostUseCaseImplTest {
         when(accessToken.getUserId()).thenReturn(222L);
 
         // when
-        ResponseStatusException exception = assertThrows(UnauthorizedDataAccessException.class, () -> {
-            updatePostUseCase.updatePost(request);
-        });
+        ResponseStatusException exception = assertThrows(UnauthorizedDataAccessException.class, () -> updatePostUseCase.updatePost(request));
 
         // then
         assertEquals("USER_ID_NOT_FROM_LOGGED_IN_USER", exception.getReason());

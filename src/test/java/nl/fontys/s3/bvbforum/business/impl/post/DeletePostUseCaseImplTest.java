@@ -104,9 +104,7 @@ class DeletePostUseCaseImplTest {
         when(accessToken.getUserId()).thenReturn(222L);
 
         // when
-        ResponseStatusException exception = assertThrows(UnauthorizedDataAccessException.class, () -> {
-            deletePostUseCase.deletePost(postEntity.getId());
-        });
+        ResponseStatusException exception = assertThrows(UnauthorizedDataAccessException.class, () -> deletePostUseCase.deletePost(postEntity.getId()));
 
         // then
         assertEquals("USER_ID_NOT_FROM_LOGGED_IN_USER", exception.getReason());
@@ -133,9 +131,7 @@ class DeletePostUseCaseImplTest {
         doThrow(new PostDoesntExistException()).when(postRepository).findById(1L);
 
         // when
-        ResponseStatusException exception = assertThrows(PostDoesntExistException.class, () -> {
-            deletePostUseCase.deletePost(id);
-        });
+        ResponseStatusException exception = assertThrows(PostDoesntExistException.class, () -> deletePostUseCase.deletePost(id));
 
         // then
         assertEquals("POST_DOESNT_EXIST", exception.getReason());

@@ -128,9 +128,7 @@ class GetPlayersUseCaseImplTest {
         when(playerRepository.findAll()).thenReturn(List.of());
 
         // when
-        ResponseStatusException exception = assertThrows(PlayerDoesntExistException.class, () -> {
-            getPlayersUseCase.getPlayers();
-        });
+        ResponseStatusException exception = assertThrows(PlayerDoesntExistException.class, () -> getPlayersUseCase.getPlayers());
 
         // then
         assertEquals("PLAYER_DOESNT_EXIST", exception.getReason());
@@ -148,9 +146,7 @@ class GetPlayersUseCaseImplTest {
         when(ratingPostPlayerRepository.findRatingPostPlayerEntitiesByRatingPostId(111L)).thenReturn(List.of());
 
         // when
-        ResponseStatusException exception = assertThrows(RatingPostDoesntExistException.class, () -> {
-            getPlayersUseCase.getPlayersByRatingPostId(111L);
-        });
+        ResponseStatusException exception = assertThrows(RatingPostDoesntExistException.class, () -> getPlayersUseCase.getPlayersByRatingPostId(111L));
 
         // then
         assertEquals("RATING_POST_DOESNT_EXIST", exception.getReason());
