@@ -5,10 +5,7 @@ import nl.fontys.s3.bvbforum.business.exception.rating_post.RatingPostDoesntExis
 import nl.fontys.s3.bvbforum.business.interfaces.rating_post.GetRatingPostUseCase;
 import nl.fontys.s3.bvbforum.persistence.RatingPostRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.RatingPostEntity;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -27,7 +24,7 @@ public class GetRatingPostUseCaseImpl implements GetRatingPostUseCase {
     public RatingPostEntity getMostRecentRatingPost() {
         RatingPostEntity ratingPost = ratingPostRepository.findFirstByOrderByDateDesc();
 
-        if (ratingPost.equals(null)) {
+        if (ratingPost == null) {
             throw new RatingPostDoesntExistException();
         }
 
