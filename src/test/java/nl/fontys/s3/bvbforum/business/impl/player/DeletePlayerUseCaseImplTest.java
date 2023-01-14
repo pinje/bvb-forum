@@ -49,27 +49,20 @@ class DeletePlayerUseCaseImplTest {
     @Test
     void Delete_NonExistingPlayer_ThrowsException() throws PlayerDoesntExistException {
         // given
-        PlayerEntity playerEntity = PlayerEntity.builder()
-                .id(1L)
-                .firstname("marco")
-                .lastname("reus")
-                .position(PositionEnum.MF)
-                .build();
-
-        Long id = playerEntity.getId();
+        long nonExistentPlayerId = -1;
 
         // set up mock objects
-        doThrow(new PlayerDoesntExistException()).when(playerRepository).findById(1L);
+        when(playerRepository.findById(nonExistentPlayerId)).thenReturn(Optional.empty());
 
         // when
-        ResponseStatusException exception = assertThrows(PlayerDoesntExistException.class, () -> deletePlayerUseCase.deletePlayer(id));
+        ResponseStatusException exception = assertThrows(PlayerDoesntExistException.class, () -> deletePlayerUseCase.deletePlayer(nonExistentPlayerId));
 
         // then
         assertEquals("PLAYER_DOESNT_EXIST", exception.getReason());
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
 
         // verify
-        verify(playerRepository, times(1)).findById(1L);
+        verify(playerRepository, times(1)).findById(nonExistentPlayerId);
 
     }
 }

@@ -175,50 +175,20 @@ class DeleteRatingUseCaseImplTest {
     @Test
     void Delete_NonExistingRating_ThrowsException() throws RatingDoesntExistException {
         // given
-        UserEntity userEntity = UserEntity.builder()
-                .id(1L)
-                .username("Shuhei")
-                .password("123456")
-                .build();
-
-        PlayerEntity playerEntity = PlayerEntity.builder()
-                .id(22L)
-                .firstname("marco")
-                .lastname("reus")
-                .position(PositionEnum.MF)
-                .build();
-
-        RatingPostEntity ratingPostEntity = RatingPostEntity.builder()
-                .id(555L)
-                .start_year(2022)
-                .end_year(2023)
-                .matchday(1)
-                .opponent("Schalke04")
-                .tournament(TournamentEnum.BUNDESLIGA)
-                .build();
-
-        RatingEntity ratingEntity = RatingEntity.builder()
-                .id(1L)
-                .player(playerEntity)
-                .rating(8L)
-                .user(userEntity)
-                .ratingPost(ratingPostEntity)
-                .build();
-
-        Long id = ratingEntity.getId();
+        long nonExistentRatingId = -1;
 
         // set up mock objects
-        doThrow(new RatingDoesntExistException()).when(ratingRepository).findById(1L);
+        when(ratingRepository.findById(nonExistentRatingId)).thenReturn(Optional.empty());
 
         // when
-        ResponseStatusException exception = assertThrows(RatingDoesntExistException.class, () -> deleteRatingUseCase.deleteRating(id));
+        ResponseStatusException exception = assertThrows(RatingDoesntExistException.class, () -> deleteRatingUseCase.deleteRating(nonExistentRatingId));
 
         // then
         assertEquals("RATING_DOESNT_EXIST", exception.getReason());
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
 
         // verify
-        verify(ratingRepository, times(1)).findById(1L);
+        verify(ratingRepository, times(1)).findById(nonExistentRatingId);
     }
 
 }

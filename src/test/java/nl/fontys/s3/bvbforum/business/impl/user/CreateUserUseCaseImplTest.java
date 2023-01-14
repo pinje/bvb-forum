@@ -84,7 +84,7 @@ class CreateUserUseCaseImplTest {
                 .build();
 
         // set up mock objects
-        doThrow(new UserUsernameAlreadyExistsException()).when(userRepository).existsByUsername("Shuhei");
+        when(userRepository.existsByUsername("Shuhei")).thenReturn(true);
 
         // when
         ResponseStatusException exception = assertThrows(UserUsernameAlreadyExistsException.class, () -> createUserUseCase.createUser(request));

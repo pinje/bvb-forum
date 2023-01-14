@@ -50,28 +50,18 @@ class DeleteRatingPostUseCaseImplTest {
     @Test
     void Delete_NonExistingRatingPost_ThrowsException() throws RatingPostDoesntExistException {
         // given
-        RatingPostEntity ratingPostEntity = RatingPostEntity.builder()
-                .id(1L)
-                .start_year(2022)
-                .end_year(2023)
-                .matchday(1)
-                .opponent("Bayern Munich")
-                .tournament(TournamentEnum.BUNDESLIGA)
-                .build();
-
-        Long id = ratingPostEntity.getId();
+        long nonExistentRatingPostId = -1;
 
         // set up mock objects
-        doThrow(new RatingPostDoesntExistException()).when(ratingPostRepository).findById(1L);
-
+        when(ratingPostRepository.findById(nonExistentRatingPostId)).thenReturn(Optional.empty());
         // when
-        ResponseStatusException exception = assertThrows(RatingPostDoesntExistException.class, () -> deleteRatingPostUseCase.deleteRatingPost(id));
+        ResponseStatusException exception = assertThrows(RatingPostDoesntExistException.class, () -> deleteRatingPostUseCase.deleteRatingPost(nonExistentRatingPostId));
 
         // then
         assertEquals("RATING_POST_DOESNT_EXIST", exception.getReason());
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
 
         // verify
-        verify(ratingPostRepository, times(1)).findById(1L);
+        verify(ratingPostRepository, times(1)).findById(nonExistentRatingPostId);
     }
 }

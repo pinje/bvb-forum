@@ -152,40 +152,19 @@ public class DeleteCommentUseCaseImplTest {
     @Test
     void Delete_NonExistingComment_ThrowsException() throws CommentDoesntExistException {
         // given
-        UserEntity userEntity = UserEntity.builder()
-                .id(1L)
-                .username("Shuhei")
-                .password("123456")
-                .build();
-
-        PostEntity postEntity = PostEntity.builder()
-                .id(1L)
-                .title("title")
-                .content("content")
-                .vote(1L)
-                .user(userEntity)
-                .build();
-
-        CommentEntity commentEntity = CommentEntity.builder()
-                .id(1L)
-                .comment("comment")
-                .user(userEntity)
-                .post(postEntity)
-                .build();
-
-        Long id = commentEntity.getId();
+        long nonExistentCommentId = -1;
 
         // set up mock objects
-        doThrow(new CommentDoesntExistException()).when(commentRepository).findById(1L);
+        when(commentRepository.findById(1L)).thenReturn(Optional.empty());
 
         // when
-        ResponseStatusException exception = assertThrows(CommentDoesntExistException.class, () -> deleteCommentUseCase.deleteComment(id));
+        ResponseStatusException exception = assertThrows(CommentDoesntExistException.class, () -> deleteCommentUseCase.deleteComment(nonExistentCommentId));
 
         // then
         assertEquals("COMMENT_DOESNT_EXIST", exception.getReason());
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
 
         // verify
-        verify(commentRepository, times(1)).findById(1L);
+        verify(commentRepository, times(1)).findById(nonExistentCommentId);
     }
 }

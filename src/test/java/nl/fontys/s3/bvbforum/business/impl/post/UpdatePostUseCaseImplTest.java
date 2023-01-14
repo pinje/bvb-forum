@@ -34,14 +34,16 @@ class UpdatePostUseCaseImplTest {
     @Test
     void Update_NonExistingPost_AdminRole_ThrowsException() throws PostDoesntExistException {
         // given
+        long nonExistentPostId = -1;
+
         UpdatePostRequest request = UpdatePostRequest.builder()
-                .id(111L)
+                .id(nonExistentPostId)
                 .title("title")
                 .content("content")
                 .build();
 
         // set up mock objects
-        when(postRepository.findById(111L)).thenThrow(new PostDoesntExistException());
+        when(postRepository.findById(nonExistentPostId)).thenReturn(Optional.empty());
 
         // when
         ResponseStatusException exception = assertThrows(PostDoesntExistException.class, () -> updatePostUseCase.updatePost(request));
@@ -51,7 +53,7 @@ class UpdatePostUseCaseImplTest {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
 
         // verify
-        verify(postRepository, times(1)).findById(111L);
+        verify(postRepository, times(1)).findById(nonExistentPostId);
     }
 
     @Test

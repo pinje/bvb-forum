@@ -33,15 +33,17 @@ class UpdateUserUseCaseImplTest {
     @Test
     void Update_NonExistingUser_AdminRole_ThrowsException() throws UserDoesntExistException {
         // given
+        long nonExistentUserId = -1;
+
         UpdateUserRequest request = UpdateUserRequest.builder()
-                .id(111L)
+                .id(nonExistentUserId)
                 .username("Shuhei")
                 .password("123")
                 .build();
 
         // set up mock objects
         when(accessToken.hasRole(RoleEnum.ADMIN.name())).thenReturn(true);
-        when(userRepository.findById(111L)).thenThrow(new UserDoesntExistException());
+        when(userRepository.findById(nonExistentUserId)).thenReturn(Optional.empty());
 
         // when
         ResponseStatusException exception = assertThrows(UserDoesntExistException.class, () -> updateUserUseCase.updateUser(request));
@@ -51,7 +53,7 @@ class UpdateUserUseCaseImplTest {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
 
         // verify
-        verify(userRepository, times(1)).findById(111L);
+        verify(userRepository, times(1)).findById(nonExistentUserId);
         verify(accessToken, times(1)).hasRole(RoleEnum.ADMIN.name());
     }
 

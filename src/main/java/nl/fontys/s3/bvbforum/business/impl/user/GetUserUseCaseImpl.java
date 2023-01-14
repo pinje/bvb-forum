@@ -24,7 +24,7 @@ public class GetUserUseCaseImpl implements GetUserUseCase {
         }
 
         return userRepository.findById(userId)
-                .stream().filter(userEntity1 -> userEntity1.getId() == userId)
+                .stream()
                 .findFirst()
                 .orElse(null);
     }

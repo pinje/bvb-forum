@@ -119,26 +119,20 @@ class DeletePostUseCaseImplTest {
     @Test
     void Delete_NonExistingPost_ThrowsException() throws PostDoesntExistException {
         // given
-        PostEntity postEntity = PostEntity.builder()
-                .id(1L)
-                .title("title")
-                .content("content")
-                .build();
-
-        Long id = postEntity.getId();
+        long nonExistentPostId = -1;
 
         // set up mock objects
-        doThrow(new PostDoesntExistException()).when(postRepository).findById(1L);
+        when(postRepository.findById(nonExistentPostId)).thenReturn(Optional.empty());
 
         // when
-        ResponseStatusException exception = assertThrows(PostDoesntExistException.class, () -> deletePostUseCase.deletePost(id));
+        ResponseStatusException exception = assertThrows(PostDoesntExistException.class, () -> deletePostUseCase.deletePost(nonExistentPostId));
 
         // then
         assertEquals("POST_DOESNT_EXIST", exception.getReason());
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
 
         // verify
-        verify(postRepository, times(1)).findById(1L);
+        verify(postRepository, times(1)).findById(nonExistentPostId);
     }
 
 }

@@ -35,13 +35,15 @@ public class UpdateCommentUseCaseImplTest {
     @Test
     void Update_NonExistingComment_AdminRole_ThrowsException() throws CommentDoesntExistException {
         // given
+        long nonExistingCommentId = -1;
+
         UpdateCommentRequest request = UpdateCommentRequest.builder()
-                .id(1L)
+                .id(nonExistingCommentId)
                 .comment("new_comment")
                 .build();
 
         // set up mock objects
-        when(commentRepository.findById(1L)).thenThrow(new CommentDoesntExistException());
+        when(commentRepository.findById(nonExistingCommentId)).thenReturn(Optional.empty());
 
         // when
         ResponseStatusException exception = assertThrows(CommentDoesntExistException.class, () -> updateCommentUseCase.updateComment(request));
@@ -51,7 +53,7 @@ public class UpdateCommentUseCaseImplTest {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
 
         // verify
-        verify(commentRepository, times(1)).findById(1L);
+        verify(commentRepository, times(1)).findById(nonExistingCommentId);
     }
 
     @Test

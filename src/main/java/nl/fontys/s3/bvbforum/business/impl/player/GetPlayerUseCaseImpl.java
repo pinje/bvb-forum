@@ -14,7 +14,7 @@ public class GetPlayerUseCaseImpl implements GetPlayerUseCase {
     @Override
     public PlayerEntity getPlayerById(long playerId) {
         return playerRepository.findById(playerId)
-                .stream().filter(playerEntity -> playerEntity.getId() == playerId)
+                .stream()
                 .findFirst()
                 .orElse(null);
     }

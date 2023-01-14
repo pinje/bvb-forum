@@ -107,24 +107,19 @@ class DeleteUserUseCaseImplTest {
     @Test
     void Delete_NonExistingUser_ThrowsException() throws UserDoesntExistException {
         // given
-        UserEntity userEntity = UserEntity.builder()
-                .id(111L)
-                .username("Shuhei")
-                .build();
-
-        Long id = userEntity.getId();
+        long nonExistentUserId = -1;
 
         // set up mock objects
-        doThrow(new UserDoesntExistException()).when(userRepository).findById(111L);
+        when(userRepository.findById(nonExistentUserId)).thenReturn(Optional.empty());
 
         // when
-        ResponseStatusException exception = assertThrows(UserDoesntExistException.class, () -> deleteUserUseCase.deleteUser(id));
+        ResponseStatusException exception = assertThrows(UserDoesntExistException.class, () -> deleteUserUseCase.deleteUser(nonExistentUserId));
 
         // then
         assertEquals("USER_DOESNT_EXIST", exception.getReason());
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
 
         // verify
-        verify(userRepository, times(1)).findById(111L);
+        verify(userRepository, times(1)).findById(nonExistentUserId);
     }
 }
