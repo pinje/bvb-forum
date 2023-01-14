@@ -160,9 +160,7 @@ class DeleteRatingUseCaseImplTest {
         when(accessToken.getUserId()).thenReturn(444L);
 
         // when
-        ResponseStatusException exception = assertThrows(UnauthorizedDataAccessException.class, () -> {
-            deleteRatingUseCase.deleteRating(ratingEntity.getId());
-        });
+        ResponseStatusException exception = assertThrows(UnauthorizedDataAccessException.class, () -> deleteRatingUseCase.deleteRating(ratingEntity.getId()));
 
         // then
         assertEquals("USER_ID_NOT_FROM_LOGGED_IN_USER", exception.getReason());
@@ -213,9 +211,7 @@ class DeleteRatingUseCaseImplTest {
         doThrow(new RatingDoesntExistException()).when(ratingRepository).findById(1L);
 
         // when
-        ResponseStatusException exception = assertThrows(RatingDoesntExistException.class, () -> {
-            deleteRatingUseCase.deleteRating(id);
-        });
+        ResponseStatusException exception = assertThrows(RatingDoesntExistException.class, () -> deleteRatingUseCase.deleteRating(id));
 
         // then
         assertEquals("RATING_DOESNT_EXIST", exception.getReason());

@@ -91,9 +91,7 @@ class GetRatingsUseCaseImplTest {
         when(ratingRepository.findAll()).thenReturn(List.of());
 
         // when
-        ResponseStatusException exception = assertThrows(RatingDoesntExistException.class, () -> {
-            getRatingsUseCase.getRatings();
-        });
+        ResponseStatusException exception = assertThrows(RatingDoesntExistException.class, () -> getRatingsUseCase.getRatings());
 
         // then
         assertEquals("RATING_DOESNT_EXIST", exception.getReason());
