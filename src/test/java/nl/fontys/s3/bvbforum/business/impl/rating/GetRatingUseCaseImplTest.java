@@ -278,15 +278,29 @@ class GetRatingUseCaseImplTest {
                 .tournament(TournamentEnum.BUNDESLIGA)
                 .build();
 
-        List<RatingEntity> emptyList = new ArrayList<>();
+        RatingEntity ratingEntityOne = RatingEntity.builder()
+                .id(1L)
+                .player(playerEntity)
+                .rating(8L)
+                .user(userEntity)
+                .ratingPost(ratingPostEntity)
+                .build();
+
+        RatingEntity ratingEntityTwo = RatingEntity.builder()
+                .id(2L)
+                .player(playerEntity)
+                .rating(10L)
+                .user(userEntity)
+                .ratingPost(ratingPostEntity)
+                .build();
 
         // set up mock objects
-        when(ratingRepository.findAllByUserId(1L)).thenReturn(emptyList);
+        when(ratingRepository.findAllByUserId(1L)).thenReturn(List.of(ratingEntityOne, ratingEntityTwo));
 
         // call the method
         GetRatingRequest request = GetRatingRequest.builder()
                 .userId(1L)
-                .ratingPostId(111L)
+                .ratingPostId(222L)
                 .build();
         // when
         boolean result = getRatingUseCase.checkUserAlreadyVoted(request);
