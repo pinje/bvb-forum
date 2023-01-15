@@ -24,10 +24,14 @@ public class VoteEntity {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private UserEntity user;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "post_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private PostEntity post;
 }

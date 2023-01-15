@@ -16,8 +16,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class UpdateVoteRequest {
     @NotNull
-    private Long id;
-    @NotNull
     private Long user;
     @NotNull
     private Long post;

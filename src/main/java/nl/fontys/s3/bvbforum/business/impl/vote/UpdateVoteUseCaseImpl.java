@@ -10,6 +10,8 @@ import nl.fontys.s3.bvbforum.persistence.entity.PostEntity;
 import nl.fontys.s3.bvbforum.persistence.entity.VoteEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -19,7 +21,18 @@ public class UpdateVoteUseCaseImpl implements UpdateVoteUseCase {
 
     @Override
     public void updateVote(UpdateVoteRequest request) {
-        Optional<VoteEntity> voteOptional = voteRepository.findById(request.getId());
+        List<VoteEntity> list;
+        list = voteRepository.findAllByPostId(request.getPost());
+        long id = 0;
+
+        // check for each in list
+        for (VoteEntity element : list) {
+            if (Objects.equals(element.getUser().getId(), request.getUser())) {
+                id = element.getId();
+            }
+        }
+
+        Optional<VoteEntity> voteOptional = voteRepository.findById(id);
 
         // ADD EXCEPTIONS
 
