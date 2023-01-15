@@ -41,7 +41,7 @@ public class GetVoteUseCaseImpl implements GetVoteUseCase {
 
         // check for each in list
         for (VoteEntity element : list) {
-            if (element.getUser().getId() == request.getUser()) {
+            if (Objects.equals(element.getUser().getId(), request.getUser())) {
                 // already voted
                 return true;
             }
@@ -57,7 +57,7 @@ public class GetVoteUseCaseImpl implements GetVoteUseCase {
 
         // check for each in list
         for (VoteEntity element : list) {
-            if (element.getUser().getId() == request.getUser()) {
+            if (Objects.equals(element.getUser().getId(), request.getUser())) {
                 // already voted
                 if (element.getType()) {
                     // already upvoted
@@ -76,7 +76,7 @@ public class GetVoteUseCaseImpl implements GetVoteUseCase {
 
         // check for each in list
         for (VoteEntity element : list) {
-            if (element.getUser().getId() == request.getUser()) {
+            if (Objects.equals(element.getUser().getId(), request.getUser())) {
                 // already voted
                 if (!element.getType()) {
                     // already downvoted

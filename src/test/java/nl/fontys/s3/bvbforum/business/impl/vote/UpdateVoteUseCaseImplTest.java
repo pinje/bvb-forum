@@ -1,7 +1,6 @@
 package nl.fontys.s3.bvbforum.business.impl.vote;
 
-import nl.fontys.s3.bvbforum.domain.VoteInformationDTO;
-import nl.fontys.s3.bvbforum.domain.request.vote.GetVoteRequest;
+import nl.fontys.s3.bvbforum.domain.request.vote.UpdateVoteRequest;
 import nl.fontys.s3.bvbforum.persistence.VoteRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.PostEntity;
 import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
@@ -13,19 +12,20 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class GetVoteUseCaseImplTest {
+class UpdateVoteUseCaseImplTest {
     @Mock
     private VoteRepository voteRepository;
     @InjectMocks
-    private GetVoteUseCaseImpl getVoteUseCase;
+    private UpdateVoteUseCaseImpl updateVoteUseCase;
 
     @Test
-    void Get_VoteByPostIdAndUserId_ReturnsVoteDTO() {
+    void Update_Vote_FromUpToDown() {
         // given
         UserEntity userEntity = UserEntity.builder()
                 .id(111L)
@@ -60,35 +60,31 @@ class GetVoteUseCaseImplTest {
                 .post(postEntity)
                 .build();
 
-        VoteInformationDTO expectedResult = VoteInformationDTO.builder()
-                .id(1L)
-                .type(true)
-                .userId(111L)
-                .postId(222L)
-                .build();
-
         // set up mock objects
         when(voteRepository.findAllByPostId(222L)).thenReturn(List.of(voteEntityOne, voteEntityTwo));
+        when(voteRepository.findById(1L)).thenReturn(Optional.of(voteEntityOne));
+        when(voteRepository.save(voteEntityOne)).thenReturn(voteEntityOne);
 
         // call the method
-        GetVoteRequest request = GetVoteRequest.builder()
-                .post(222L)
+        UpdateVoteRequest request = UpdateVoteRequest.builder()
                 .user(111L)
+                .post(222L)
                 .build();
 
         // when
-        VoteInformationDTO actualVote = getVoteUseCase.getVote(request);
+        updateVoteUseCase.updateVote(request);
 
         // then
-        assertNotNull(actualVote);
-        assertEquals(expectedResult, actualVote);
+        assertEquals(false, voteEntityOne.getType());
 
         // verify
         verify(voteRepository, times(1)).findAllByPostId(222L);
+        verify(voteRepository, times(1)).findById(1L);
+        verify(voteRepository, times(1)).save(voteEntityOne);
     }
 
     @Test
-    void Check_UserAlreadyVoted_ReturnsTrue() {
+    void Update_Vote_FromDownToUp() {
         // given
         UserEntity userEntity = UserEntity.builder()
                 .id(111L)
@@ -125,59 +121,24 @@ class GetVoteUseCaseImplTest {
 
         // set up mock objects
         when(voteRepository.findAllByPostId(222L)).thenReturn(List.of(voteEntityOne, voteEntityTwo));
+        when(voteRepository.findById(2L)).thenReturn(Optional.of(voteEntityTwo));
+        when(voteRepository.save(voteEntityTwo)).thenReturn(voteEntityTwo);
 
         // call the method
-        GetVoteRequest requestCheckAlreadyVotedReturnsTrue = GetVoteRequest.builder()
-                .post(222L)
-                .user(111L)
-                .build();
-
-        GetVoteRequest requestCheckAlreadyVotedReturnsFalse = GetVoteRequest.builder()
-                .post(222L)
-                .user(444L)
-                .build();
-
-        GetVoteRequest requestCheckAlreadyUpvotedReturnsTrue = GetVoteRequest.builder()
-                .post(222L)
-                .user(111L)
-                .build();
-
-        GetVoteRequest requestCheckAlreadyUpvotedReturnsFalse = GetVoteRequest.builder()
-                .post(222L)
+        UpdateVoteRequest request = UpdateVoteRequest.builder()
                 .user(777L)
-                .build();
-
-        GetVoteRequest requestCheckAlreadyDownvotedReturnsTrue = GetVoteRequest.builder()
                 .post(222L)
-                .user(777L)
-                .build();
-
-        GetVoteRequest requestCheckAlreadyDownvotedReturnsFalse = GetVoteRequest.builder()
-                .post(222L)
-                .user(111L)
                 .build();
 
         // when
-        boolean actualCheckAlreadyVotedReturnsTrue = getVoteUseCase.checkUserAlreadyVoted(requestCheckAlreadyVotedReturnsTrue);
-        boolean actualCheckAlreadyVotedReturnsFalse = getVoteUseCase.checkUserAlreadyVoted(requestCheckAlreadyVotedReturnsFalse);
-
-        boolean actualCheckAlreadyUpvotedReturnsTrue = getVoteUseCase.checkUserAlreadyUpvoted(requestCheckAlreadyUpvotedReturnsTrue);
-        boolean actualCheckAlreadyUpvotedReturnsFalse = getVoteUseCase.checkUserAlreadyUpvoted(requestCheckAlreadyUpvotedReturnsFalse);
-
-        boolean actualCheckAlreadyDownvotedReturnsTrue = getVoteUseCase.checkUserAlreadyDownvoted(requestCheckAlreadyDownvotedReturnsTrue);
-        boolean actualCheckAlreadyDownvotedReturnsFalse = getVoteUseCase.checkUserAlreadyDownvoted(requestCheckAlreadyDownvotedReturnsFalse);
+        updateVoteUseCase.updateVote(request);
 
         // then
-        assertTrue(actualCheckAlreadyVotedReturnsTrue);
-        assertFalse(actualCheckAlreadyVotedReturnsFalse);
-
-        assertTrue(actualCheckAlreadyUpvotedReturnsTrue);
-        assertFalse(actualCheckAlreadyUpvotedReturnsFalse);
-
-        assertTrue(actualCheckAlreadyDownvotedReturnsTrue);
-        assertFalse(actualCheckAlreadyDownvotedReturnsFalse);
+        assertEquals(true, voteEntityTwo.getType());
 
         // verify
-        verify(voteRepository, times(6)).findAllByPostId(222L);
+        verify(voteRepository, times(1)).findAllByPostId(222L);
+        verify(voteRepository, times(1)).findById(2L);
+        verify(voteRepository, times(1)).save(voteEntityTwo);
     }
 }
