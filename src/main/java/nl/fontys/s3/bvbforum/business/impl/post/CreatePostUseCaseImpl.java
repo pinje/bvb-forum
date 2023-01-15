@@ -53,7 +53,7 @@ public class CreatePostUseCaseImpl implements CreatePostUseCase {
         return postRepository.save(newPost);
     }
 
-    private VoteEntity voteInit(Long postId, Long userId) {
+    private void voteInit(Long postId, Long userId) {
 
         VoteEntity newVote = VoteEntity.builder()
                 .type(true)
@@ -65,6 +65,6 @@ public class CreatePostUseCaseImpl implements CreatePostUseCase {
                         .findFirst().orElse(null))
                 .build();
 
-        return voteRepository.save(newVote);
+        voteRepository.save(newVote);
     }
 }

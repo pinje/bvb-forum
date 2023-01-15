@@ -18,8 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -169,5 +168,142 @@ class UpdatePostUseCaseImplTest {
         verify(accessToken, times(1)).hasRole(RoleEnum.ADMIN.name());
         verify(accessToken, times(1)).getUserId();
         verify(postRepository, times(1)).findById(request.getId());
+    }
+
+    @Test
+    void Update_Upvote() {
+        // given
+        UserEntity userEntity = UserEntity.builder()
+                .id(7L)
+                .username("Shuhei")
+                .password("123456")
+                .build();
+
+        PostEntity postEntity = PostEntity.builder()
+                .id(111L)
+                .title("title")
+                .content("content")
+                .user(userEntity)
+                .vote(1L)
+                .build();
+
+
+        // set up mock objects
+        when(postRepository.findById(111L)).thenReturn(Optional.ofNullable(postEntity));
+        when(postRepository.save(postEntity)).thenReturn(postEntity);
+
+        // when
+        updatePostUseCase.upvote(111L);
+
+        // then
+        assertEquals(2L, postEntity.getVote());
+
+        // verify
+        verify(postRepository, times(1)).findById(111L);
+        verify(postRepository, times(1)).save(postEntity);
+    }
+
+    @Test
+    void Update_Downvote() {
+        // given
+        UserEntity userEntity = UserEntity.builder()
+                .id(7L)
+                .username("Shuhei")
+                .password("123456")
+                .build();
+
+        PostEntity postEntity = PostEntity.builder()
+                .id(111L)
+                .title("title")
+                .content("content")
+                .user(userEntity)
+                .vote(1L)
+                .build();
+
+
+        // set up mock objects
+        when(postRepository.findById(111L)).thenReturn(Optional.ofNullable(postEntity));
+        when(postRepository.save(postEntity)).thenReturn(postEntity);
+
+        // when
+        updatePostUseCase.downvote(111L);
+
+        // then
+        assertEquals(0L, postEntity.getVote());
+
+        // verify
+        verify(postRepository, times(1)).findById(111L);
+        verify(postRepository, times(1)).save(postEntity);
+    }
+
+    @Test
+    void Update_Downvote_Negative() {
+        // given
+        UserEntity userEntity = UserEntity.builder()
+                .id(7L)
+                .username("Shuhei")
+                .password("123456")
+                .build();
+
+        PostEntity postEntity = PostEntity.builder()
+                .id(111L)
+                .title("title")
+                .content("content")
+                .user(userEntity)
+                .vote(0L)
+                .build();
+
+
+        // set up mock objects
+        when(postRepository.findById(111L)).thenReturn(Optional.ofNullable(postEntity));
+        when(postRepository.save(postEntity)).thenReturn(postEntity);
+
+        // when
+        updatePostUseCase.downvote(111L);
+
+        // then
+        assertEquals(-1L, postEntity.getVote());
+
+        // verify
+        verify(postRepository, times(1)).findById(111L);
+        verify(postRepository, times(1)).save(postEntity);
+    }
+
+    @Test
+    void Update_Upvote_NoExistingPost_ThrowsException() throws PostDoesntExistException {
+        // given
+        long nonExistentPostId = -1;
+
+        // set up mock objects
+        when(postRepository.findById(nonExistentPostId)).thenReturn(Optional.empty());
+
+        // when
+        ResponseStatusException exception = assertThrows(PostDoesntExistException.class, () -> updatePostUseCase.upvote(nonExistentPostId));
+
+        // then
+        assertEquals("POST_DOESNT_EXIST", exception.getReason());
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+
+        // verify
+        verify(postRepository, times(1)).findById(nonExistentPostId);
+    }
+
+    @Test
+    void Update_Downvote_NoExistingPost_ThrowsException() throws PostDoesntExistException {
+        // given
+        long nonExistentPostId = -1;
+
+        // set up mock objects
+        when(postRepository.findById(nonExistentPostId)).thenReturn(Optional.empty());
+
+        // when
+        ResponseStatusException exception = assertThrows(PostDoesntExistException.class, () -> updatePostUseCase.downvote(nonExistentPostId));
+
+        // then
+        assertEquals("POST_DOESNT_EXIST", exception.getReason());
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+
+        // verify
+        verify(postRepository, times(1)).findById(nonExistentPostId);
     }
 }

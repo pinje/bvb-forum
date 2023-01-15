@@ -17,14 +17,11 @@ import javax.transaction.Transactional;
 public class CreateVoteUseCaseImpl implements CreateVoteUseCase {
     private VoteRepository voteRepository;
     private UserRepository userRepository;
-
     private PostRepository postRepository;
     @Transactional
     @Override
     public CreateVoteResponse createVote(CreateVoteRequest request) {
         VoteEntity saveVote = save(request);
-
-        // ADD EXCEPTION
 
         return CreateVoteResponse.builder()
                 .voteId(saveVote.getId())

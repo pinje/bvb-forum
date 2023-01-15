@@ -1,7 +1,7 @@
-package nl.fontys.s3.bvbforum.business.impl.post;
+package nl.fontys.s3.bvbforum.business.impl.vote;
 
-import nl.fontys.s3.bvbforum.domain.request.post.CreatePostRequest;
-import nl.fontys.s3.bvbforum.domain.response.post.CreatePostResponse;
+import nl.fontys.s3.bvbforum.domain.request.vote.CreateVoteRequest;
+import nl.fontys.s3.bvbforum.domain.response.vote.CreateVoteResponse;
 import nl.fontys.s3.bvbforum.persistence.PostRepository;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
 import nl.fontys.s3.bvbforum.persistence.VoteRepository;
@@ -16,22 +16,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class CreatePostUseCaseImplTest {
+class CreateVoteUseCaseImplTest {
     @Mock
-    private PostRepository postRepository;
+    private VoteRepository voteRepository;
     @Mock
     private UserRepository userRepository;
     @Mock
-    private VoteRepository voteRepository;
+    private PostRepository postRepository;
     @InjectMocks
-    private CreatePostUseCaseImpl createPostUseCase;
+    private CreateVoteUseCaseImpl createVoteUseCase;
 
     @Test
-    void Add_ValidPost_PostSavedInRepository() {
+    void Add_ValidVote_VoteSavedInRepository() {
         // given
         UserEntity userEntity = UserEntity.builder()
                 .id(1L)
@@ -40,14 +40,7 @@ class CreatePostUseCaseImplTest {
                 .build();
 
         PostEntity postEntity = PostEntity.builder()
-                .id(1L)
-                .title("title")
-                .content("content")
-                .vote(1L)
-                .user(userEntity)
-                .build();
-
-        PostEntity requestPostEntity = PostEntity.builder()
+                .id(11L)
                 .title("title")
                 .content("content")
                 .vote(1L)
@@ -55,7 +48,7 @@ class CreatePostUseCaseImplTest {
                 .build();
 
         VoteEntity voteEntity = VoteEntity.builder()
-                .id(11L)
+                .id(444L)
                 .type(true)
                 .user(userEntity)
                 .post(postEntity)
@@ -69,26 +62,24 @@ class CreatePostUseCaseImplTest {
 
         // set up mock objects
         when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(userEntity));
-        when(postRepository.save(requestPostEntity)).thenReturn(postEntity);
+        when(postRepository.findById(11L)).thenReturn(Optional.ofNullable(postEntity));
         when(voteRepository.save(requestVoteEntity)).thenReturn(voteEntity);
 
         // call the method
-        CreatePostRequest request = CreatePostRequest.builder()
-                .title(postEntity.getTitle())
-                .content(postEntity.getContent())
-                .vote(postEntity.getVote())
-                .userId(1L)
+        CreateVoteRequest request = CreateVoteRequest.builder()
+                .type(true)
+                .user(1L)
+                .post(11L)
                 .build();
 
         // when
-        CreatePostResponse response = createPostUseCase.createPost(request);
+        CreateVoteResponse response = createVoteUseCase.createVote(request);
 
         // then
-        assertNotNull(response.getPostId());
+        assertEquals(444L, response.getVoteId());
 
         // verify
-        verify(postRepository, times(1)).save(requestPostEntity);
-        verify(userRepository, times(2)).findById(1L);
-        verify(voteRepository, times(1)).save(requestVoteEntity);
+        verify(userRepository, times(1)).findById(1L);
+        verify(postRepository, times(1)).findById(11L);
     }
 }
