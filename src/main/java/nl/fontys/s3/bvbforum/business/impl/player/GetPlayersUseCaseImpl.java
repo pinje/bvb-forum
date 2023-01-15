@@ -8,12 +8,9 @@ import nl.fontys.s3.bvbforum.domain.Player;
 import nl.fontys.s3.bvbforum.domain.response.player.GetPlayersResponse;
 import nl.fontys.s3.bvbforum.persistence.PlayerRepository;
 import nl.fontys.s3.bvbforum.persistence.RatingPostPlayerRepository;
-import nl.fontys.s3.bvbforum.persistence.entity.PlayerEntity;
 import nl.fontys.s3.bvbforum.persistence.entity.RatingPostPlayerEntity;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,7 +45,7 @@ public class GetPlayersUseCaseImpl implements GetPlayersUseCase {
         }
 
         List<Player> players = ratingPostPlayerEntities.stream()
-                .map(ratingPostPlayerEntity -> ratingPostPlayerEntity.getPlayer())
+                .map(RatingPostPlayerEntity::getPlayer)
                 .map(PlayerConverter::convert)
                 .collect(Collectors.toList());
 

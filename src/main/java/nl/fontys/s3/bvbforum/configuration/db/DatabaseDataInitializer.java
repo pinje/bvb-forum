@@ -9,9 +9,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Set;
 
 @Component
@@ -75,8 +73,8 @@ public class DatabaseDataInitializer {
         postRepository.save(
                 PostEntity.builder()
                         .date(ts)
-                        .title("title")
-                        .content("content")
+                        .title("Welcome")
+                        .content("Welcome everybody to the unofficial BVB Forum!")
                         .vote(0L)
                         .user(userRepository.findByUsername("admin")).build());
     }
@@ -94,7 +92,7 @@ public class DatabaseDataInitializer {
         commentRepository.save(
                 CommentEntity.builder()
                         .date(ts)
-                        .comment("this is a comment")
+                        .comment("Hope you enjoy it")
                         .user(userRepository.findByUsername("admin"))
                         .post(postRepository.findById(1L).stream().filter(postEntity -> postEntity.getId() == 1L).findFirst().orElse(null)).build()
         );

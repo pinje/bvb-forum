@@ -8,7 +8,6 @@ import nl.fontys.s3.bvbforum.configuration.security.isauthenticated.IsAuthentica
 import nl.fontys.s3.bvbforum.domain.request.rating_post.CreateRatingPostRequest;
 import nl.fontys.s3.bvbforum.domain.response.rating_post.CreateRatingPostResponse;
 import nl.fontys.s3.bvbforum.persistence.entity.RatingPostEntity;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

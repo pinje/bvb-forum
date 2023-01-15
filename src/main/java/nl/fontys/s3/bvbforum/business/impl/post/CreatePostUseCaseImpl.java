@@ -3,7 +3,6 @@ package nl.fontys.s3.bvbforum.business.impl.post;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.business.interfaces.post.CreatePostUseCase;
 import nl.fontys.s3.bvbforum.domain.request.post.CreatePostRequest;
-import nl.fontys.s3.bvbforum.domain.request.vote.CreateVoteRequest;
 import nl.fontys.s3.bvbforum.domain.response.post.CreatePostResponse;
 import nl.fontys.s3.bvbforum.persistence.PostRepository;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;

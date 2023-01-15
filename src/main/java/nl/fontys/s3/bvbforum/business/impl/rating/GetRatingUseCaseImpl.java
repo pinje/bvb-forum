@@ -11,6 +11,7 @@ import nl.fontys.s3.bvbforum.persistence.entity.RatingEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -39,13 +40,11 @@ public class GetRatingUseCaseImpl implements GetRatingUseCase {
 
         String formattedAverageRating = String.format("%.2f", averageRating);
 
-        PlayerAverageRatingDTO result = PlayerAverageRatingDTO.builder()
+        return PlayerAverageRatingDTO.builder()
                 .player(playerRepository.findById(playerId)
                         .stream().findFirst().orElse(null))
                 .averageRating(formattedAverageRating)
                 .build();
-
-        return result;
     }
 
     @Override
@@ -55,7 +54,7 @@ public class GetRatingUseCaseImpl implements GetRatingUseCase {
 
         // check for each in list
         for (RatingEntity element : list) {
-            if (element.getRatingPost().getId() == request.getRatingPostId()) {
+            if (Objects.equals(element.getRatingPost().getId(), request.getRatingPostId())) {
                 // already voted
                 return true;
             }

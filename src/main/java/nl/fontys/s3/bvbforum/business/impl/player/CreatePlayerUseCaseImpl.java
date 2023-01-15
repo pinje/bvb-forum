@@ -6,11 +6,9 @@ import nl.fontys.s3.bvbforum.domain.request.player.CreatePlayerRequest;
 import nl.fontys.s3.bvbforum.domain.response.player.CreatePlayerResponse;
 import nl.fontys.s3.bvbforum.persistence.PlayerRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.PlayerEntity;
-import nl.fontys.s3.bvbforum.persistence.entity.PositionEnum;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Objects;
 
 @Service
 @AllArgsConstructor

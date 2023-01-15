@@ -15,14 +15,12 @@ import nl.fontys.s3.bvbforum.domain.response.rating.CreateRatingResponse;
 import nl.fontys.s3.bvbforum.domain.response.rating.GetAverageRatingsResponse;
 import nl.fontys.s3.bvbforum.domain.response.rating.GetRatingsResponse;
 import nl.fontys.s3.bvbforum.persistence.entity.PositionEnum;
-import nl.fontys.s3.bvbforum.persistence.entity.RatingEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/ratings")

@@ -11,12 +11,9 @@ import nl.fontys.s3.bvbforum.domain.response.rating.GetRatingsResponse;
 import nl.fontys.s3.bvbforum.persistence.PlayerRepository;
 import nl.fontys.s3.bvbforum.persistence.RatingRepository;
 import nl.fontys.s3.bvbforum.persistence.entity.PlayerEntity;
-import nl.fontys.s3.bvbforum.persistence.entity.PositionEnum;
 import nl.fontys.s3.bvbforum.persistence.entity.RatingEntity;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

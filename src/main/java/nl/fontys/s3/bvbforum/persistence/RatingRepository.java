@@ -1,6 +1,5 @@
 package nl.fontys.s3.bvbforum.persistence;
 
-import nl.fontys.s3.bvbforum.domain.RatingInformationDTO;
 import nl.fontys.s3.bvbforum.persistence.entity.RatingEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

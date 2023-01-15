@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import nl.fontys.s3.bvbforum.persistence.entity.PlayerEntity;
-import nl.fontys.s3.bvbforum.persistence.entity.UserEntity;
 
 @Data
 @Builder

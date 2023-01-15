@@ -8,7 +8,6 @@ import nl.fontys.s3.bvbforum.domain.response.user.GetAllUsersResponse;
 import nl.fontys.s3.bvbforum.persistence.UserRepository;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
