@@ -29,4 +29,6 @@ sonarqube:
 production:
   stage: production
   script:
+    - ./gradlew clean assemble
     - docker build -t bvb-forum .
+    - docker run -d -p 8090:8080 --net=docker_demo_network_staging --env spring_profiles_active=staging --name=bvb-forum-staging bvb-forum
