@@ -2,12 +2,14 @@ package nl.fontys.s3.bvbforum.controller;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.bvbforum.business.interfaces.vote.CreateVoteUseCase;
+import nl.fontys.s3.bvbforum.business.interfaces.vote.DeleteVoteUseCase;
 import nl.fontys.s3.bvbforum.business.interfaces.vote.GetVoteUseCase;
 import nl.fontys.s3.bvbforum.business.interfaces.vote.UpdateVoteUseCase;
 import nl.fontys.s3.bvbforum.domain.VoteInformationDTO;
 import nl.fontys.s3.bvbforum.domain.request.post.CreatePostRequest;
 import nl.fontys.s3.bvbforum.domain.request.post.UpdatePostRequest;
 import nl.fontys.s3.bvbforum.domain.request.vote.CreateVoteRequest;
+import nl.fontys.s3.bvbforum.domain.request.vote.DeleteVoteRequest;
 import nl.fontys.s3.bvbforum.domain.request.vote.GetVoteRequest;
 import nl.fontys.s3.bvbforum.domain.request.vote.UpdateVoteRequest;
 import nl.fontys.s3.bvbforum.domain.response.post.CreatePostResponse;
@@ -25,9 +27,9 @@ import javax.validation.Valid;
 @CrossOrigin(origins = {"http://localhost:3000"})
 public class VotesController {
     private final CreateVoteUseCase createVoteUseCase;
-
     private final UpdateVoteUseCase updateVoteUseCase;
     private final GetVoteUseCase getVoteUseCase;
+    private final DeleteVoteUseCase deleteVoteUseCase;
 
     @PostMapping
     public ResponseEntity<CreateVoteResponse> createVote(@RequestBody @Valid CreateVoteRequest request) {
@@ -79,5 +81,15 @@ public class VotesController {
         request.setPost(postId);
         request.setUser(userId);
         return getVoteUseCase.checkUserAlreadyDownvoted(request);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteVote(@RequestParam(value = "postId") long postId,
+                                           @RequestParam(value = "userId") long userId) {
+        DeleteVoteRequest request = new DeleteVoteRequest();
+        request.setPost(postId);
+        request.setUser(userId);
+        deleteVoteUseCase.deleteVote(request);
+        return ResponseEntity.noContent().build();
     }
 }
