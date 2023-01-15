@@ -57,10 +57,4 @@ class UsersControllerTest {
                                                     """));
         verify(createUserUseCase).createUser(expectedRequest);
     }
-
-    @Test
-    @WithMockUser(username = "Shuhei", roles = {"ADMIN"})
-    void getAllUsers_shouldReturn200WithUsersList() throws Exception {
-        
-    }
 }
