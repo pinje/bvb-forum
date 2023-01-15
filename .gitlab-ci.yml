@@ -9,6 +9,7 @@ stages:
   - build
   - test
   - sonarqube
+  - production
 
 build:
   stage: build
@@ -24,3 +25,8 @@ sonarqube:
   stage: sonarqube
   script:
     - ./gradlew sonarqube
+
+production:
+  stage: production
+  script:
+    - docker build -t bvb-forum .
