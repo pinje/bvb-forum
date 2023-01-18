@@ -75,7 +75,7 @@ public class DatabaseDataInitializer {
                         .date(ts)
                         .title("Welcome")
                         .content("Welcome everybody to the unofficial BVB Forum!")
-                        .vote(0L)
+                        .vote(1L)
                         .user(userRepository.findByUsername("admin")).build());
     }
 
