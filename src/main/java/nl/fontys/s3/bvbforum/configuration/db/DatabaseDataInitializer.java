@@ -78,7 +78,7 @@ public class DatabaseDataInitializer {
                         .vote(1L)
                         .user(userRepository.findByUsername("admin")).build());
     }
-
+    
     public void insertVote() {
         voteRepository.save(VoteEntity.builder()
                 .type(Boolean.TRUE)
